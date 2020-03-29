@@ -1,35 +1,10 @@
 #include <iostream>
-#include <conio.h>
 #include <Windows.h>
 using namespace std;
 
 const int LARGHEZZA = 99;
 const int ALTEZZA =LARGHEZZA /2;
 char menu[ALTEZZA][LARGHEZZA];
-
-// Versione outdated del menu
-void oldMenuDisplay() {
-	int choice;
-
-	//Formatting of menu.
-	cout << "\n\n__________________________\n     CAR RACING\n\n   "
-		"Select an option:\n\t1. Start new game.\n\t2. Continue.\n\n\t0. Quit.\n__________________________\n";
-
-	//Selection.
-	do {
-
-		cin >> choice;
-		switch (choice) {
-		case 1: cout << "\nStarting new game.\n";
-			break;
-		case 2: cout << "\nContinuing previous game.\n";
-			break;
-		case 0: cout << "\nYou suck. Get lost.\n";
-			exit(1);
-		}
-
-	} while (choice != 0);
-}
 
 // Inserisce il testo nell'array bidimensionale 
 void addText(const char testo[], int length) {
@@ -101,7 +76,6 @@ void MenuDisplay(int opt) {
 		cout << endl;
 	}
 }
-
 
 
 // Input dalla tastiera per il menu di gioco
