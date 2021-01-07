@@ -79,12 +79,12 @@ void MenuDisplay(int opt) {
 
 
 // Input dalla tastiera per il menu di gioco
-void KeyboardInput() { 
+void KeyboardInput() {
 	bool keepGoing = true; // variabile booleana per determinare se l'utente vuole rimanere sul gioco o uscirne
 	int opt = 1; // opzione attiva nel menu
 	int lowest_opt = 1; // prima opzione disponibile (resa a variabile rispetto a versione precedente per rendere funzione pi� generica)
 	int highest_opt = 3;// ultima opzione disponibile (come sopra). Solitamente � Quit
-	
+
 	// Ciclo per continuare ininterrottamente gioco (si esce con ESC o selezionando Quit)
 	do {
 		if (GetAsyncKeyState(VK_UP)) {
@@ -140,6 +140,6 @@ int main() {
 
 	// Viene atteso input da tastiera (all'interno � richiamato MenuDisplay())
 	KeyboardInput();
-	
+
 	return 0;
 }
