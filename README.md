@@ -28,8 +28,10 @@ Progetto per Esame Programmazione, corso di Laurea Informatica
   - get position
 - Livello (numero nemici, motiplicatore Danno, moltiplicatore bonus (?))
   - altezza statica
+  - disegna
+  - get punteggio
 - Partita
-  - add livello (punteggio)
+  - avanza livello ()
 - Nemici (moltiplicatore)
   - Type (lettera)
   - Danno (Player p) => p.proprietà -= danno
@@ -39,3 +41,5 @@ Progetto per Esame Programmazione, corso di Laurea Informatica
 - Interfaccia di gioco
   - Level stats
   - Draw map
+- Sprite
+  - scontra (quadrato)
