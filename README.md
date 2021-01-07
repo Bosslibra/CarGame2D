@@ -23,19 +23,19 @@ Progetto per Esame Programmazione, corso di Laurea Informatica
 
 ## Classi
 
-- Player
+- Player (M)
   - Scontra
   - get position
-- Livello (numero nemici, motiplicatore Danno, moltiplicatore bonus (?))
+- Livello (numero nemici, motiplicatore Danno, moltiplicatore bonus (?)) (A)
   - altezza statica
-- Partita
+- Partita (E)
   - add livello (punteggio)
-- Nemici (moltiplicatore)
+- Nemici (moltiplicatore) (E)
   - Type (lettera)
   - Danno (Player p) => p.proprietà -= danno
-- Bonus
+- Bonus (E)
   - Type
   - AddBonus (Player p) => p.proprietà += bonus
-- Interfaccia di gioco
+- Interfaccia di gioco (A)
   - Level stats
   - Draw map
