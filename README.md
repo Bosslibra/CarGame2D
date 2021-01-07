@@ -25,10 +25,12 @@ Progetto per Esame Programmazione, corso di Laurea Informatica
 
 - Player
   - Scontra
-  - position
-- Mappa
-- Livello
-- Nemici
+  - get position
+- Livello (numero nemici, motiplicatore Danno, moltiplicatore bonus (?))
+  - altezza statica
+- Partita
+  - add livello (punteggio)
+- Nemici (moltiplicatore)
   - Type (lettera)
   - Danno (Player p) => p.proprietà -= danno
 - Bonus
