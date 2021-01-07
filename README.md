@@ -1,8 +1,8 @@
 # CarGame2D
-Progetto per Esame Programmazione, corso di Laurea Informatica
-- pasta e fagioli
----
 
+Progetto per Esame Programmazione, corso di Laurea Informatica
+
+- pasta e fagioli
 - Gioco di corse automobilistiche
 - Su più livelli
 - A punteggio, senza traguardi
@@ -20,3 +20,20 @@ Progetto per Esame Programmazione, corso di Laurea Informatica
 
 - Bisogna usare le classi
 - Più file
+
+## Classi
+
+- Player
+  - Scontra
+  - position
+- Mappa
+- Livello
+- Nemici
+  - Type (lettera)
+  - Danno (Player p) => p.proprietà -= danno
+- Bonus
+  - Type
+  - AddBonus (Player p) => p.proprietà += bonus
+- Interfaccia di gioco
+  - Level stats
+  - Draw map
