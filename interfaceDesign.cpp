@@ -1,66 +1,60 @@
 #include <iostream>
 using namespace std;
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
 
-void cls()
-{
-    // Get the Win32 handle representing standard output.
-    // This generally only has to be done once, so we make it static.
-    static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+const int HEIGHT = 27; 
+const int WIDTH = 48*2; // 48*2 per normalizzare la grandezza dell'array quando viene stampato
+const int VLINE = (WIDTH *3)/4; //divido lo schermo in due parti, a sinistra (tre quarti dello schermo) sarà dove 
+// si gioca, a destra saranno scritti Punteggio e Livello
+const int XCOORDTEXT = VLINE + ((WIDTH - VLINE)/2) -3 ;
+//Trovo il centro tra il lato destro e VLINE, gli tolgo tre (sia la scritta "SCORE:" che "LEVEL:" hanno sei caratteri)
+// e sommo al tutto VLINE, in modo da trovare dove iniziare a scrivere SCORE e LEVEL per averli centrati
 
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    COORD topLeft = { 0, 0 };
+int main(){
 
-    // std::cout uses a buffer to batch writes to the underlying console.
-    // We need to flush that to the console because we're circumventing
-    // std::cout entirely; after we clear the console, we don't want
-    // stale buffered text to randomly be written out.
-    std::cout.flush();
+    char mymap[WIDTH][HEIGHT];
 
-    // Figure out the current width and height of the console window
-    if (!GetConsoleScreenBufferInfo(hOut, &csbi)) {
-        // TODO: Handle failure!
-        abort();
+    //drawing hastags on borders
+    for (int x = 0; x < WIDTH-1; x++){
+        for (int y = 0; y < HEIGHT; y++){
+            if (x == 0 || x == WIDTH-2 || x == (VLINE-1)){
+                mymap [x][y] = '#';
+            } else if (y == 0 || y == HEIGHT-1){
+                if ((x%2) == 0 && (y == 0 || y == HEIGHT -1)){
+                    mymap [x][y] = '#';
+                } else {
+                    mymap [x][y] = ' ';
+                }
+            } else {
+                mymap [x][y] = ' '; // se togli questo l'array non è inizializzato e crasha tutto
+            }
+        }
     }
-    DWORD length = csbi.dwSize.X * csbi.dwSize.Y;
+
+    //Scrivere "SCORE:"
+    mymap [XCOORDTEXT  ][5] = 'S';
+    mymap [XCOORDTEXT+1][5] = 'C';
+    mymap [XCOORDTEXT+2][5] = 'O';
+    mymap [XCOORDTEXT+3][5] = 'R';
+    mymap [XCOORDTEXT+4][5] = 'E';
+    mymap [XCOORDTEXT+5][5] = ':';
+
+    mymap [XCOORDTEXT+5][5+2] = '9';
+
+    //Scrivere "LEVEL:"
+    mymap [XCOORDTEXT  ][9] = 'L';
+    mymap [XCOORDTEXT+1][9] = 'E';
+    mymap [XCOORDTEXT+2][9] = 'V';
+    mymap [XCOORDTEXT+3][9] = 'E';
+    mymap [XCOORDTEXT+4][9] = 'L';
+    mymap [XCOORDTEXT+5][9] = ':';
     
-    DWORD written;
+    mymap [XCOORDTEXT+5][9+2] = '9';
 
-    // Flood-fill the console with spaces to clear it
-    FillConsoleOutputCharacter(hOut, TEXT(' '), length, topLeft, &written);
-
-    // Reset the attributes of every character to the default.
-    // This clears all background colour formatting, if any.
-    FillConsoleOutputAttribute(hOut, csbi.wAttributes, length, topLeft, &written);
-
-    // Move the cursor back to the top left for the next sequence of writes
-    SetConsoleCursorPosition(hOut, topLeft);
-}
-
-// x is the column, y is the row. The origin (0,0) is top-left.
-void setCursorPosition(int x, int y)
-{
-    static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    std::cout.flush();
-    COORD coord = { (SHORT)x, (SHORT)y };
-    SetConsoleCursorPosition(hOut, coord);
-}
-
-
-int main (){
-    // Step through with a debugger, or insert sleeps, to see the effect.
-setCursorPosition(10, 5);
-std::cout << "CHEESE";
-setCursorPosition(10, 5);
-std::cout 'W';
-setCursorPosition(10, 9);
-std::cout << 'Z';
-setCursorPosition(10, 5);
-std::cout << "     ";  // Overwrite characters with spaces to "erase" them
-std::cout.flush();
-// Voilà, 'CHEESE' converted to 'WHEEZE', then all but the last 'E' erased
-
-    return 0;
+    //per testing (stampa l'array)
+    for (int y = 0; y < HEIGHT; y++){
+        for (int x = 0; x < WIDTH-1; x++){
+            cout << mymap[x][y];
+        }
+        cout << endl;
+    }
 }
