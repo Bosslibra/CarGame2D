@@ -24,10 +24,13 @@ Progetto per Esame Programmazione, corso di Laurea Informatica
 ## Classi
 
 - Entity
+  - sprite
   - scontra (quadrato)
   - get position
 - Player : Entity
+  - move
 - Nemici : Entity
+  - randomMove
   - danno
 - Fuel : Entity
   - bonus
