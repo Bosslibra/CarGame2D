@@ -31,12 +31,9 @@ Progetto per Esame Programmazione, corso di Laurea Informatica
   - danno
 - Fuel : Entity
   - bonus
-- Livello (punteggio, numero nemici, motiplicatore Danno, moltiplicatore bonus (?), velocità)
-  - altezza statica
-  - disegna
-  - get punteggio
 - Partita
-  - add livello (punteggio)
+  - livelli (lista(?))
+  - add livello (punteggio, numero nemici, motiplicatore Danno, moltiplicatore bonus (?), velocità)
 - Interfaccia di gioco
   - Level stats
   - Draw map
