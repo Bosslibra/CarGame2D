@@ -23,23 +23,20 @@ Progetto per Esame Programmazione, corso di Laurea Informatica
 
 ## Classi
 
-- Player (M)
-  - Scontra
+- Entity
+  - scontra (quadrato)
   - get position
-- Livello (numero nemici, motiplicatore Danno, moltiplicatore bonus (?)) (A)
+- Player : Entity
+- Nemici : Entity
+  - danno
+- Fuel : Entity
+  - bonus
+- Livello (punteggio, numero nemici, motiplicatore Danno, moltiplicatore bonus (?), velocità)
   - altezza statica
   - disegna
   - get punteggio
-- Partita (E)
+- Partita
   - add livello (punteggio)
-- Nemici (moltiplicatore) (E)
-  - Type (lettera)
-  - Danno (Player p) => p.proprietà -= danno
-- Bonus (E)
-  - Type
-  - AddBonus (Player p) => p.proprietà += bonus
-- Interfaccia di gioco (A)
+- Interfaccia di gioco
   - Level stats
   - Draw map
-- Sprite
-  - scontra (quadrato)
