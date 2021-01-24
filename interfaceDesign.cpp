@@ -25,7 +25,7 @@ void cls()
         abort();
     }
     DWORD length = csbi.dwSize.X * csbi.dwSize.Y;
-    
+
     DWORD written;
 
     // Flood-fill the console with spaces to clear it
@@ -54,7 +54,7 @@ int main (){
 setCursorPosition(10, 5);
 std::cout << "CHEESE";
 setCursorPosition(10, 5);
-std::cout 'W';
+std::cout << 'W';
 setCursorPosition(10, 9);
 std::cout << 'Z';
 setCursorPosition(10, 5);
