@@ -9,6 +9,7 @@ private:
     int spriteID;
     static int lastUnusedID;
     static map<int, vector<int>> loadedSprites;
+    static vector<int> unloadedIDs;
 
 public:
     Sprite(int x, int y, int spriteID);
