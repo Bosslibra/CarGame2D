@@ -23,20 +23,39 @@ Progetto per Esame Programmazione, corso di Laurea Informatica
 
 ## Classi
 
-- Entity
-  - scontra (quadrato)
-  - get position
-- Player : Entity
-- Nemici : Entity
-  - danno
-- Fuel : Entity
-  - bonus
-- Livello (punteggio, numero nemici, motiplicatore Danno, moltiplicatore bonus (?), velocità)
-  - altezza statica
-  - disegna
-  - get punteggio
-- Partita
-  - add livello (punteggio)
-- Interfaccia di gioco
-  - Level stats
-  - Draw map
+Game(); (E) (P)
+#include <GameInterface>
+ canvas[][];
+ level;
+ score;
+ private numberOfEnemies;
+ private numberOfBonuses;
+ start(
+every 1/60s of a second:
+checkCollision(canvas)
+checkLevel(score)
+);
+
+GameInterface(); (M)
+#include <LevelInterface>
+ car;
+ const bonuses;
+ const enemies;
+ checkCollision(canvas);
+ checkLevel(score);
+ checkBounds(canvas);
+ setLevel(level);
+ setScore(score);
+
+LevelInterface(); (E) (P)
+ drawEnemies(numberOfEnemies, enemies, canvas);
+ drawBonuses(numberOfEnemies, bonuses, canvas);
+ moveCar(source,direction, canvas);
+ moveBonus(source,direction, canvas);
+ moveEnemy(source,direction, canvas);
+
+KeyBoard(); (A)
+ keyboard stuff
+
+Printing(); (A)
+printing stuff
