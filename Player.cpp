@@ -1,32 +1,23 @@
-#include <windows.h>
-
 #include <Player.hpp>
 
-Player::Player(int startX, int startY, int width, int height)
-    : Entity(startX, startY, width, height) {
-    x = startX;
-    y = startY;
-    width = width;
-    height = height;
+Player::Player(int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)
+{
 }
 
-int Player::getX() { return x; }
-int Player::getY() { return y; }
-int getWidth() { return width; }
-int getHeight() { return height; }
-bool Player::collide(Entity e) {
-    int eWidth = e.getWidth();
+/*collisioni tra player e un'altra entità qualsiasi
+ *@param Entity entità con cui si scontra (Enemy o Bonus)
+ */
+bool Player::collide(Entity e)
+{
+    int eWitdth = e.getWidth();
     int eHeight = e.getHeight();
     int eX = e.getX();
     int eY = e.getY();
-
-    // magia
-    if (x < eX + eWidth && x + width > eX && y < eY + eHeight &&
-        y + height > eY) {
-        // collision detected
+    //check collisioni hitbox
+    if (this->x<eX + eWitdth &&this->x + this->width> eX &&
+        this->y<eY + eHeight &&this->y + this->height> eY)
+    {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
-void move(int speed) {}

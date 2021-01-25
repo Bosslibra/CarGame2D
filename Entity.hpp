@@ -1,15 +1,17 @@
 class Entity
 {
-private:
-    /* data */
+protected:
+    // @param width e @param height servono per la hitbox
+    int x, y, width, height;
+
 public:
+    // Classe generale che gestisce metodi comuni a tutte le "entità presenti in gioco"
     Entity(int initialX, int initialY, int width, int height);
     ~Entity();
 
-    bool collide(Entity e);
     int getX();
     int getY();
     int getHeight();
     int getWidth();
-    void move(int x, int y,int speed);
+    // // void move(char d,int speed);
 };
