@@ -1,3 +1,4 @@
+#include <map>
 #include <vector>
 using namespace std;
 class Sprite
@@ -5,9 +6,12 @@ class Sprite
 private:
     int x;
     int y;
-    static vector<Sprite> loadedSprites;
+    int spriteID;
+    static int lastUnusedID;
+    static map<int, vector<int>> loadedSprites;
 
 public:
-    Sprite(int x, int y);
-    void deleteSprite(int x, int y);
+    Sprite(int x, int y, int spriteID);
+    void deleteSprite(int spriteID);
+    int getSpriteID();
 };
