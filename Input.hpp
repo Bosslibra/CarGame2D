@@ -1,8 +1,7 @@
 class Input {
     private:
-        char button;
+        static char button;
 
     public: 
-        Input (char button);
-        char getKeyboardInput();
+        static char getKeyboardInput();
 };
