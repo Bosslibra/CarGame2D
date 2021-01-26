@@ -6,8 +6,16 @@ vector<int> Sprite::unloadedIDs;
 map<int, vector<int>> Sprite::loadedSprites;
 map<int, vector<int>> Sprite::unloadedSprites;
 
-Sprite::Sprite(int x_pos, int y_pos)
+Sprite::Sprite(int x_pos, int y_pos, int type)
 {
+    if (type == ENEMY_TYPE)
+    {
+        this->aspect = ENEMY_ASPECT;
+    }
+    else if (type == BONUS_TYPE)
+    {
+        this->aspect = BONUS_ASPECT;
+    }
     this->x = x_pos;
     this->y = y_pos;
     this->spriteID = Sprite::idGenerator();
@@ -46,6 +54,16 @@ int Sprite::getSpriteX()
 int Sprite::getSpriteY()
 {
     return this->y;
+}
+
+void Sprite::setSpriteX(int x)
+{
+    this->x = x;
+}
+
+void Sprite::setSpriteY(int y)
+{
+    this->y = y;
 }
 
 bool Sprite::isLoaded()
@@ -99,7 +117,7 @@ void Sprite::loadSprite(int x, int y, int id)
     pair.push_back(x);
     pair.push_back(y);
     loadedSprites[id] = pair;
-     Sprite::removeOldOccurrence(id, OLD_UNLOAD);
+    Sprite::removeOldOccurrence(id, OLD_UNLOAD);
 }
 
 void Sprite::unloadSprite(int x, int y, int id)
@@ -121,4 +139,14 @@ void Sprite::removeOldOccurrence(int id, int type)
     {
         unloadedSprites.erase(id);
     }
+}
+
+void Sprite::setAspect(string aspect)
+{
+    this->aspect = aspect;
+}
+
+string Sprite::getAspect()
+{
+    return this->aspect;
 }

@@ -38,9 +38,9 @@ void printUnloadedIDs()
 
 int main()
 {
-    Sprite test(1, 2);
-    Sprite test2(2, 3);
-    Sprite test3(3, 4);
+    Sprite test(1, 2, BONUS_TYPE);
+    Sprite test2(2, 3, BONUS_TYPE);
+    Sprite test3(3, 4, BONUS_TYPE);
     printUnloaded();
     printUnloadedIDs();
     cout << "Loading every Sprite" << endl;
