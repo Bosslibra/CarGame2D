@@ -28,6 +28,7 @@ void Game::changeState(Timer gameTimer)
     else
     {
         gameTimer.stop();
+        //TODO rendering an ending screen or something?
     }
 }
 
