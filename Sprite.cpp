@@ -16,7 +16,6 @@ Sprite::Sprite(vector<pair<pair<int, int>, char>> positions)
 }
 void Sprite::deleteSprite()
 {
-
     map<int, vector<pair<pair<int, int>, char>>>::iterator it = loadedSprites.find(this->spriteID);
     if (it != loadedSprites.end())
     {
@@ -59,30 +58,69 @@ bool Sprite::isLoaded()
     }
 }
 
-void Sprite::load()
+int Sprite::load()
 {
-    if (Sprite::isLoaded() == false)
+    if (Sprite::isLoaded() == false && !canvas.empty())
     {
-        loadSprite(this->positions, this->spriteID);
+        return loadSprite(this->positions, this->spriteID);
+    }
+    else
+    {
+        return LOAD_ERROR;
     }
 }
 
-void Sprite::unload()
+int Sprite::unload()
 {
     if (Sprite::isLoaded() == true)
     {
         unloadSprite(this->positions, this->spriteID);
+        return UNLOAD_ALLOWED;
+    }
+    else
+    {
+        return UNLOAD_SPRITE_WAS_NOT_LOADED;
     }
 }
 
-void Sprite::loadSprite(vector<pair<pair<int, int>, char>> positions, int id)
+int Sprite::loadSprite(vector<pair<pair<int, int>, char>> positions, int id)
 {
+    bool check = false;
+    //checking that every point is not occupied
+    for (pair<pair<int, int>, char> pair_father : this->positions)
+    {
+        pair<int, int> point_coordinate = pair_father.first;
+        if (Sprite::isOccupied(point_coordinate.first, point_coordinate.second, this->spriteID))
+        {
+            check = true;
+        }
+    }
+    //every point is not occupied, writing the sprite
+    if (check)
+    {
+        for (pair<pair<int, int>, char> pair_father : this->positions)
+        {
+            pair<int, int> point_coordinate = pair_father.first;
+            char element = pair_father.second;
+            canvas.at(point_coordinate.second).at(point_coordinate.first) = element;
+        }
+    }
+    else
+    {
+        return LOAD_OVERLAP;
+    }
     loadedSprites[id] = positions;
     Sprite::removeOldOccurrence(id, OLD_UNLOAD);
+    return LOAD_ALLOWED;
 }
 
 void Sprite::unloadSprite(vector<pair<pair<int, int>, char>> positions, int id)
 {
+    for (pair<pair<int, int>, char> pair_father : this->positions)
+    {
+        pair<int, int> point_coordinate = pair_father.first;
+        canvas.at(point_coordinate.second).at(point_coordinate.first) = char(0);
+    }
     unloadedSprites[id] = positions;
     Sprite::removeOldOccurrence(id, OLD_LOAD);
 }
@@ -117,6 +155,7 @@ void Sprite::removeOldOccurrence(int id, int type)
 
 void Sprite::setPosition(vector<pair<pair<int, int>, char>> positions)
 {
+    //TODO if the sprite is loaded, check if the new positions are valid
     this->positions = positions;
 }
 
@@ -126,7 +165,7 @@ int Sprite::checkCollision(int direction, int unit_x, int unit_y)
     //you just need to check for the top side) but I don't know how to program that by generalizing the
     //form of the Sprite, so I'll just make the Sprite  check every other occupied spot that's not part
     //of him
-    //also direction is useless, it's just used so it's easier to check for collisions and probably
+    //also direction is useless, it's  used because it's easier to check for collisions and probably
     //it's less CPU intensive, for all that it matters...
 
     //MEMO [y][x], [0][0] is the top-left point

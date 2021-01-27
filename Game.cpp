@@ -11,7 +11,7 @@ void Game::start()
 {
     this->level = 1;
     this->score = 0;
-    //TODO set the default matrix
+    //TODO set the default canvas
     Timer gameTimer = Timer();
     gameTimer.setInterval([&]() {
         this->changeState(gameTimer);
