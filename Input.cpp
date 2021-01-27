@@ -2,23 +2,29 @@
 #include <windows.h>
 
 //Inizializzo con 'n' per indicare che non sta essendo premuto niente
-Input::Input (char button){
-    button = 'n';
+Input::Input (){
+    this->x_coord = 0;
+    this->y_coord = 0;  
 }
 
-//W, A, S, D e le frecce direzionali sono equivalenti. Spazio e Enter sono equivalenti
-char Input::getKeyboardInput() {
+//Ritorna x, y. x è -1 per sinistra, 1 per destra. y è -1 per sotto e 1 per sopra
+int Input::getKeyboardInput() {
+    int coords[2] = {0, 0};
     if (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)){
-        this->button = 'w';
-    } else if (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)){
-        this->button = 'a';
-    } else if (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)){
-        this->button = 's';
-    } else if (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)){
-        this->button = 'd';
-    } else if (GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_SPACE)){
-        this->button = 'o';
+        Input::y_coord += 1;
     }
-    return this->button;
+    if (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)){
+        Input::x_coord -= 1;
+    }
+    if (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)){
+        Input::y_coord -= 1;
+    }
+    if (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)){
+        Input::x_coord += 1;
+    }
+    //if (GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_SPACE)){
+      //  Input::button = 'o';
+   // }
+    return coords[x_coord][y_coord];
 }
 

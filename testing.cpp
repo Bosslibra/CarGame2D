@@ -3,7 +3,7 @@
 #include <windows.h>
 
 int main(){
-
+    bool keepGoing = true;
     do {
         if (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)){
             std::cout << "up ";
@@ -15,10 +15,11 @@ int main(){
             std::cout << "down ";
         } else if (GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_SPACE)){
             std::cout << "0 ";
+            keepGoing = false;
         }
-        
+        Sleep(17);
 
-    } while (true);
+    } while (keepGoing);
 
     
 

@@ -1,7 +1,10 @@
 class Input {
     private:
-        static char button;
+        static int x_coord;
+        static int y_coord;
+
 
     public: 
-        static char getKeyboardInput();
+        Input();
+        static int getKeyboardInput();
 };
