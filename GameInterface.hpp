@@ -4,20 +4,26 @@
 class GameInterface
 {
 private:
-    //lista bonus sulla mappa
+    //@param bonuses lista bonus sulla mappa
     struct bonuses{
         Bonus b;
         bonuses * next;
     };
-    //lista nemici sulla mappa
+    //@param enemies lista nemici sulla mappa
     struct enemies{
         Enemy e;
         enemies * next;
     };
+    //definizione puntatori
     typedef enemies* ptr_enemies;
     typedef bonuses* ptr_bonuses;
-    Player player; //giocatore
+    ptr_bonuses bonuses;
+    ptr_enemies enemies;
 
+    int score; //@param score score partita
+
+    typedef Player* ptr_player;
+    ptr_player player; //giocatore
 public:
 
     GameInterface();

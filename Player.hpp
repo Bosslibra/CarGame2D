@@ -8,5 +8,6 @@ private:
 public:
     Player(int initialX, int initialY, int width, int height);
     ~Player();
-    bool collide(Entity e);
+    bool collideEnemy(Enemy e);
+    bool collideBonus(Bonus b);
 };
