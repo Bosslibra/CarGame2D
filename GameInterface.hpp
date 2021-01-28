@@ -9,6 +9,7 @@ private:
         Bonus b;
         bonuses * next;
     };
+
     //@param enemies lista nemici sulla mappa
     struct enemies{
         Enemy e;
@@ -22,14 +23,13 @@ private:
 
     int score; //@param score score partita
 
-    typedef Player* ptr_player;
-    ptr_player player; //giocatore
+    Player* player; //giocatore
 public:
 
     GameInterface();
     ~GameInterface();
     void checkCollision();
     // void setLevel(level);
-    bool checkLevel(int score);
+    bool checkLevel();
     void setScore(int score);
 };

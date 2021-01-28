@@ -1,21 +1,32 @@
 #include <GameInterface.hpp>
+GameInterface::GameInterface()
+{
+    this->score = 0;
+}
 
-void GameInterface::checkCollision(){
-        ptr_enemies enemy = this->enemies;
-        ptr_bonuses bonus = this->bonuses;
-        ptr_player player = this->player;
+void GameInterface::checkCollision()
+{
+    ptr_enemies enemy = this->enemies;
+    ptr_bonuses bonus = this->bonuses;
     // controllo collisioni con nemici
-    while (enemy -> next != nullptr){
+    while (enemy != nullptr)
+    {
         Enemy e = enemy->e;
-        if (player->collideEnemy(e)){
+        if (this->player->collideEnemy(e))
+        {
             this->score -= e.getDamage();
         }
     }
-    while (bonus -> next != nullptr){
+    while (bonus != nullptr)
+    {
         Bonus b = bonus->b;
-        if (player->collideBonus(b)){
+        if (this->player->collideBonus(b))
+        {
             this->score += b.getBonus();
         }
     }
-
+}
+void GameInterface::setScore(int score)
+{
+    this->score + score;
 }
