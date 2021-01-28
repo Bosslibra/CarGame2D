@@ -4,7 +4,7 @@ Player::Player(int initialX, int initialY, int width, int height) : Entity(initi
 {
 }
 
-/*collisioni tra player e un'altra entità qualsiasi
+/**collisioni tra player e un'altra entità qualsiasi
  *@param Entity entità con cui si scontra (Enemy o Bonus)
  */
 bool Player::collideEnemy(Enemy e)
