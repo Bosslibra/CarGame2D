@@ -4,17 +4,14 @@ Player::Player(int initialX, int initialY, int width, int height) : Entity(initi
 {
 }
 
-/**collisioni tra player e un'altra entità qualsiasi
- *@param Entity entità con cui si scontra (Enemy o Bonus)
- */
 bool Player::collideEnemy(Enemy e)
 {
-    int eWitdth = e.getWidth();
+    int eWidth = e.getWidth();
     int eHeight = e.getHeight();
     int eX = e.getX();
     int eY = e.getY();
     //check collisioni hitbox
-    if (this->x<eX + eWitdth &&this->x + this->width> eX &&
+    if (this->x<eX + eWidth &&this->x + this->width> eX &&
         this->y<eY + eHeight &&this->y + this->height> eY)
     {
         return true;
@@ -23,13 +20,13 @@ bool Player::collideEnemy(Enemy e)
 }
 bool Player::collideBonus(Bonus b)
 {
-    int eWitdth = b.getWidth();
-    int eHeight = b.getHeight();
+    int bWidth = b.getWidth();
+    int bHeight = b.getHeight();
     int eX = b.getX();
     int eY = b.getY();
     //check collisioni hitbox
-    if (this->x<eX + eWitdth &&this->x + this->width> eX &&
-        this->y<eY + eHeight &&this->y + this->height> eY)
+    if (this->x<eX + bWidth &&this->x + this->width> eX &&
+        this->y<eY + bHeight &&this->y + this->height> eY)
     {
         return true;
     }
