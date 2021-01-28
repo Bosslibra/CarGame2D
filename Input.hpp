@@ -1,3 +1,5 @@
+
+
 class Input {
     private:
         static int x_coord;

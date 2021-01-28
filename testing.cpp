@@ -1,27 +1,38 @@
 #include <iostream>
 #include "Input.hpp"
 #include <windows.h>
+#include <tuple>
 
 int main(){
-    bool keepGoing = true;
+    
+    int keepGoing = 0;
+    
     do {
-        if (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)){
-            std::cout << "up ";
-        } else if (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)){
+        int coord = Input::getKeyboardInput();
+        
+        if (coord == 1){
+            std::cout << "top ";
+        } else if (coord == 2){
             std::cout << "left ";
-        } else if (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)){
+        }else if (coord = 3){
             std::cout << "right ";
-        } else if (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)){
+        }else if (coord = 4){
             std::cout << "down ";
-        } else if (GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_SPACE)){
-            std::cout << "0 ";
-            keepGoing = false;
+        }else if (coord = 5){
+            std::cout << "topleft ";
+        }else if (coord = 6){
+            std::cout << "topright ";
+        }else if (coord = 7){
+            std::cout << "downleft ";
+        }else if (coord = 8){
+            std::cout << "downright ";
         }
+
+        keepGoing++;
+      
         Sleep(17);
 
-    } while (keepGoing);
-
-    
+    } while (keepGoing < 900);
 
     return 0;
 }
