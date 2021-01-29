@@ -8,5 +8,5 @@ class Input {
 
     public: 
         Input();
-        static int getKeyboardInput();
+        int getKeyboardInput();
 };
