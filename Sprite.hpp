@@ -1,7 +1,5 @@
 #include <list>
 #include <string>
-#include <TextWindow.hpp>
-
 class Sprite
 {
 private:
@@ -16,6 +14,7 @@ public:
      * @param line
      */
     void addLine(std::string line);
+    std::list<std::string> getSprite();
 };
 
-void draw(TextWindow _textWindow);
+// void draw(TextWindow _textWindow);

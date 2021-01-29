@@ -1,4 +1,4 @@
-#include <Sprite.hpp>
+#include "Sprite.hpp"
 class TextWindow
 {
 private:
@@ -6,5 +6,5 @@ private:
 public:
     TextWindow(/* args */);
     ~TextWindow();
-    void draw(Sprite s)
+    // void draw(Sprite s);
 };

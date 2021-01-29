@@ -1,8 +1,13 @@
-#include <Entity.hpp>
-#include <Bonus.hpp>
-#include <Enemy.hpp>
+#include "Entity.hpp"
+#include "Bonus.hpp"
+#include "Enemy.hpp"
+#include "Sprite.hpp"
+
 class Player : public Entity
 {
+private:
+    Sprite* sprite;
+
 public:
     /**
      * @brief Construct a new Player object
@@ -30,4 +35,5 @@ public:
      * @return false (non collide)
      */
     bool collideBonus(Bonus b);
+    std::string getSprite();
 };

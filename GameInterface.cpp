@@ -1,4 +1,4 @@
-#include <GameInterface.hpp>
+#include "GameInterface.hpp"
 GameInterface::GameInterface()
 {
     this->score = 0;

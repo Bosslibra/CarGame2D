@@ -1,6 +1,6 @@
-#include <Bonus.hpp>
-#include <Enemy.hpp>
-#include <Player.hpp>
+#include "Bonus.hpp"
+#include "Enemy.hpp"
+#include "Player.hpp"
 class GameInterface
 {
 private:

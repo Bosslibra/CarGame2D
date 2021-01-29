@@ -1,7 +1,14 @@
-#include <Player.hpp>
-
+#include "Player.hpp"
+#include <iostream>
 Player::Player(int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)
 {
+    this->sprite = new Sprite();
+    std::string one = "***";
+    std::string two = "**";
+    std::string three = "***";
+    this->sprite.add(one);
+    this->sprite.add(two);
+    this->sprite.add(three);
 }
 
 bool Player::collideEnemy(Enemy e)
@@ -31,4 +38,11 @@ bool Player::collideBonus(Bonus b)
         return true;
     }
     return false;
+}
+std::string Player::getSprite(){
+    std::list<std::string>::iterator it;
+    for (it = this->sprite.begin();it!=this->sprite.end(); it++){
+        std::cout << it;
+    }
+    return "";
 }
