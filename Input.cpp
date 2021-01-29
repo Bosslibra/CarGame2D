@@ -1,6 +1,7 @@
 #include "Input.hpp"
 #include <windows.h>
 
+#define NULL 0
 #define TOP 1
 #define LEFT 2
 #define RIGHT 3
@@ -11,51 +12,59 @@
 #define DOWNRIGHT 8
 #define ENTER 9
 
-//Inizializzo con 'n' per indicare che non sta essendo premuto niente
-Input::Input(){
-    Input::x_coord = 0;
-    Input::y_coord = 0;
-}
 
-int Input::getKeyboardInput() {
-    int coordinates_combined = 0;
+/*Returns:
+- 0 if both Up and Down or both Left and Right are pressed simultaneously
+- 1 if Up (W) is pressed
+- 2 if Left (A) is pressed
+- 3 if Right (D) is pressed
+- 4 if Down (S) is pressed
+- 5 if both Up (W) and Left (A) are pressed
+- 6 if both Up (W) and Right (D) are pressed
+- 7 if both Down (S) and Left (A) are pressed
+- 8 if both Down (S) and Right (D) is pressed
+*/
+int Input::getMovementInput() {
 
     //Detects Keystrokes
+    if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT))){
+        return TOPLEFT;
+    }
+    if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
+        return 0;
+    }
+    if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
+        return TOPRIGHT;
+    }
+    if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) && (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT))){
+       return DOWNLEFT;
+    }
+    if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
+       return DOWNRIGHT;
+    }
+    if ((GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
+        return 0;
+    }
+    if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
+        return NULL;
+    }
     if (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)){
-        this->y_coord += 1;
+        return TOP;
     }
     if (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)){
-        this->x_coord -= 1;
+        return LEFT;
     }
     if (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)){
-    	this->y_coord -= 1;
+    	return DOWN;
     }
     if (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)){
-    	this->x_coord += 1;
+    	return RIGHT;
     }
-    if (GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_SPACE)){
-        coordinates_combined = ENTER;
-    }
-
-    //Determines Output
-    if (this->x_coord == 0 && this->y_coord == 1){
-        coordinates_combined = TOP;
-    } else if (this->x_coord == -1 && this->y_coord == 0){
-        coordinates_combined = LEFT;
-    } else if (this->x_coord == 1 && this->y_coord == 0){
-        coordinates_combined = RIGHT;
-    } else if (this->x_coord == 0 && this->y_coord == -1){
-        coordinates_combined = DOWN;
-    } else if (this->x_coord == -1 && this->y_coord == 1){
-        coordinates_combined = TOPLEFT;
-    } else if (this->x_coord == 1 && this->y_coord == 1){
-        coordinates_combined = TOPRIGHT;
-    } else if (this->x_coord == -1 && this->y_coord == -1){
-        coordinates_combined = DOWNLEFT;
-    } else if (this->x_coord == 1 && this->y_coord == -1){
-        coordinates_combined = DOWNRIGHT;
-    }
-
-    return (coordinates_combined);
 }
 
+//Returns 9 if either Spacebar or Enter are pressed
+int Input::getMenuInput(){
+    if (GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_SPACE)){
+        return ENTER;
+    }
+}
