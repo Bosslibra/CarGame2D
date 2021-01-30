@@ -28,6 +28,7 @@ public:
 
     GameInterface();
     ~GameInterface();
+    void run();
     void checkCollision();
     // void setLevel(level);
     bool checkLevel();

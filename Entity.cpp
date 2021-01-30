@@ -1,5 +1,6 @@
 #include "Entity.hpp"
 
+Entity::~Entity(){}
 Entity::Entity(int initialX, int initialY, int width, int height)
 {
     this->x = initialX;

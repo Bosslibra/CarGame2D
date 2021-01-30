@@ -1,14 +1,14 @@
 #include "Player.hpp"
-#include <iostream>
+Player::~Player(){}
 Player::Player(int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)
 {
-    this->sprite = new Sprite();
-    std::string one = "***";
-    std::string two = "**";
-    std::string three = "***";
-    this->sprite.add(one);
-    this->sprite.add(two);
-    this->sprite.add(three);
+    // crea lo sprite collegato al player
+    std::string one   = "O * O";
+    std::string two   = "* A *";
+    std::string three = "O * O";
+    this->sprite.addLine(one);
+    this->sprite.addLine(two);
+    this->sprite.addLine(three);
 }
 
 bool Player::collideEnemy(Enemy e)
@@ -39,10 +39,16 @@ bool Player::collideBonus(Bonus b)
     }
     return false;
 }
-std::string Player::getSprite(){
-    std::list<std::string>::iterator it;
-    for (it = this->sprite.begin();it!=this->sprite.end(); it++){
-        std::cout << it;
+bool Player::collideWalls(int xMax, int yMax)
+{
+    //check collisioni hitbox
+    if (this->x <= 0 || this->x >= xMax || this->y <= 0 || this->y >= yMax)
+    {
+        return true;
     }
-    return "";
+    return false;
+}
+Sprite Player::getSprite()
+{
+    return this->sprite;
 }

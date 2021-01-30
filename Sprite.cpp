@@ -1,7 +1,9 @@
 #include "Sprite.hpp"
-#pragma once
-int x, y;
+#include <list>
+#include <string>
 Sprite::Sprite(){
+}
+Sprite::~Sprite(){
 }
 void Sprite::addLine(std::string line){
     this->sprite.push_back(line);

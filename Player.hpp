@@ -1,12 +1,15 @@
+#pragma once
 #include "Entity.hpp"
 #include "Bonus.hpp"
 #include "Enemy.hpp"
 #include "Sprite.hpp"
+#include <list>
+#include <string>
 
 class Player : public Entity
 {
 private:
-    Sprite* sprite;
+    Sprite sprite;
 
 public:
     /**
@@ -35,5 +38,15 @@ public:
      * @return false (non collide)
      */
     bool collideBonus(Bonus b);
-    std::string getSprite();
+
+    /**
+     * @brief controlla le collisioni con i bordi
+     *
+     * @param xMax massima grandezza canvas (x)
+     * @param yMax massima grandezza canvas (y)
+     * @return true (collide)
+     * @return false (non collide)
+     */
+    bool collideWalls(int xMax, int yMax);
+    Sprite getSprite();
 };

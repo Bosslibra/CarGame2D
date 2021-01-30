@@ -2,6 +2,7 @@
 GameInterface::GameInterface()
 {
     this->score = 0;
+    this->player = new Player (2,2,2,2);
 }
 
 void GameInterface::checkCollision()
