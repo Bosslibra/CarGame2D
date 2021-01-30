@@ -5,7 +5,16 @@
 #include "Sprite.hpp"
 #include <list>
 #include <string>
-
+// DIRECTIONS
+#define TOP 1
+#define LEFT 2
+#define RIGHT 3
+#define DOWN 4
+#define TOPLEFT 5
+#define TOPRIGHT 6
+#define DOWNLEFT 7
+#define DOWNRIGHT 8
+#define ENTER 9
 class Player : public Entity
 {
 private:
@@ -48,5 +57,17 @@ public:
      * @return false (non collide)
      */
     bool collideWalls(int xMax, int yMax);
+    /**
+     * @brief Get the Sprite object
+     *
+     * @return Sprite
+     */
     Sprite getSprite();
+    /**
+     * @brief
+     *
+     *
+     * @param speed speed
+     */
+    void move(int direction, int speed);
 };

@@ -1,10 +1,9 @@
-#include "Sprite.hpp"
+#pragma once
+// #include "Sprite.hpp"
 class TextWindow
 {
-private:
-    /* data */
 public:
-    TextWindow(/* args */);
+    TextWindow();
     ~TextWindow();
     // void draw(Sprite s);
 };

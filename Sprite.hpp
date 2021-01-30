@@ -1,12 +1,13 @@
 #pragma once
 #include <list>
 #include <string>
+#include "TextWindow.hpp"
 class Sprite
 {
 private:
     std::list<std::string> sprite;
-public:
 
+public:
     Sprite();
     ~Sprite();
     /**
@@ -15,7 +16,16 @@ public:
      * @param line
      */
     void addLine(std::string line);
+    /**
+     * @brief Get the Sprite object
+     *
+     * @return std::list<std::string> sprite
+     */
     std::list<std::string> getSprite();
+    /**
+     * @brief
+     *
+     * @param _textWindow
+     */
+    void Sprite::draw(int &canvas, int width, int height, int x, int y);
 };
-
-// void draw(TextWindow _textWindow);

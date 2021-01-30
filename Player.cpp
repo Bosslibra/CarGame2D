@@ -1,10 +1,10 @@
 #include "Player.hpp"
-Player::~Player(){}
+Player::~Player() {}
 Player::Player(int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)
 {
     // crea lo sprite collegato al player
-    std::string one   = "O * O";
-    std::string two   = "* A *";
+    std::string one = "O * O";
+    std::string two = "* A *";
     std::string three = "O * O";
     this->sprite.addLine(one);
     this->sprite.addLine(two);
@@ -51,4 +51,40 @@ bool Player::collideWalls(int xMax, int yMax)
 Sprite Player::getSprite()
 {
     return this->sprite;
+}
+void Player::move(int direction, int speed)
+{
+    switch (direction)
+    {
+    case TOP:
+        this->y -= speed;
+        break;
+    case TOPLEFT:
+        this->y -= speed / 2;
+        this->x -= speed / 2;
+        break;
+    case TOPRIGHT:
+        this->y -= speed / 2;
+        this->x += speed / 2;
+        break;
+    case RIGHT:
+        this->x += speed;
+        break;
+    case DOWNLEFT:
+        this->y += speed / 2;
+        this->x -= speed / 2;
+        break;
+    case DOWNRIGHT:
+        this->y += speed / 2;
+        this->x += speed / 2;
+        break;
+    case DOWN:
+        this->y += speed;
+        break;
+    case LEFT:
+        this->x -= speed;
+        break;
+    default:
+        break;
+    }
 }
