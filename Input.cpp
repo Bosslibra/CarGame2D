@@ -31,7 +31,7 @@ int Input::getMovementInput() {
         return TOPLEFT;
     }
     if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
-        return 0;
+        return NULL;
     }
     if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
         return TOPRIGHT;
@@ -43,7 +43,7 @@ int Input::getMovementInput() {
        return DOWNRIGHT;
     }
     if ((GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
-        return 0;
+        return NULL;
     }
     if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
         return NULL;
