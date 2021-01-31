@@ -1,12 +1,17 @@
 #include "ConsoleDrawing.hpp"
 #include <windows.h>
 #include <iostream>
+#include <vector>
 
 int main(){
-    COORD c = {22, 22};
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
-    std::cout << "#";
+    ConsoleDrawing c;
+    while (true){
+        c.DrawBuffers();
+        if(GetAsyncKeyState(VK_SPACE)){
+            break;
+        }
+    }
     int z;
-    std::cin>> z;
+    std::cin >> z;
     return 0;
-}
+}   
