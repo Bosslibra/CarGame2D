@@ -29,35 +29,25 @@ int Input::getMovementInput() {
     //Detects Keystrokes
     if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT))){
         return TOPLEFT;
-    }
-    if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
+    } else if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
         return NULL;
-    }
-    if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
+    } else if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
         return TOPRIGHT;
-    }
-    if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) && (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT))){
+    } else if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) && (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT))){
        return DOWNLEFT;
-    }
-    if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
+    } else if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
        return DOWNRIGHT;
-    }
-    if ((GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
+    } else if ((GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
         return NULL;
-    }
-    if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
+    } else if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
         return NULL;
-    }
-    if (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)){
+    } else if (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)){
         return TOP;
-    }
-    if (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)){
+    } else if (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)){
         return LEFT;
-    }
-    if (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)){
+    } else if (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)){
     	return DOWN;
-    }
-    if (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)){
+    } else if (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT)){
     	return RIGHT;
     }
 }
