@@ -15,17 +15,17 @@ int main()
     {
         Player p(300, 3, 3, 3);
         char canvas[height][width];
+        p.draw(canvas);
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
                 canvas[i][j] = ' ';
-                if (i == p.getY() && x)
+                if (i == p.getY() && x == p.getY())
             }
         }
         p.move(1, 3);
         x++;
     }
-    p.getSprite();
     return 0;
 }

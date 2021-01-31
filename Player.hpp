@@ -70,4 +70,5 @@ public:
      * @param speed speed
      */
     void move(int direction, int speed);
+    void draw(int* canvas);
 };

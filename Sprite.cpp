@@ -12,7 +12,7 @@ void Sprite::addLine(std::string line)
     this->sprite.push_back(line);
 }
 
-void Sprite::draw(int &canvas, int width, int height, int x, int y)
+void Sprite::draw(char *canvas, int x, int y, int width, int height)
 {
     for (int i = y; i < height; i++)
     {
