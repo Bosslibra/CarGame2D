@@ -1,31 +1,37 @@
 #include "Bonus.hpp"
 #include "Enemy.hpp"
 #include "Player.hpp"
+#include <vector>
 class GameInterface
 {
 private:
+    const int width = 100;
+    const int height = 100;
+    std::vector<std::vector<char>> canvas;
+
     //@param bonuses lista bonus sulla mappa
-    struct bonuses{
+    struct bonuses
+    {
         Bonus b;
-        bonuses * next;
+        bonuses *next;
     };
 
     //@param enemies lista nemici sulla mappa
-    struct enemies{
+    struct enemies
+    {
         Enemy e;
-        enemies * next;
+        enemies *next;
     };
     //definizione puntatori
-    typedef enemies* ptr_enemies;
-    typedef bonuses* ptr_bonuses;
+    typedef enemies *ptr_enemies;
+    typedef bonuses *ptr_bonuses;
     ptr_bonuses bonuses;
     ptr_enemies enemies;
 
     int score; //@param score score partita
 
-    Player* player; //giocatore
+    Player *player; //giocatore
 public:
-
     GameInterface();
     ~GameInterface();
     void run();
@@ -33,4 +39,5 @@ public:
     // void setLevel(level);
     bool checkLevel();
     void setScore(int score);
+    void resetCanvas();
 };

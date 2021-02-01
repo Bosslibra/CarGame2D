@@ -3,9 +3,9 @@ Player::~Player() {}
 Player::Player(int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)
 {
     // crea lo sprite collegato al player
-    std::string one = "O * O";
-    std::string two = "* A *";
-    std::string three = "O * O";
+    std::string one = "O*O";
+    std::string two = "*A*";
+    std::string three = "O*O";
     this->sprite.addLine(one);
     this->sprite.addLine(two);
     this->sprite.addLine(three);
