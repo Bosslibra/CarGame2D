@@ -8,8 +8,8 @@
 
 ConsoleDrawing::ConsoleDrawing(){
     //this initialization of the vector is for testing purposes only and will be deleted before the merge
-    this->buffer_one = {};
-    this->buffer_two = {};
+    this->buffer_one = {{' '}};
+    this->buffer_two = {{' '}};
 }
 
 void ConsoleDrawing::setBufferOne(std::vector<std::vector<char>> x){
@@ -27,7 +27,8 @@ BOOL ConsoleDrawing::setCursorPosition(int x, int y){
     return SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
 
-void ConsoleDrawing::Draw(){
+//Draws the game as it starts
+void ConsoleDrawing::DrawAtStart(){
     
     for (int i = 0; i < this->buffer_one.size(); i++){
         for (int j = 0; j < this->buffer_one.size(); j++){
@@ -35,30 +36,21 @@ void ConsoleDrawing::Draw(){
             std::cout << this->buffer_one[i][j];
         }
     }
-    /*ConsoleDrawing::DrawBuffers(this->buffer_two, this->buffer_one);
-
-    std::vector<std::vector<char>> temp = this->buffer_one;
-    this->buffer_one = this->buffer_two;
-    this->buffer_two = temp;*/
 }
 
+//Draws everything that changed in buffer_two compared to buffer_one
 void ConsoleDrawing::DrawBuffers(){
-
-    //do I need to change this before the merge??
-    for (int i = 0; i < buffer_two.size(); i++){
-        for (int j = 0; j < buffer_two.size(); j++){
-            if (this->buffer_one[i][j] != this->buffer_two[i][j]){ //only rewrites what has been changed
-                ConsoleDrawing::setCursorPosition(i, j);
-                std::cout << buffer_two[i][j];
+    
+    if (this->buffer_one.size() == this->buffer_two.size() && this->buffer_one[0].size() == this->buffer_two[0].size()){ //without this check the program crashes the app in case vectors are not of the same size
+        for (int i = 0; i < buffer_two.size(); i++){
+            for (int j = 0; j < buffer_two.size(); j++){
+                if (this->buffer_one[i][j] != this->buffer_two[i][j]){ //only rewrites what has been changed -> 
+                    ConsoleDrawing::setCursorPosition(i, j);
+                    std::cout << buffer_two[i][j];
+                }
             }
         }
     }
-
-    //the next three lines are only for testing purposes only and will be deleted before the merge !!!!
-    std::vector<std::vector<char>> temp = this->buffer_one;
-    this->buffer_one = this->buffer_two;
-    this->buffer_two = temp;
-
     Sleep(17); //17 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
 
 }
