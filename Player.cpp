@@ -87,8 +87,7 @@ void Player::move(int direction, int speed)
     default:
         break;
     }
-    
 }
-void  Player::draw(int* canvas){
-    this->sprite.draw(canvas, this->x, this->y, this->height, this->width);
+std::vector <std::vector <char>> Player::draw(std::vector <std::vector <char>> canvas){
+    return this->sprite.draw(canvas, this->x, this->y, this->width, this->height);
 }

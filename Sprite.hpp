@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <string>
+#include <vector>
 #include "TextWindow.hpp"
 class Sprite
 {
@@ -22,10 +23,6 @@ public:
      * @return std::list<std::string> sprite
      */
     std::list<std::string> getSprite();
-    /**
-     * @brief
-     *
-     * @param _textWindow
-     */
-    void Sprite::draw(char *canvas, int x, int y, int width, int height);
+
+    std::vector <std::vector <char>> draw(std::vector <std::vector <char>> canvas, int x, int y, int width, int height);
 };

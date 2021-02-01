@@ -4,6 +4,7 @@
 #include "Enemy.hpp"
 #include "Sprite.hpp"
 #include <list>
+#include <vector>
 #include <string>
 // DIRECTIONS
 #define TOP 1
@@ -70,5 +71,5 @@ public:
      * @param speed speed
      */
     void move(int direction, int speed);
-    void draw(int* canvas);
+    std::vector <std::vector <char>> draw(std::vector<std::vector <char>> canvas);
 };
