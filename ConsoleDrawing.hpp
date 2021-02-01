@@ -12,6 +12,6 @@ public:
     BOOL setCursorPosition(int x, int y);
     void Draw();
     void DrawBuffers();
-    void setBufferOne();
-    void setBufferTwo();
+    void setBufferOne(std::vector<std::vector<char>> x);
+    void setBufferTwo(std::vector<std::vector<char>> x);
 };

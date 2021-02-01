@@ -4,9 +4,20 @@
 #include <vector>
 
 
+//This class needs to have a method that draws the map at the start of the game and a method that keeps on drawing 
+
 ConsoleDrawing::ConsoleDrawing(){
-    this->buffer_one = {{'#', '#', '#', '#'}, {'#', ' ', ' ', '#'}, {'#', 'A', ' ', '#'}, {'#', ' ', ' ', '#'},{'#', '#', '#','#'}};
-    this->buffer_two = {{'#', '#', '#', '#'}, {'#', 'A', ' ', '#'}, {'#', ' ', ' ', '#'}, {'#', ' ', ' ', '#'},{'#', '#', '#','#'}};
+    //this initialization of the vector is for testing purposes only and will be deleted before the merge
+    this->buffer_one = {};
+    this->buffer_two = {};
+}
+
+void ConsoleDrawing::setBufferOne(std::vector<std::vector<char>> x){
+    this->buffer_one = x;
+}
+
+void ConsoleDrawing::setBufferTwo(std::vector<std::vector<char>> x){
+    this->buffer_two = x;
 }
 
 BOOL ConsoleDrawing::setCursorPosition(int x, int y){
@@ -33,7 +44,7 @@ void ConsoleDrawing::Draw(){
 
 void ConsoleDrawing::DrawBuffers(){
 
-
+    //do I need to change this before the merge??
     for (int i = 0; i < buffer_two.size(); i++){
         for (int j = 0; j < buffer_two.size(); j++){
             if (this->buffer_one[i][j] != this->buffer_two[i][j]){ //only rewrites what has been changed
@@ -42,10 +53,13 @@ void ConsoleDrawing::DrawBuffers(){
             }
         }
     }
+
+    //the next three lines are only for testing purposes only and will be deleted before the merge !!!!
     std::vector<std::vector<char>> temp = this->buffer_one;
     this->buffer_one = this->buffer_two;
     this->buffer_two = temp;
 
-    Sleep(17);
+    Sleep(17); //17 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
 
 }
+

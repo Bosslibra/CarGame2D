@@ -5,6 +5,10 @@
 
 int main(){
     ConsoleDrawing c;
+    
+    c.setBufferOne({{'#', '#', '#', '#'}, {'#', ' ', ' ', '#'}, {'#', 'A', ' ', '#'}, {'#', ' ', ' ', '#'},{'#', '#', '#','#'}});
+    c.setBufferTwo({{'#', '#', '#', '#'}, {'#', 'A', ' ', '#'}, {'#', ' ', ' ', '#'}, {'#', ' ', ' ', '#'},{'#', '#', '#','#'}});
+    c.Draw();
     while (true){
         c.DrawBuffers();
         if(GetAsyncKeyState(VK_SPACE)){
