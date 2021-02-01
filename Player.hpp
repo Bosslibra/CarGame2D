@@ -71,5 +71,5 @@ public:
      * @param speed speed
      */
     void move(int direction, int speed);
-    std::vector <std::vector <char>> draw(std::vector<std::vector <char>> canvas);
+    void draw(std::vector<std::vector <char>> &canvas);
 };

@@ -23,5 +23,5 @@ public:
      */
     std::vector<std::string> getSprite();
 
-    std::vector <std::vector <char>> draw(std::vector <std::vector <char>> canvas, int x, int y, int width, int height);
+   void draw(std::vector <std::vector <char>> &canvas, int x, int y, int width, int height);
 };

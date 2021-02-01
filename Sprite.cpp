@@ -13,7 +13,7 @@ void Sprite::addLine(std::string line)
     this->sprite.push_back(line);
 }
 
-std::vector<std::vector<char>> Sprite::draw(std::vector<std::vector<char>> canvas, int x, int y, int width, int height)
+void Sprite::draw(std::vector<std::vector<char>> &canvas, int x, int y, int width, int height)
 {
     std::cout << sprite[0][0];
     std::cout << sprite[0][1];
@@ -31,7 +31,6 @@ std::vector<std::vector<char>> Sprite::draw(std::vector<std::vector<char>> canva
         std::vector<std::vector<char>>::iterator iter = canvas.begin() + i;
         canvas.insert(iter, row);
     }
-    return canvas;
 }
 std::vector<std::string> Sprite::getSprite()
 {
