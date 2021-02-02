@@ -2,3 +2,12 @@ Debug
 .vscode
 *.exe
 .editorconfig
+*.out
+.vscode
+.vs/ProjectSettings.json
+.vs/CarGame2D/v16/ipch/AutoPCH/34ba38934a2bf997/TESTING.ipch
+.vs/CarGame2D/v16/Browse.VC.db
+.vs/CarGame2D/v16/.suo
+.vs/VSWorkspaceState.json
+.vs/slnx.sqlite
+
