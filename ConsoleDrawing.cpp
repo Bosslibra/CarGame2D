@@ -15,11 +15,23 @@ BOOL ConsoleDrawing::setCursorPosition(int x, int y)
     c.Y = y;
     return SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
+ 
+ //made to hide cursor in console
+void ConsoleDrawing::ShowConsoleCursor(bool show)
+{
+    HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    CONSOLE_CURSOR_INFO cursorInfo;
+
+    GetConsoleCursorInfo(out, &cursorInfo);
+    cursorInfo.bVisible = show;
+    SetConsoleCursorInfo(out, &cursorInfo);
+}
 
 //Draws the game as it starts
 void ConsoleDrawing::DrawAtStart(std::vector<std::vector<char>> canvas)
 {
-
+    ConsoleDrawing::ShowConsoleCursor(false);
     for (int i = 0; i < canvas.size(); i++)
     {
         for (int j = 0; j < canvas.size(); j++)
@@ -35,7 +47,7 @@ void ConsoleDrawing::DrawAtStart(std::vector<std::vector<char>> canvas)
 //Draws everything that changed in a given canvas compared to buffer_one
 void ConsoleDrawing::DrawBuffer(std::vector<std::vector<char>> canvas)
 {
-
+    ConsoleDrawing::ShowConsoleCursor(false);
     if (this->buffer_one.size() == canvas.size() && this->buffer_one[0].size() == canvas[0].size())
     { //without this check the program crashes the app in case vectors are not of the same size
         for (int i = 0; i < canvas.size(); i++)
