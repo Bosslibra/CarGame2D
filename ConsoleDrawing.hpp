@@ -1,9 +1,10 @@
+#pragma once
 #include <windows.h>
 #include <vector>
 
 class ConsoleDrawing {
 private:
-    COORD c; 
+    COORD c;
     std::vector<std::vector<char>> buffer_one;
 public:
     ConsoleDrawing();
