@@ -110,12 +110,13 @@ void GameInterface::run()
 // }
 void GameInterface::resetCanvas()
 {
+    this->canvas.clear();
     for (int i = 0; i < this->height; i++)
     {
         std::vector<char> row;
         for (int j = 0; j < this->width; j++)
         {
-            if (j == 0 || j== this->width-1 || i == this->height || i == 0)
+            if (j == 0 || j== this->width-1 || i == this->height-1 || i == 0)
             {
                 row.push_back('#');
             }

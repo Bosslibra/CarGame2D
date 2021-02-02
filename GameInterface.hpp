@@ -7,8 +7,8 @@ class GameInterface
 {
 private:
     ConsoleDrawing console;
-    const int width = 300;
-    const int height = 300;
+    const int width = 50;
+    const int height = 50;
     int speed;
     std::vector<std::vector<char>> canvas;
 
