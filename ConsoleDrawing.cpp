@@ -3,23 +3,9 @@
 #include <iostream>
 #include <vector>
 
-
-//This class needs to have a method that draws the map at the start of the game and a method that keeps on drawing
-
 ConsoleDrawing::ConsoleDrawing()
 {
     this->buffer_one = {{' '}};
-    this->buffer_two = {{' '}};
-}
-
-void ConsoleDrawing::setBufferOne(std::vector<std::vector<char>> x)
-{
-    this->buffer_one = x;
-}
-
-void ConsoleDrawing::setBufferTwo(std::vector<std::vector<char>> x)
-{
-    this->buffer_two = x;
 }
 
 BOOL ConsoleDrawing::setCursorPosition(int x, int y)
@@ -31,36 +17,41 @@ BOOL ConsoleDrawing::setCursorPosition(int x, int y)
 }
 
 //Draws the game as it starts
-void ConsoleDrawing::DrawAtStart()
+void ConsoleDrawing::DrawAtStart(std::vector<std::vector<char>> canvas)
 {
 
-    for (int i = 0; i < this->buffer_one.size(); i++)
+    for (int i = 0; i < canvas.size(); i++)
     {
-        for (int j = 0; j < this->buffer_one.size(); j++)
+        for (int j = 0; j < canvas.size(); j++)
         {
             ConsoleDrawing::setCursorPosition(i, j);
-            std::cout << this->buffer_one[i][j];
+            std::cout << canvas[i][j];
         }
     }
+
+    this->buffer_one = canvas; //saves copy of vector to later compare it to the updated one, in order to have the lowest calls to std::cout
 }
 
-//Draws everything that changed in buffer_two compared to buffer_one
-void ConsoleDrawing::DrawBuffers()
+//Draws everything that changed in a given canvas compared to buffer_one
+void ConsoleDrawing::DrawBuffer(std::vector<std::vector<char>> canvas)
 {
 
-    if (this->buffer_one.size() == this->buffer_two.size() && this->buffer_one[0].size() == this->buffer_two[0].size())
+    if (this->buffer_one.size() == canvas.size() && this->buffer_one[0].size() == canvas[0].size())
     { //without this check the program crashes the app in case vectors are not of the same size
-        for (int i = 0; i < buffer_two.size(); i++)
+        for (int i = 0; i < canvas.size(); i++)
         {
-            for (int j = 0; j < buffer_two.size(); j++)
+            for (int j = 0; j < canvas.size(); j++)
             {
-                if (this->buffer_one[i][j] != this->buffer_two[i][j])
-                { //only rewrites what has been changed ->
+                if (this->buffer_one[i][j] != canvas[i][j])
+                { //only rewrites what has been changed
                     ConsoleDrawing::setCursorPosition(i, j);
-                    std::cout << buffer_two[i][j];
+                    std::cout << canvas[i][j];
                 }
             }
         }
     }
-    Sleep(16); //17 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
+
+    this->buffer_one = canvas;//saves copy of vector to later compare it to the updated one, in order to have the lowest calls to std::cout
+
+    Sleep(16); //16.66667 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
 }
