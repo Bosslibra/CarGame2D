@@ -1,3 +1,4 @@
+#include "ConsoleDrawing.hpp"
 #include "Bonus.hpp"
 #include "Enemy.hpp"
 #include "Player.hpp"
@@ -5,6 +6,7 @@
 class GameInterface
 {
 private:
+    ConsoleDrawing console;
     const int width = 100;
     const int height = 100;
     int speed;

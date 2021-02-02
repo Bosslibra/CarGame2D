@@ -27,7 +27,7 @@ void GameInterface::run()
     this->draw();
     this->checkCollision();
     this->score += 1;
-    this->checkLevel()
+    this->checkLevel();
 }
 
 void GameInterface::checkCollision()
@@ -68,14 +68,8 @@ void GameInterface::draw()
     {
         bonusIt->draw(this->canvas);
     }
-    for (int i = 0; i < this->height; i++)
-    {
-        for (int j = 0; j < this->width; j++)
-        {
-            std::cout<<canvas[i][j];
-        }
-        std::cout<<std::endl;
-    }
+    this->console.DrawBuffers();
+
 }
 void GameInterface::move(int direction)
 {
