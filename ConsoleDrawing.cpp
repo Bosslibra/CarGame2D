@@ -34,7 +34,7 @@ void ConsoleDrawing::DrawAtStart(std::vector<std::vector<char>> canvas)
     ConsoleDrawing::ShowConsoleCursor(false);
     for (int i = 0; i < canvas.size(); i++)
     {
-        for (int j = 0; j < canvas.size(); j++)
+        for (int j = 0; j < canvas[i].size(); j++)
         {
             ConsoleDrawing::setCursorPosition(i, j);
             std::cout << canvas[i][j];
@@ -52,7 +52,7 @@ void ConsoleDrawing::DrawBuffer(std::vector<std::vector<char>> canvas)
     { //without this check the program crashes the app in case vectors are not of the same size
         for (int i = 0; i < canvas.size(); i++)
         {
-            for (int j = 0; j < canvas.size(); j++)
+            for (int j = 0; j < canvas[i].size(); j++)
             {
                 if (this->buffer_one[i][j] != canvas[i][j])
                 { //only rewrites what has been changed
