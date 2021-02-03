@@ -57,7 +57,7 @@ void Player::move(int direction, int speed)
 	switch (direction)
 	{
 	case TOP:
-		this->y -= speed;
+		this->x -= speed;
 		break;
 	case TOPLEFT:
 		this->y -= speed / 2;

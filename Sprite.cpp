@@ -15,10 +15,6 @@ void Sprite::addLine(std::string line)
 
 void Sprite::draw(std::vector<std::vector<char>> &canvas, int x, int y, int width, int height)
 {
-    std::cout << sprite[0][0];
-    std::cout << sprite[0][1];
-    std::cout << sprite[0][2];
-    std::cout << "FINE"<<std::endl;
     for (int i = y; i < y + height; i++)
     {
         std::vector<char> row = canvas[i];

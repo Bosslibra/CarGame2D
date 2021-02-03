@@ -13,6 +13,7 @@ public:
     int getBonus();
     void move(int speed);
     void draw(std::vector<std::vector<char>> &canvas);
+    bool collideBottomWall(int screenHeight, int borderWidth);
 };
 
 

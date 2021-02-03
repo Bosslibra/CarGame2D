@@ -16,3 +16,10 @@ void Bonus::draw(std::vector<std::vector<char>> &canvas)
 {
 	this->sprite.draw(canvas, this->x, this->y, this->width, this->height);
 }
+bool Bonus::collideBottomWall(int screenHeight, int borderWidth){
+    borderWidth -= 1; //per avere la coordinata dell'ultimo punto del bordo
+    if (this->x >= screenHeight - borderWidth){
+        return true;
+    }
+    return false;
+}
