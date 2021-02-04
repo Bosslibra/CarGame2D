@@ -26,7 +26,7 @@ void Enemy::move(int speed, int screenWidth, int borderWidth){
     this->collideLateralWalls(screenWidth, borderWidth);
 }
 void Enemy::collideLateralWalls(int screenWidth, int borderWidth){
-    borderWidth -= 1; //per avere la coordinata dell'ultimo punto del bordo
+    // borderWidth -= 1; //per avere la coordinata dell'ultimo punto del bordo
     if (this->y+this->width >= screenWidth - borderWidth){
         this->y = screenWidth - borderWidth - 1;
     }
@@ -36,7 +36,7 @@ void Enemy::collideLateralWalls(int screenWidth, int borderWidth){
 
 }
 bool Enemy::collideBottomWall(int screenHeight, int borderWidth){
-    borderWidth -= 1; //per avere la coordinata dell'ultimo punto del bordo
+    // borderWidth -= 1; //per avere la coordinata dell'ultimo punto del bordo
     if (this->x+this->height >= screenHeight - borderWidth){
         return true;
 

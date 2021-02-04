@@ -6,10 +6,9 @@
 GameInterface::GameInterface()
 {
     this->resetCanvas();
-    console.DrawAtStart(this->canvas);
     //score inziale
     this->score = 1;
-    this->player = new Player(this->width -3, this->height /2, 3, 3);
+    this->player = new Player(this->width - 3, this->height / 2, 3, 3);
     //numero entità iniziali
     this->nBonus = 1;
     this->nEnemy = 1;
@@ -17,6 +16,7 @@ GameInterface::GameInterface()
     this->bonus = 50;
     this->speed = 1;
     this->levelUpTarget = 1000;
+    console.DrawAtStart(this->canvas);
 }
 void GameInterface::run()
 {
@@ -27,47 +27,62 @@ void GameInterface::run()
     // if (this->bonuses.size() < this->nBonus)
     //     this->addBonus(this->bonus);
     this->move(1);
+    this->checkCollision();
     this->draw();
-    // this->checkCollision();
     // this->score += 1;
     // this->checkLevel();
-    Sleep(500);
+
+    // for (int i = 0; i < this->height; i++)
+    // {
+    //     for (int j = 0; j < this->width; j++)
+    //     {
+    //         std::cout<<this->canvas[i][j];
+    //     }
+    //     std::cout<<std::endl;
+    // }
+    //     std::cout<<std::endl;
+
+    Sleep(300);
 }
 
-// void GameInterface::checkCollision()
-// {
-//     std::list<Enemy>::iterator enemyIt;
-//     for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
-//     {
-//         bool isColliding = this->player->collideEnemy(*enemyIt);
-//         if (isColliding)
-//         {
-//             this->score -= enemyIt->getDamage();
-//             enemies.remove(*enemyIt);
-//         }
-//     }
-//     // muovo tutti i bonus
-//     std::list<Bonus>::iterator bonusIt;
-//     for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
-//     {
-//         bool isColliding = this->player->collideBonus(*bonusIt);
-//         if (isColliding)
-//         {
-//             this->score += bonusIt->getBonus();
-//             bonuses.remove(*bonusIt);
-//         }
-//     }
-// }
+void GameInterface::checkCollision()
+{
+    std::list<Enemy>::iterator enemyIt;
+    for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+    {
+        bool isColliding = this->player->collideEnemy(*enemyIt);
+        if (isColliding)
+        {
+            this->score -= enemyIt->getDamage();
+            enemies.erase(enemyIt);
+        }
+    }
+    // muovo tutti i bonus
+    std::list<Bonus>::iterator bonusIt;
+    for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
+    {
+        bool isColliding = this->player->collideBonus(*bonusIt);
+        if (isColliding)
+        {
+            this->score += bonusIt->getBonus();
+            bonuses.erase(bonusIt);
+        }
+    }
+}
 void GameInterface::draw()
 {
     //disegno player
     this->player->draw(this->canvas);
 
     std::list<Enemy>::iterator enemyIt;
-    for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+    if (enemies.size() > 0)
     {
-        enemyIt->draw(this->canvas);
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {
+            enemyIt->draw(this->canvas);
+        }
     }
+
     // muovo tutti i bonus
     std::list<Bonus>::iterator bonusIt;
     for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
@@ -80,15 +95,20 @@ void GameInterface::move(int direction)
 {
     this->player->move(direction, speed);
     //muovo tutti i nemici
-    std::list<Enemy>::iterator enemyIt;
-    for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+    if (enemies.size() > 0)
     {
-        enemyIt->move(this->speed, this->height, 1);
-        if(enemyIt->collideBottomWall(this->width, 1)){
-            enemies.erase(enemyIt);
+        std::list<Enemy>::iterator enemyIt;
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {
+            enemyIt->move(this->speed, this->height, 1);
+            if (enemyIt->collideBottomWall(this->width, 1))
+            {
+                enemies.erase(enemyIt);
+            }
         }
     }
-    // // muovo tutti i bonus
+
+    // muovo tutti i bonus
     std::list<Bonus>::iterator bonusIt;
     for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
     {
@@ -98,7 +118,7 @@ void GameInterface::move(int direction)
 void GameInterface::addEnemy(int damage)
 {
     srand((unsigned)time(0));
-    int yPos = rand() % (width -3) + 3;
+    int yPos = rand() % (width - 3) + 3;
     Enemy e(damage, 3, yPos, 3, 3);
     this->enemies.push_back(e);
 }
