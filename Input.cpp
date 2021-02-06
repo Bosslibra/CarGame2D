@@ -10,7 +10,7 @@
 #define TOPRIGHT 6
 #define DOWNLEFT 7
 #define DOWNRIGHT 8
-#define ENTER 9
+#define EXIT 9
 
 
 /*Returns:
@@ -59,7 +59,7 @@ int Input::getMovementInput() {
 
 //Returns 9 if either Spacebar or Enter are pressed
 int Input::getMenuInput(){
-    if (GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_SPACE)){
-        return ENTER;
+    if (GetAsyncKeyState(VK_ESCAPE) || GetAsyncKeyState(VK_SPACE)){
+        return EXIT;
     }
 }

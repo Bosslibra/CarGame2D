@@ -42,7 +42,7 @@ int main()
         {
             std::cout << "downright ";
         }
-        if (i.getMenuInput() == ENTER)
+        if (i.getMenuInput() == EXIT)
         {
             keepGoing = false;
         }
