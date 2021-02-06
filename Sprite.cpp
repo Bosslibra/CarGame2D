@@ -434,6 +434,7 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         }
         return NOTHING;
         break;
+
     case PLAYER_ENEMY_COLLISION:
         //player moves, enemy sprite disappears, handler must update score
         Sprite::getLoadedSprite(check.second).unload();
@@ -474,12 +475,25 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         break;
 
     case ENEMY_WALL_COLLISION:
-        //enemy has to disappear
-        Sprite::getLoadedSprite(this->spriteID).unload();
+        //enemy has hit a wall, handler must change its direction
+        return BOUNCE_ENEMY;
         break;
 
     case ENEMY_BONUS_COLLISION:
-        //TODO
+        //bonus disappears, enemy moves
+        Sprite::getLoadedSprite(check.second).unload();
+        for (pair<pair<int, int>, char> pair_father : this->positions)
+        {
+            pair<int, int> point_coordinate = pair_father.first;
+            char point = pair_father.second;
+            //deleting the old position
+            canvas.at(point_coordinate.second).at(point_coordinate.first) = char(0);
+            //moving the point to the new position
+            canvas.at(point_coordinate.second + unit_y).at(point_coordinate.first + unit_x) = point;
+            //updating the Sprite position
+            pair_father.first.first += unit_x;
+            pair_father.first.second += unit_y;
+        }
         break;
 
     case ENEMY_PLAYER_COLLISION:
@@ -499,8 +513,13 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         return UPDATE_SCORE_BONUS;
         break;
 
+    case BONUS_ENEMY_COLLISION:
+        //bonus has to disappear
+        Sprite::getLoadedSprite(this->spriteID).unload();
+        break;
+
     case ENEMY_OOB:
-        //TODO this depends actually
+        //enemy has to disappear
         Sprite::getLoadedSprite(this->spriteID).unload();
         break;
 
@@ -510,7 +529,7 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         break;
 
     case ERROR_EMPTY_CANVAS:
-        //critical error, canvas was not set properly
+        //TODO critical error, canvas was not set properly
         break;
     }
 }
