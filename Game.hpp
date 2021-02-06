@@ -11,7 +11,6 @@ private:
     int score;                         //current score
     int internal_score;                //score that resets to 0 every time the normal score reaches the next thousand unit
     vector<vector<string>> canvas;     //graphic container
-    void changeState(Timer gameTimer); //changes the game state by moving the enemies and the bonuses
 
 public:
     Game();

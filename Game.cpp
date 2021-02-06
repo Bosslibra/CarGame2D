@@ -1,5 +1,5 @@
 #include "Game.hpp"
-#include "timercpp.h"
+#include "Input.cpp"
 using namespace std;
 
 Game::Game()
@@ -11,25 +11,45 @@ void Game::start()
 {
     this->level = 1;
     this->score = 0;
+    this->gameState = GAME_ON;
     //TODO set the default canvas
     Timer gameTimer = Timer();
-    gameTimer.setInterval([&]() {
-        this->changeState(gameTimer);
-    },
-                          16); //every 1/60th of a second
-}
+    Input i;
 
-void Game::changeState(Timer gameTimer)
-{
-    if (this->gameState != GAME_OVER)
+    do
     {
-        //TODO this is the center of the game, here we'll move sprites and stuff
-    }
-    else
-    {
-        gameTimer.stop();
-        //TODO rendering an ending screen or something?
-    }
+        int coord = i.getMovementInput();
+        if (coord == TOP)
+        {
+        }
+        else if (coord == LEFT)
+        {
+        }
+        else if (coord == RIGHT)
+        {
+        }
+        else if (coord == DOWN)
+        {
+        }
+        else if (coord == TOPLEFT)
+        {
+        }
+        else if (coord == TOPRIGHT)
+        {
+        }
+        else if (coord == DOWNLEFT)
+        {
+        }
+        else if (coord == DOWNRIGHT)
+        {
+        }
+        if (i.getMenuInput() == EXIT)
+        {
+            this->gameState = GAME_OVER;
+        }
+        Sleep(17);
+    } while (this->gameState != GAME_OVER);
+    //TODO rendering an ending screen or something?
 }
 
 void Game::addScore(int score)
