@@ -24,8 +24,8 @@ void GameInterface::run()
     this->resetCanvas();
     if (this->enemies.size() < this->nEnemy)
         this->addEnemy(this->damage);
-    // if (this->bonuses.size() < this->nBonus)
-    //     this->addBonus(this->bonus);
+    if (this->bonuses.size() < this->nBonus)
+        this->addBonus(this->bonus);
     this->move(1);
     this->checkCollision();
     this->draw();
@@ -47,25 +47,42 @@ void GameInterface::run()
 
 void GameInterface::checkCollision()
 {
-    std::list<Enemy>::iterator enemyIt;
-    for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+    if (enemies.size() > 0)
     {
-        bool isColliding = this->player->collideEnemy(*enemyIt);
-        if (isColliding)
+        std::list<Enemy>::iterator enemyIt;
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
-            this->score -= enemyIt->getDamage();
-            enemies.erase(enemyIt);
+            bool isColliding = this->player->collideEnemy(*enemyIt);
+            if (isColliding)
+            {
+                this->score -= enemyIt->getDamage();
+                enemies.erase(enemyIt);
+            }
+            else
+            {
+                enemyIt->collideBonus(this->bonuses);
+                enemyIt->collideEnemy(this->enemies);
+            }
         }
     }
+
     // muovo tutti i bonus
-    std::list<Bonus>::iterator bonusIt;
-    for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
+    if (enemies.size() > 0)
     {
-        bool isColliding = this->player->collideBonus(*bonusIt);
-        if (isColliding)
+        std::list<Bonus>::iterator bonusIt;
+        for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
         {
-            this->score += bonusIt->getBonus();
-            bonuses.erase(bonusIt);
+            bool isColliding = this->player->collideBonus(*bonusIt);
+            if (isColliding)
+            {
+                this->score += bonusIt->getBonus();
+                bonuses.erase(bonusIt);
+            }
+            // else
+            // {
+            //     bonusIt->collideBonus(this->bonuses);
+            //     bonusIt->collideEnemy(this->enemies);
+            // }
         }
     }
 }
@@ -74,21 +91,26 @@ void GameInterface::draw()
     //disegno player
     this->player->draw(this->canvas);
 
-    std::list<Enemy>::iterator enemyIt;
     if (enemies.size() > 0)
     {
+        std::list<Enemy>::iterator enemyIt;
+
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
             enemyIt->draw(this->canvas);
         }
     }
-
     // muovo tutti i bonus
-    std::list<Bonus>::iterator bonusIt;
-    for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
+    if (bonuses.size() > 0)
     {
-        bonusIt->draw(this->canvas);
+        std::list<Bonus>::iterator bonusIt;
+
+        for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
+        {
+            bonusIt->draw(this->canvas);
+        }
     }
+
     this->console.DrawBuffer(this->canvas);
 }
 void GameInterface::move(int direction)
@@ -109,10 +131,13 @@ void GameInterface::move(int direction)
     }
 
     // muovo tutti i bonus
-    std::list<Bonus>::iterator bonusIt;
-    for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
+    if (bonuses.size() > 0)
     {
-        bonusIt->move(this->speed);
+        std::list<Bonus>::iterator bonusIt;
+        for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
+        {
+            bonusIt->move(this->speed);
+        }
     }
 }
 void GameInterface::addEnemy(int damage)
@@ -125,7 +150,7 @@ void GameInterface::addEnemy(int damage)
 void GameInterface::addBonus(int bonus)
 {
     srand((unsigned)time(0));
-    int yPos = rand() % width + 3;
+    int yPos = rand() % (width - 3) + 3;
     Bonus b(bonus, 3, yPos, 1, 1);
     this->bonuses.push_back(b);
 }

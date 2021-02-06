@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
+#include <list>
 #include <vector>
-#include "TextWindow.hpp"
 class Sprite
 {
 private:

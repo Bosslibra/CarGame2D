@@ -1,7 +1,5 @@
 #include "Sprite.hpp"
-#include <list>
-#include <string>
-#include <iostream>
+
 Sprite::Sprite()
 {
 }

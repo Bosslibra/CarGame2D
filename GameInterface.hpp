@@ -1,3 +1,4 @@
+#pragma once
 #include "ConsoleDrawing.hpp"
 #include "Bonus.hpp"
 #include "Enemy.hpp"
