@@ -1,8 +1,4 @@
-#pragma once
-#include "Entity.hpp"
-#include "Bonus.hpp"
 #include "Enemy.hpp"
-#include "Sprite.hpp"
 #include <list>
 #include <vector>
 #include <string>

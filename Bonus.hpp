@@ -1,7 +1,6 @@
-#pragma once
 #include "Entity.hpp"
+// #include "Enemy.hpp"
 #include "Sprite.hpp"
-#include "Enemy.hpp"
 #include <vector>
 #include <list>
 class Bonus : public Entity
@@ -17,7 +16,7 @@ public:
     void draw(std::vector<std::vector<char>> &canvas);
     bool collideBottomWall(int screenHeight, int borderWidth);
 //     void collideBonus(std::list<Bonus> bonuses);
-//     void collideEnemy(std::list<Enemy> enemies);
+    // void collideEnemy(std::vector<Enemy> enemies);
 };
 
 

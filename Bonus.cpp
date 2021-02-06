@@ -26,29 +26,19 @@ bool Bonus::collideBottomWall(int screenHeight, int borderWidth)
     }
     return false;
 }
-// void Bonus::collideEnemy(std::list<Enemy> enemies)
+// void Bonus::collideEnemy(std::vector<Enemy> enemies)
 // {
-//     std::list<Enemy>::iterator enemyIt;
-//     for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+//     for (int i = 0; i < enemies.size(); i++)
 //     {
-//         Enemy e = *enemyIt;
-
-//         int bWidth = e.getWidth();
-//         int bHeight = e.getHeight();
-//         int eX = e.getX();
-//         int eY = e.getY();
+//         int bWidth = enemies[i].getWidth();
+//         int bHeight = enemies[i].getHeight();
+//         int eX = enemies[i].getX();
+//         int eY = enemies[i].getY();
 //         //check collisioni hitbox
 //         if (this->x<eX + bWidth &&this->x + this->width> eX &&
 //             this->y<eY + bHeight &&this->y + this->height> eY)
 //         {
-//             if (this->yDirection == 0)
-//             {
-//                 this->y -= 1;
-//             }
-//             else
-//             {
-//                 this->y += 1;
-//             }
+//             return true;
 //         }
 //     }
 // }

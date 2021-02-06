@@ -1,22 +1,19 @@
-#pragma once
 #include "ConsoleDrawing.hpp"
-#include "Bonus.hpp"
-#include "Enemy.hpp"
 #include "Player.hpp"
 #include <vector>
 class GameInterface
 {
 private:
     ConsoleDrawing console;
-    const int width = 20;
-    const int height = 30;
+    const int width = 40;
+    const int height = 60;
     int speed;
     std::vector<std::vector<char>> canvas;
 
     //@param bonuses lista bonus sulla mappa
-    std::list<Bonus> bonuses;
+    std::vector<Bonus> bonuses;
     //@param bonuses lista nemici sulla mappa
-    std::list<Enemy> enemies;
+    std::vector<Enemy> enemies;
     //danno e bonus inflitti
     int damage;
     int bonus;
