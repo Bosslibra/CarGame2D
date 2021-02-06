@@ -25,38 +25,70 @@
 #define LOAD_OVERLAP 16
 #define UNLOAD_SPRITE_WAS_NOT_LOADED 17
 
+//sprite types
+#define ENEMY 18
+#define WALL 19
+#define PLAYER 20
+#define BONUS 21
+#define EMPTY -1
+
+//collision type
+#define PLAYER_ENEMY_COLLISION 22
+#define PLAYER_WALL_COLLISION 23
+#define PLAYER_BONUS_COLLISION 24
+#define ENEMY_WALL_COLLISION 25
+#define ENEMY_BONUS_COLLISION 26
+#define ENEMY_PLAYER_COLLISION 27
+#define BONUS_WALL_COLLISION 28
+#define BONUS_PLAYER_COLLISION 29
+#define BONUS_ENEMY_COLLISION 30
+#define ENEMY_OOB 31
+#define BONUS_OOB 32
+
+//useless data
+#define USELESS -2
+
+//actions to be executed after a move 
+#define UPDATE_SCORE_BONUS 33 
+#define UPDATE_SCORE_ENEMY 34
+#define BOUNCE_ENEMY 35
+#define NOTHING 36
+
 using namespace std;
 
 class Sprite
 {
 private:
-    static int canvas_height;                                               //canvas height, calculated once when a canvas is set, used to check for out of bounds
-    static int canvas_width;                                                //canvas width, calculated once when a canvas is set, used to check for out of bounds
-    static vector<vector<char>> canvas;                                     //this class assumes that every sprite is placed in the same canvas, which will always be the case in this project
-    vector<pair<pair<int, int>, char>> positions;                           //vector of pairs(x,y) that define which point of the matrix are being used for that specific char
-    int spriteID;                                                           //unique identifier
-    int type;                                                               //bonus or enemy
-    static int lastUnusedID;                                                //last unused identifier
-    int idGenerator();                                                      //returns an unique identifier, using unloadedIDs if some exists or by advancing lastUnusedID
-    int loadSprite(vector<pair<pair<int, int>, char>> positions, int id);   //utility to insert in the loadedSprites map
-    void unloadSprite(vector<pair<pair<int, int>, char>> positions, int id); //utility to insert in the unloadedSprites map
-    void removeOldOccurrence(int id, int type);                             //utility to remove the old Sprite occurrence in case a loaded sprite gets unloaded or vice versa
-    int checkCollision(int direction, int unit_x, int unit_y);              //tries to move a sprite in the direction provided, return true if it can't be moved due to collision, false otherwise
-    bool isOccupied(int x, int y, int self_id);                             //given an x and y position, returns true if that spot is occupied some loaded sprite, false otherwise, ignoring the collision if the spot is occupied by the same sprite that's checking
+    static int canvas_height;                                                  //canvas height, calculated once when a canvas is set, used to check for out of bounds
+    static int canvas_width;                                                   //canvas width, calculated once when a canvas is set, used to check for out of bounds
+    static vector<vector<char>> canvas;                                        //this class assumes that every sprite is placed in the same canvas, which will always be the case in this project
+    static int lastUnusedID;                                                   //last unused identifier
+    vector<pair<pair<int, int>, char>> positions;                              //vector of pairs(x,y) that define which point of the matrix are being used for that specific char
+    int spriteID;                                                              //unique identifier
+    int type;                                                                  //bonus, enemy, wall or player
+    int idGenerator();                                                         //returns an unique identifier, using unloadedIDs if some exists or by advancing lastUnusedID
+    int loadSprite();                                                          //utility to insert in the loadedSprites map
+    void unloadSprite();                                                       //utility to insert in the unloadedSprites map
+    void removeOldOccurrence(int id, int type);                                //utility to remove the old Sprite occurrence in case a loaded sprite gets unloaded or vice versa
+    pair<int, int> checkCollision(int direction, int unit_x, int unit_y);      //tries to move a sprite in the direction provided, return true if it can't be moved due to collision, false otherwise
+    int isOccupied(int x, int y, int self_id);                                 //given an x and y position, return -1 if the position isn't occupied, otherwise returns the sprite ID of the sprite that occupies that position
+    pair<int, int> oobCheck(int type);                                         //utility to check for out of bounds collision
+    pair<int, int> internalCollisionCheck(int occupied_id, int occupied_type); //utility to check for out of bounds collision
+    Sprite getLoadedSprite(int spriteID);
 
 public:
-    Sprite(vector<pair<pair<int, int>, char>> positions);                //constructor
-    void deleteSprite();                                                 //deletes a sprite
-    int getSpriteID();                                                   //returns sprite identifier
-    bool isLoaded();                                                     //returns true if the sprite is inside the loadedSprites vector
-    int load();                                                          //pushes a Sprite into the loadedSprites vector, deleting it from the unloadedSprites if needed
-    int unload();                                                        //pushes a Sprite into the unloadedSprites vector, deleting it from the loadedSprites if needed
-    void setPosition(vector<pair<pair<int, int>, char>> positions);      //sets the position of the aspect inside the canvas
-    vector<pair<int, int>> getPosition();                                //returns the positions of the aspect inside the canvas
-    static map<int, vector<pair<pair<int, int>, char>>> loadedSprites;   //vector of sprites actually loaded in the canvas
-    static map<int, vector<pair<pair<int, int>, char>>> unloadedSprites; //vector of sprites that exist but aren't loaded yet
-    static vector<int> unloadedIDs;                                      //vector of identifier that have been unloaded by some sprite, useful to avoid overflow of the spriteID integer TODO PUT ME BACK IN PRIVATE AT THE END
-    void setCanvas(vector<vector<char>> canvas);                         //sets the shared canvas that all the sprites will be using
-    static vector<vector<char>> getCanvas();                             //returns the canvas
-    int move(int direction, int unit_x, int unit_y);                     //moves a sprite, along with his aspect i the canvas,essentially making all his point shift into one of 8 possible directions
+    Sprite(vector<pair<pair<int, int>, char>> positions, int type); //constructor
+    static map<int, Sprite> loadedSprites;                          //vector of sprites actually loaded in the canvas
+    static map<int, Sprite> unloadedSprites;                        //vector of sprites that exist but aren't loaded yet
+    void deleteSprite();                                            //deletes a sprite
+    int getSpriteID();                                              //returns sprite identifier
+    bool isLoaded();                                                //returns true if the sprite is inside the loadedSprites vector
+    int load();                                                     //pushes a Sprite into the loadedSprites vector, deleting it from the unloadedSprites if needed
+    int unload();                                                   //pushes a Sprite into the unloadedSprites vector, deleting it from the loadedSprites if needed
+    void setPosition(vector<pair<pair<int, int>, char>> positions); //sets the position of the aspect inside the canvas
+    vector<pair<int, int>> getPosition();                           //returns the positions of the aspect inside the canvas
+    static vector<int> unloadedIDs;                                 //vector of identifier that have been unloaded by some sprite, useful to avoid overflow of the spriteID integer TODO PUT ME BACK IN PRIVATE AT THE END
+    void setCanvas(vector<vector<char>> canvas);                    //sets the shared canvas that all the sprites will be using
+    static vector<vector<char>> getCanvas();                        //returns the canvas
+    int move(int direction, int unit_x, int unit_y);                //moves a sprite, along with his aspect i the canvas,essentially making all his point shift into one of 8 possible directions
 };
