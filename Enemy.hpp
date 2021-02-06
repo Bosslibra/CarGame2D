@@ -19,6 +19,6 @@ public:
     void draw(std::vector<std::vector<char>> &canvas);
     void collideLateralWalls(int screenWidth, int borderWidth);
     bool collideBottomWall(int screenHeight, int borderWidth);
-    void collideBonus(std::list< Bonus > bonuses);
-    void collideEnemy(std::list< Enemy > enemies);
+    // void collideBonus(std::list< Bonus > bonuses);
+    // void collideEnemy(std::list< Enemy > enemies);
 };

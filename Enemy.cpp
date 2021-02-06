@@ -53,53 +53,54 @@ void Enemy::draw(std::vector<std::vector<char>> &canvas)
 {
     this->sprite.draw(canvas, this->x, this->y, this->width, this->height);
 }
-void Enemy::collideBonus(std::list<Bonus> bonuses)
-{
-    std::list<Bonus>::iterator bonusIt;
-    for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
-    {
-        int bWidth = bonusIt->getWidth();
-        int bHeight = bonusIt->getHeight();
-        int eX = bonusIt->getX();
-        int eY = bonusIt->getY();
-        //check collisioni hitbox
-        if (this->x<eX + bWidth &&this->x + this->width> eX &&
-            this->y<eY + bHeight &&this->y + this->height> eY)
-        {
-            // 0 = va verso destra
-            // 1 = va verso sinistra
-            if (this->yDirection == 0)
-            {
-                this->y -= 1;
-            }
-            else
-            {
-                this->y += 1;
-            }
-        }
-    }
-}
-void Enemy::collideEnemy(std::list<Enemy> enemies)
-{
-    std::list<Enemy>::iterator enemyIt;
-    for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
-    {
-        int bWidth = enemyIt->getWidth();
-        int bHeight = enemyIt->getHeight();
-        int eX = enemyIt->getX();
-        int eY = enemyIt->getY();
-        //check collisioni hitbox
-        if (this->x<eX + bWidth &&this->x + this->width> eX &&
-            this->y<eY + bHeight &&this->y + this->height> eY)
-        {
-            if (this->yDirection == 0)
-            {
-                this->y -= 1;
-            }
-            else
-            {
-                this->y += 1;
-            }
-        }
-    }
-}
+// void Enemy::collideBonus(std::list<Bonus> bonuses)
+// {
+//     std::list<Bonus>::iterator bonusIt;
+//     for (bonusIt = bonuses.begin(); bonusIt != bonuses.end(); ++bonusIt)
+//     {
+//         int bWidth = bonusIt->getWidth();
+//         int bHeight = bonusIt->getHeight();
+//         int eX = bonusIt->getX();
+//         int eY = bonusIt->getY();
+//         //check collisioni hitbox
+//         if (this->x<eX + bWidth &&this->x + this->width> eX &&
+//             this->y<eY + bHeight &&this->y + this->height> eY)
+//         {
+//             // 0 = va verso destra
+//             // 1 = va verso sinistra
+//             if (this->yDirection == 0)
+//             {
+//                 this->y -= 1;
+//             }
+//             else
+//             {
+//                 this->y += 1;
+//             }
+//         }
+//     }
+// }
+
+// void Enemy::collideEnemy(std::list<Enemy> enemies)
+// {
+//     std::list<Enemy>::iterator enemyIt;
+//     for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+//     {
+//         int bWidth = enemyIt->getWidth();
+//         int bHeight = enemyIt->getHeight();
+//         int eX = enemyIt->getX();
+//         int eY = enemyIt->getY();
+//         //check collisioni hitbox
+//         if (this->x<eX + bWidth &&this->x + this->width> eX &&
+//             this->y<eY + bHeight &&this->y + this->height> eY)
+//         {
+//             if (this->yDirection == 0)
+//             {
+//                 this->y -= 1;
+//             }
+//             else
+//             {
+//                 this->y += 1;
+//             }
+//         }
+//     }
+// }

@@ -58,11 +58,11 @@ void GameInterface::checkCollision()
                 this->score -= enemyIt->getDamage();
                 enemies.erase(enemyIt);
             }
-            else
-            {
-                enemyIt->collideBonus(this->bonuses);
-                enemyIt->collideEnemy(this->enemies);
-            }
+            // else
+            // {
+            //     enemyIt->collideBonus(this->bonuses);
+            //     enemyIt->collideEnemy(this->enemies);
+            // }
         }
     }
 
