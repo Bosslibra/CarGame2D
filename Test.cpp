@@ -12,11 +12,9 @@ int main()
     system("cls");
     GameInterface* g = new GameInterface();
     int x = 0;
-    while (x<20){
+    while (x<200){
         g->run();
         x++;
     }
-    int c;
-    std::cin>>c ;
     return 0;
 }
