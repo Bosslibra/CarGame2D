@@ -1,13 +1,14 @@
 #include "Enemy.hpp"
 #include <iostream>
+using namespace std;
 Enemy::~Enemy() {}
 Enemy::Enemy(int damage, int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)
 {
     this->damage = damage;
     //sprite
-    std::string one = "0*0";
-    std::string two = "*E*";
-    std::string three = "0*0";
+    string one = "0*0";
+    string two = "*E*";
+    string three = "0*0";
     this->sprite.addLine(one);
     this->sprite.addLine(two);
     this->sprite.addLine(three);
@@ -52,15 +53,15 @@ bool Enemy::collideBottomWall(int screenHeight, int borderWidth)
     }
     return false;
 }
-void Enemy::draw(std::vector<std::vector<char>> &canvas)
+void Enemy::draw(vector<vector<char>> &canvas)
 {
     this->sprite.draw(canvas, this->x, this->y, this->width, this->height);
 }
-void Enemy::remove(std::vector<std::vector<char>> &canvas)
+void Enemy::remove(vector<vector<char>> &canvas)
 {
     this->sprite.remove(canvas, this->x, this->y, this->width, this->height);
 }
-void Enemy::collideBonus(std::vector<Bonus> bonuses)
+void Enemy::collideBonus(vector<Bonus> bonuses)
 {
     for (int i = 0; i < bonuses.size(); i++)
     {
@@ -89,7 +90,7 @@ void Enemy::collideBonus(std::vector<Bonus> bonuses)
         }
     }
 }
-void Enemy::collideEnemy(std::vector<Enemy> enemies)
+void Enemy::collideEnemy(vector<Enemy> enemies)
 {
     for (int i = 0; i < enemies.size(); i++)
     {

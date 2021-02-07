@@ -1,11 +1,12 @@
 #include "Player.hpp"
+using namespace std;
 Player::~Player() {}
 Player::Player(int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)
 {
 	// crea lo sprite collegato al player
-	std::string one = "O|O";
-	std::string two = "^A-";
-	std::string three = "O|O";
+	string one = "O|O";
+	string two = "^A-";
+	string three = "O|O";
 	this->sprite.addLine(one);
 	this->sprite.addLine(two);
 	this->sprite.addLine(three);
@@ -102,11 +103,11 @@ void Player::move()
 		break;
 	}
 }
-void Player::draw(std::vector<std::vector<char>> &canvas)
+void Player::draw(vector<vector<char>> &canvas)
 {
 	this->sprite.draw(canvas, this->x, this->y, this->height, this->width);
 }
-void Player::remove(std::vector<std::vector<char>> &canvas)
+void Player::remove(vector<vector<char>> &canvas)
 {
 	this->sprite.remove(canvas, this->x, this->y, this->height, this->width);
 }

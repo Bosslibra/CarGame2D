@@ -1,4 +1,5 @@
 #include "Game.hpp"
+using namespace std;
 Game::~Game() {}
 Game::Game()
 {
@@ -22,7 +23,7 @@ void Game::initCanvas()
 {
     for (int i = 0; i < this->height; i++)
     {
-        std::vector<char> row;
+        vector<char> row;
         for (int j = 0; j < this->width; j++)
         {
             if (j == 0 || j == this->width - 1 || i == this->height - 1 || i == 0)

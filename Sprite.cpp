@@ -1,17 +1,17 @@
 #include "Sprite.hpp"
-
+using namespace std;
 Sprite::Sprite()
 {
 }
 Sprite::~Sprite()
 {
 }
-void Sprite::addLine(std::string line)
+void Sprite::addLine(string line)
 {
     this->sprite.push_back(line);
 }
 
-void Sprite::draw(std::vector<std::vector<char>> &canvas, int x, int y, int width, int height)
+void Sprite::draw(vector<vector<char>> &canvas, int x, int y, int width, int height)
 {
     for (int i = y; i < y + height; i++)
     {
@@ -22,7 +22,7 @@ void Sprite::draw(std::vector<std::vector<char>> &canvas, int x, int y, int widt
         }
     }
 }
-void Sprite::remove(std::vector<std::vector<char>> &canvas, int x, int y, int width, int height)
+void Sprite::remove(vector<vector<char>> &canvas, int x, int y, int width, int height)
 {
     for (int i = y; i < y + height; i++)
     {
@@ -33,7 +33,7 @@ void Sprite::remove(std::vector<std::vector<char>> &canvas, int x, int y, int wi
         }
     }
 }
-std::vector<std::string> Sprite::getSprite()
+vector<string> Sprite::getSprite()
 {
     return this->sprite;
 }
