@@ -1,4 +1,5 @@
 #include "Enemy.hpp"
+#include <iostream>
 Enemy::~Enemy() {}
 Enemy::Enemy(int damage, int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)
 {
@@ -10,21 +11,35 @@ Enemy::Enemy(int damage, int initialX, int initialY, int width, int height) : En
     this->sprite.addLine(one);
     this->sprite.addLine(two);
     this->sprite.addLine(three);
-    this->yDirection = DIR_LEFT;
+    this->yDirection = (int)(rand() % 2);
 }
 int Enemy::getDamage() { return this->damage; }
 void Enemy::move(int screenWidth, int borderWidth)
 {
-    int dirChangeProb = rand() % 2;
-    if (dirChangeProb == 1)
+    int dirChangeProb = (int)(rand() % 50) + 1;
+    //bassa probabilità di cambiare direzione
+    if (dirChangeProb >= 45)
     {
-        this->y++;
-        this->yDirection = DIR_RIGHT;
+
+        if (this->yDirection == 0)
+        {
+            this->yDirection = 1;
+        }
+        else
+        {
+            this->yDirection = 0;
+        }
+    }
+    
+    // se yDirection è uguale a 0 allora si sposta verso destra
+    // altrimenti sinistra
+    if (this->yDirection == 0)
+    {
+        this->y += 1;
     }
     else
     {
-        this->y--;
-        this->yDirection = DIR_LEFT;
+        this->y -= 1;
     }
     this->x++;
     this->collideLateralWalls(screenWidth, borderWidth);
@@ -34,10 +49,12 @@ void Enemy::collideLateralWalls(int screenWidth, int borderWidth)
     if (this->y + this->width >= screenWidth - borderWidth - 1)
     {
         this->y = screenWidth - this->width - borderWidth - 1;
+        this->yDirection = 1; //se sbatte contro il muro di destra allora "si gira" e va verso sinistra
     }
-    if (this->y < 0 + borderWidth)
+    if (this->y <= 0 + borderWidth + 1)
     {
-        this->y = borderWidth;
+        this->y = borderWidth + 1;
+        this->yDirection = 1; //se sbatte contro il muro di sinistra allora "si gira" e va verso destra
     }
 }
 bool Enemy::collideBottomWall(int screenHeight, int borderWidth)
@@ -60,6 +77,7 @@ void Enemy::collideBonus(std::vector<Bonus> bonuses)
 {
     for (int i = 0; i < bonuses.size(); i++)
     {
+
         int bWidth = bonuses[i].getWidth();
         int bHeight = bonuses[i].getHeight();
         int eX = bonuses[i].getX();
@@ -69,16 +87,17 @@ void Enemy::collideBonus(std::vector<Bonus> bonuses)
         if (this->x<eX + bWidth &&this->x + this->width> eX &&
             this->y<eY + bHeight &&this->y + this->height> eY)
         {
-            collide = true;
-            // DIR_RIGHT = va verso destra
-            // DIR_LEFT = va verso sinistra
-            if (this->yDirection == DIR_RIGHT)
+            // 0 = va verso destra
+            // 1 = va verso sinistra
+            if (this->yDirection == 0)
             {
                 this->y--;
+                this->yDirection = 1;
             }
             else
             {
                 this->y++;
+                this->yDirection = 0;
             }
         }
     }
@@ -88,22 +107,26 @@ void Enemy::collideEnemy(std::vector<Enemy> enemies)
     for (int i = 0; i < enemies.size(); i++)
     {
         Enemy e = enemies[i];
-        int bWidth = e.getWidth();
+        int eWidth = e.getWidth();
         int bHeight = e.getHeight();
         int eX = e.getX();
         int eY = e.getY();
         bool collide = false;
         //check collisioni hitbox
-        if (this->x<eX + bWidth &&this->x + this->width> eX &&
+        if (this->x<eX + eWidth &&this->x + this->width> eX &&
             this->y<eY + bHeight &&this->y + this->height> eY)
         {
-            if (this->yDirection == DIR_RIGHT)
+            // 0 = va verso destra
+            // 1 = va verso sinistra
+            if (this->yDirection == 0)
             {
                 this->y--;
+                this->yDirection = 1;
             }
             else
             {
                 this->y++;
+                this->yDirection = 0;
             }
         }
     }

@@ -62,28 +62,31 @@ void Game::checkCollision()
 {
     this->player->collideWalls(this->height, this->width);
     //collide con nemici
-    for (int i = 0; i < enemies.size(); i++)
+    for (int i = 0; i < this->enemies.size(); i++)
     {
-        bool isColliding = this->player->collideEnemy(enemies[i]);
+        bool isColliding = this->player->collideEnemy(this->enemies[i]);
         if (isColliding)
         {
-            this->score -= enemies[i].getDamage();
-            enemies.erase(enemies.begin() + i);
+            this->score -= this->enemies[i].getDamage();
+            this->enemies.erase(this->enemies.begin() + i);
         }
         else
         {
-            enemies[i].collideBonus(this->bonuses);
-            enemies[i].collideEnemy(this->enemies);
+            Enemy e = this->enemies[i];
+            this->enemies.erase(this->enemies.begin() + i);
+            e.collideBonus(this->bonuses);
+            e.collideEnemy(this->enemies);
+            this->enemies.push_back(e);
         }
     }
     // collide con bonus
     for (int i = 0; i < bonuses.size(); i++)
     {
-        bool isColliding = this->player->collideBonus(bonuses[i]);
+        bool isColliding = this->player->collideBonus(this->bonuses[i]);
         if (isColliding)
         {
-            this->score += bonuses[i].getBonus();
-            bonuses.erase(bonuses.begin() + i);
+            this->score += this->bonuses[i].getBonus();
+            this->bonuses.erase(this->bonuses.begin() + i);
         }
     }
 }
