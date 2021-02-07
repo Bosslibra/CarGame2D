@@ -66,3 +66,8 @@ void ConsoleDrawing::DrawBuffer(std::vector<std::vector<char>> canvas)
 
    // Sleep(16); //16.66667 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
 }
+
+void maximizeWindow(){
+    HWND hwnd = GetConsoleWindow();
+    ShowWindow(hwnd, SW_SHOWMAXIMIZED);
+}
