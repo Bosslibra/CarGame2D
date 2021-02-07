@@ -221,6 +221,7 @@ void LevelInterface::moveGame()
         }
     }
     this->canvas_handler.DrawBuffer(Sprite::getCanvas());
+    return;
 }
 
 void LevelInterface::movePlayer(int direction)
@@ -253,6 +254,7 @@ void LevelInterface::movePlayer(int direction)
         after_move = LevelInterface::player.move(DOWN_RIGHT, 1, 1);
         break;
     }
+    // cout << after_move << endl;
     switch (after_move)
     {
     case UPDATE_SCORE_ENEMY:
@@ -310,29 +312,6 @@ void LevelInterface::addScore(int score)
 
 void LevelInterface::spawner()
 {
-    // while (Enemies.size() < enemyLimit)
-    // {
-    //     int load_check = 0;
-    //     Sprite enemy;
-    //     do
-    //     {
-    //         int x = rand() % PLAYER_WIDTH;
-    //         vector<vector<int>> ep1;
-    //         vector<int> e1point1 = {x, 1, (int)'*'};
-    //         vector<int> e1point2 = {x, 2, (int)'E'};
-    //         vector<int> e1point3 = {x, 3, (int)'*'};
-    //         vector<int> e1point4 = {x + 1, 2, (int)'*'};
-    //         vector<int> e1point5 = {x - 1, 2, (int)'*'};
-    //         ep1.push_back(e1point1);
-    //         ep1.push_back(e1point2);
-    //         ep1.push_back(e1point3);
-    //         ep1.push_back(e1point4);
-    //         ep1.push_back(e1point5);
-    //         enemy = Sprite(ep1, ENEMY);
-    //         load_check = enemy.load();
-    //     } while (load_check != LOAD_ALLOWED);
-    //     LevelInterface::Enemies.push_back(enemy);
-    // };
     if (Enemies.size() < enemyLimit)
     {
         int enemy_limit = enemyLimit - Enemies.size();
@@ -342,7 +321,8 @@ void LevelInterface::spawner()
             Sprite enemy;
             do
             {
-                int x = rand() % PLAYER_WIDTH;
+                int x = rand() % (PLAYER_WIDTH - 3);
+                x += 4;
                 vector<vector<int>> ep1;
                 vector<int> e1point1 = {x, 1, (int)'*'};
                 vector<int> e1point2 = {x, 2, (int)'E'};
@@ -369,7 +349,8 @@ void LevelInterface::spawner()
             Sprite bonus;
             do
             {
-                int x = rand() % PLAYER_WIDTH;
+                int x = rand() % (PLAYER_WIDTH - 1);
+                x += 2;
                 vector<vector<int>> bonus_points;
                 vector<int> bpoint = {x, 1, int('B')};
                 bonus_points.push_back(bpoint);

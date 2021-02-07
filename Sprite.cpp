@@ -179,12 +179,6 @@ pair<int, int> Sprite::internalCollisionCheck(int occupied_id, int occupied_type
     {
         switch (occupied_type)
         {
-        case ENEMY:
-            return make_pair(PLAYER_ENEMY_COLLISION, occupied_id);
-            break;
-        case BONUS:
-            return make_pair(PLAYER_BONUS_COLLISION, occupied_id);
-            break;
         case WALL:
             return make_pair(PLAYER_WALL_COLLISION, occupied_id);
             break;
@@ -205,9 +199,6 @@ pair<int, int> Sprite::internalCollisionCheck(int occupied_id, int occupied_type
                 return make_pair(ENEMY_WALL_COLLISION, occupied_id);
                 break;
             }
-        case BONUS:
-            return make_pair(ENEMY_BONUS_COLLISION, occupied_id);
-            break;
         case PLAYER:
             return make_pair(ENEMY_PLAYER_COLLISION, occupied_id);
             break;
@@ -226,7 +217,6 @@ pair<int, int> Sprite::internalCollisionCheck(int occupied_id, int occupied_type
             {
                 return make_pair(BONUS_WALL_COLLISION, occupied_id);
             }
-
             break;
         case ENEMY:
             return make_pair(BONUS_ENEMY_COLLISION, occupied_id);
@@ -430,98 +420,14 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         return NOTHING;
         break;
 
-    case PLAYER_ENEMY_COLLISION:
-        //player moves, enemy sprite disappears, handler must update score
-        temp = Sprite::getLoadedSprite(check.second);
-        if (temp.getSpriteID() != -1)
-        {
-            temp.unload();
-        }
-        for (vector<int> coordinates : this->positions)
-        {
-            //deleting the old position
-            canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-        }
-        for (vector<int> coordinates : this->positions)
-        {
-            //moving the point to the new position
-            canvas.at(coordinates[X_SPRITE] + unit_x).at(coordinates[Y_SPRITE] + unit_y) = coordinates[CHAR_SPRITE];
-            //updating the Sprite position
-            coordinates.at(X_SPRITE) += unit_x;
-            coordinates.at(Y_SPRITE) += unit_y;
-            vector<int> temp = {coordinates.at(X_SPRITE), coordinates.at(Y_SPRITE), coordinates.at(CHAR_SPRITE)};
-            new_positions.push_back(temp);
-        }
-        loadedSprites[this->spriteID].positions = new_positions;
-        this->positions = new_positions;
-
-        return UPDATE_SCORE_ENEMY;
-        break;
-
     case PLAYER_WALL_COLLISION:
         //nothing should happen
         return NOTHING;
         break;
 
-    case PLAYER_BONUS_COLLISION:
-        //player moves, bonus sprite disappears, handler must update score
-        temp = Sprite::getLoadedSprite(check.second);
-        if (temp.getSpriteID() != -1)
-        {
-            temp.unload();
-        }
-        for (vector<int> coordinates : this->positions)
-        {
-            //deleting the old position
-            canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-        }
-        for (vector<int> coordinates : this->positions)
-        {
-            //moving the point to the new position
-            canvas.at(coordinates[X_SPRITE] + unit_x).at(coordinates[Y_SPRITE] + unit_y) = coordinates[CHAR_SPRITE];
-            //updating the Sprite position
-            coordinates.at(X_SPRITE) += unit_x;
-            coordinates.at(Y_SPRITE) += unit_y;
-            vector<int> temp = {coordinates.at(X_SPRITE), coordinates.at(Y_SPRITE), coordinates.at(CHAR_SPRITE)};
-            new_positions.push_back(temp);
-        }
-        loadedSprites[this->spriteID].positions = new_positions;
-        this->positions = new_positions;
-        temp = Sprite::getLoadedSprite(check.second);
-
-        return UPDATE_SCORE_BONUS;
-        break;
-
     case ENEMY_WALL_COLLISION:
         //enemy has hit a wall, handler must change its direction
         return BOUNCE_ENEMY;
-        break;
-
-    case ENEMY_BONUS_COLLISION:
-        //bonus disappears, enemy moves
-        for (vector<int> coordinates : this->positions)
-        {
-            //deleting the old position
-            canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-        }
-        for (vector<int> coordinates : this->positions)
-        {
-            //moving the point to the new position
-            canvas.at(coordinates[X_SPRITE] + unit_x).at(coordinates[Y_SPRITE] + unit_y) = coordinates[CHAR_SPRITE];
-            //updating the Sprite position
-            coordinates.at(X_SPRITE) += unit_x;
-            coordinates.at(Y_SPRITE) += unit_y;
-            vector<int> temp = {coordinates.at(X_SPRITE), coordinates.at(Y_SPRITE), coordinates.at(CHAR_SPRITE)};
-            new_positions.push_back(temp);
-        }
-        loadedSprites[this->spriteID].positions = new_positions;
-        this->positions = new_positions;
-        temp = Sprite::getLoadedSprite(check.second);
-        if (temp.getSpriteID() != -1)
-        {
-            temp.unload();
-        }
-        return NOTHING;
         break;
 
     case ENEMY_PLAYER_COLLISION:
@@ -530,16 +436,6 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         if (temp.getSpriteID() != -1)
         {
             temp.unload();
-        }
-        else
-        {
-            //sprite was deleted by the player, deleting it manually from the canvas
-            for (vector<int> coordinates : this->positions)
-            {
-                //deleting the old position
-                canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-            }
-            return ERASE;
         }
         return UPDATE_SCORE_ENEMY;
         break;
@@ -551,16 +447,6 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         {
             temp.unload();
         }
-        else
-        {
-            //sprite was deleted by someone else, deleting it manually from the canvas
-            for (vector<int> coordinates : this->positions)
-            {
-                //deleting the old position
-                canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-            }
-            return ERASE;
-        }
         return ERASE;
         break;
 
@@ -571,16 +457,6 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         {
             temp.unload();
         }
-        else
-        {
-            //sprite was deleted by someone else, deleting it manually from the canvas
-            for (vector<int> coordinates : this->positions)
-            {
-                //deleting the old position
-                canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-            }
-            return ERASE;
-        }
         return ERASE;
         break;
 
@@ -590,18 +466,8 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         if (temp.getSpriteID() != -1)
         {
             temp.unload();
+            return UPDATE_SCORE_BONUS;
         }
-        else
-        {
-            //sprite was deleted by the player, deleting it manually from the canvas
-            for (vector<int> coordinates : this->positions)
-            {
-                //deleting the old position
-                canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-            }
-            return ERASE;
-        }
-        return UPDATE_SCORE_BONUS;
         break;
 
     case BONUS_ENEMY_COLLISION:
@@ -613,12 +479,6 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         }
         else
         {
-            //sprite was deleted by someone else, deleting it manually from the canvas
-            for (vector<int> coordinates : this->positions)
-            {
-                //deleting the old position
-                canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-            }
             return ERASE;
         }
         return ERASE;
@@ -633,12 +493,6 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         }
         else
         {
-            //sprite was deleted by someone else, deleting it manually from the canvas
-            for (vector<int> coordinates : this->positions)
-            {
-                //deleting the old position
-                canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-            }
             return ERASE;
         }
         return ERASE;
@@ -653,12 +507,7 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         }
         else
         {
-            //sprite was deleted by someone else, deleting it manually from the canvas
-            for (vector<int> coordinates : this->positions)
-            {
-                //deleting the old position
-                canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-            }
+
             return ERASE;
         }
         return NOTHING;
@@ -673,12 +522,6 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         }
         else
         {
-            //sprite was deleted by someone else, deleting it manually from the canvas
-            for (vector<int> coordinates : this->positions)
-            {
-                //deleting the old position
-                canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-            }
             return ERASE;
         }
         return NOTHING;
