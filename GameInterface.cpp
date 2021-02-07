@@ -24,10 +24,10 @@ void GameInterface::run()
         this->addEnemy(this->damage);
     if (this->bonuses.size() < this->nBonus)
         this->addBonus(this->bonus);
-    this->move(1);
-    this->draw();
+    this->move();
     this->checkCollision();
-    // this->score += 1;
+    this->draw();
+    this->score += 1;
     // this->checkLevel();
 
     // for (int i = 0; i < this->height; i++)
@@ -40,7 +40,7 @@ void GameInterface::run()
     // }
     //     std::cout<<std::endl;
 
-    Sleep(300);
+    Sleep(100);
 }
 
 void GameInterface::checkCollision()
@@ -106,9 +106,12 @@ void GameInterface::draw()
 
     this->console.DrawBuffer(this->canvas);
 }
-void GameInterface::move(int direction)
+void GameInterface::move()
 {
-    this->player->move(direction, speed);
+    this->player->move(speed);
+    if(this->player->collideWalls(this->height, this->width)){
+        this->score-=this->damage;
+    }
     //muovo tutti i nemici
     if (enemies.size() > 0)
     {

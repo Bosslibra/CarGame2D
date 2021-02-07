@@ -1,4 +1,5 @@
 #include "Enemy.hpp"
+#include "Input.hpp"
 #include <list>
 #include <vector>
 #include <string>
@@ -66,6 +67,6 @@ public:
      *
      * @param speed speed
      */
-    void move(int direction, int speed);
+    void move(int speed);
     void draw(std::vector<std::vector <char>> &canvas);
 };

@@ -32,7 +32,7 @@ public:
     ~GameInterface();
     void run();
     void checkCollision();
-    void move(int direction);
+    void move();
     void draw();
     // void setLevel(level);
     void checkLevel();

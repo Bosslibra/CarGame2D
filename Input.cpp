@@ -1,17 +1,8 @@
 #include "Input.hpp"
-#include <windows.h>
 
-#define NULL 0
-#define TOP 1
-#define LEFT 2
-#define RIGHT 3
-#define DOWN 4
-#define TOPLEFT 5
-#define TOPRIGHT 6
-#define DOWNLEFT 7
-#define DOWNRIGHT 8
-#define ENTER 9
 
+Input::Input(){}
+Input::~Input(){}
 
 /*Returns:
 - 0 if both Up and Down or both Left and Right are pressed simultaneously
@@ -30,7 +21,7 @@ int Input::getMovementInput() {
     if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT))){
         return TOPLEFT;
     } else if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
-        return NULL;
+        return STOPPED;
     } else if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
         return TOPRIGHT;
     } else if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) && (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT))){
@@ -38,9 +29,9 @@ int Input::getMovementInput() {
     } else if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
        return DOWNRIGHT;
     } else if ((GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)) && (GetAsyncKeyState(0x44) || GetAsyncKeyState(VK_RIGHT))){
-        return NULL;
+        return STOPPED;
     } else if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)) && (GetAsyncKeyState(0x53) || GetAsyncKeyState(VK_DOWN))){
-        return NULL;
+        return STOPPED;
     } else if (GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_UP)){
         return TOP;
     } else if (GetAsyncKeyState(0x41) || GetAsyncKeyState(VK_LEFT)){

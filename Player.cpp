@@ -42,8 +42,24 @@ bool Player::collideBonus(Bonus b)
 bool Player::collideWalls(int xMax, int yMax)
 {
 	//check collisioni hitbox
-	if (this->x <= 0 || this->x >= xMax || this->y <= 0 || this->y >= yMax)
+	if (this->x <= 0)
 	{
+		this->x = 0;
+		return true;
+	}
+	else if (x >= xMax)
+	{
+		this->x = xMax;
+		return true;
+	}
+	if (this->y <= 0)
+	{
+		this->y = 0;
+		return true;
+	}
+	else if (y >= yMax)
+	{
+		this->y = yMax;
 		return true;
 	}
 	return false;
@@ -52,8 +68,10 @@ Sprite Player::getSprite()
 {
 	return this->sprite;
 }
-void Player::move(int direction, int speed)
+void Player::move(int speed)
 {
+	Input i;
+	int direction = i.getMovementInput();
 	switch (direction)
 	{
 	case TOP:
@@ -68,21 +86,21 @@ void Player::move(int direction, int speed)
 		this->x += speed / 2;
 		break;
 	case RIGHT:
-		this->x += speed;
+		this->y += speed;
 		break;
 	case DOWNLEFT:
-		this->y += speed / 2;
-		this->x -= speed / 2;
+		this->x += speed / 2;
+		this->y -= speed / 2;
 		break;
 	case DOWNRIGHT:
 		this->y += speed / 2;
 		this->x += speed / 2;
 		break;
 	case DOWN:
-		this->y += speed;
+		this->x += speed;
 		break;
 	case LEFT:
-		this->x -= speed;
+		this->y -= speed;
 		break;
 	default:
 		break;
