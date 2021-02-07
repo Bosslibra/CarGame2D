@@ -2,15 +2,18 @@
 #include <windows.h>
 #include <iostream>
 #include <vector>
-int drawCanva(int c, int level, int score){
+
+LevelInterface(){}
+
+void LevelInterface::drawCanva(int c){
     int w=c*2;
     char canva[c][w];
 
     std::string levelChar = "LEVEL: ";
-    std::string l = std::to_string(level);
-    std::string s = std::to_string(score);
-    std::string scoreChar="SCORE: ";
-    int countS =0;
+    std::string l = std::to_string(this->level);
+    std::string s = std::to_string(this->score);
+    std::string scoreChar = "SCORE: ";
+    int countS = 0;
     int maxS = s.length() + scoreChar.length();
     int countL = 0;
     int maxL = l.length() + levelChar.length();
@@ -49,23 +52,20 @@ int drawCanva(int c, int level, int score){
 
         }std::cout<<'\n';
     }
-
 }
 
-int levelUp(int level){
-    level=level+1;
-    return(level);
+void LevelInterface::levelUp(){
+    this->level += 1;
+    
 }
-int levelDown(int level){
-    level=level-1;
-    return(level);
+void LevelInterface::levelDown(){
+    this->level -= 1;
 }
 
-int addScore(int score, int bonus){
-    score += bonus;
-    return(score);
+void LevelInterface::addScore(int bonus){
+    this->score += bonus;
 }
-int subScore(int score, int damage){
-    score-=damage;
-    return(score);
+
+void LevelInferface::subScore(int damage){
+    this->score -= damage;
 }
