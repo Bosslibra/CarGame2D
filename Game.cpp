@@ -2,7 +2,8 @@
 Game::~Game() {}
 Game::Game()
 {
-    this->resetCanvas();
+
+    this->initCanvas();
     //score inziale
     this->score = 1;
     this->player = new Player(this->width - 4, this->height / 2, 3, 3);
@@ -17,12 +18,31 @@ Game::Game()
     console.DrawAtStart(this->canvas);
     srand((unsigned)time(0));
 }
+void Game::initCanvas()
+{
+    for (int i = 0; i < this->height; i++)
+    {
+        std::vector<char> row;
+        for (int j = 0; j < this->width; j++)
+        {
+            if (j == 0 || j == this->width - 1 || i == this->height - 1 || i == 0)
+            {
+                row.push_back('#');
+            }
+            else
+            {
+                row.push_back(' ');
+            }
+        }
+        this->canvas.push_back(row);
+    }
+}
 void Game::run()
 {
     while (this->score > 0)
     {
-        // resetto canvas
         this->resetCanvas();
+        //aggiorno il numero di nemici/bonus a schermo
         if (this->enemies.size() < this->nEnemy)
             this->addEnemy(this->damage);
         if (this->bonuses.size() < this->nBonus)
@@ -34,7 +54,6 @@ void Game::run()
 
         this->score += 1;
         this->checkLevel();
-
         Sleep(this->speed);
     }
 }
@@ -72,22 +91,15 @@ void Game::draw()
 {
     //disegno player
     this->player->draw(this->canvas);
-
-    if (enemies.size() > 0)
+    for (int i = 0; i < enemies.size(); i++)
     {
-        for (int i = 0; i < enemies.size(); i++)
-        {
-            enemies[i].draw(this->canvas);
-        }
+        enemies[i].draw(this->canvas);
     }
-    // muovo tutti i bonus
-    if (bonuses.size() > 0)
-    {
 
-        for (int i = 0; i < bonuses.size(); i++)
-        {
-            bonuses[i].draw(this->canvas);
-        }
+    // muovo tutti i bonus
+    for (int i = 0; i < bonuses.size(); i++)
+    {
+        bonuses[i].draw(this->canvas);
     }
 
     this->console.DrawBuffer(this->canvas);
@@ -97,28 +109,22 @@ void Game::move()
     this->player->move();
 
     //muovo tutti i nemici
-    if (enemies.size() > 0)
+    for (int i = 0; i < enemies.size(); i++)
     {
-        for (int i = 0; i < enemies.size(); i++)
+        enemies[i].move(this->height, 1);
+        if (enemies[i].collideBottomWall(this->width, enemies[i].getHeight()))
         {
-            enemies[i].move(this->height, 1);
-            if (enemies[i].collideBottomWall(this->width, 1))
-            {
-                enemies.erase(enemies.begin() + i);
-            }
+            enemies.erase(enemies.begin() + i);
         }
     }
 
     // muovo tutti i bonus
-    if (bonuses.size() > 0)
+    for (int i = 0; i < bonuses.size(); i++)
     {
-        for (int i = 0; i < bonuses.size(); i++)
+        bonuses[i].move();
+        if (bonuses[i].collideBottomWall(this->width, bonuses[i].getHeight()))
         {
-            bonuses[i].move();
-            if (bonuses[i].collideBottomWall(this->width, bonuses[i].getWidth()))
-            {
-                bonuses.erase(bonuses.begin() + i);
-            }
+            bonuses.erase(bonuses.begin() + i);
         }
     }
 }
@@ -126,7 +132,7 @@ void Game::addEnemy(int damage)
 {
 
     int yPos = rand() % (width - 3) + 3;
-    Enemy e(damage, 4, yPos, 3, 3);
+    Enemy e(damage, 1, yPos, 3, 3);
     // se NON è occupato allora aggiungo il nemico, altrimenti aspetto.
     if (!e.isOccupied(this->canvas))
     {
@@ -143,28 +149,17 @@ void Game::addBonus(int bonus)
         this->bonuses.push_back(b);
     }
 }
-void Game::setScore(int score)
-{
-    this->score += score;
-}
+
 void Game::resetCanvas()
 {
-    this->canvas.clear();
-    for (int i = 0; i < this->height; i++)
+    this->player->remove(this->canvas);
+    for (int i = 0; i < enemies.size(); i++)
     {
-        std::vector<char> row;
-        for (int j = 0; j < this->width; j++)
-        {
-            if (j == 0 || j == this->width - 1 || i == this->height - 1 || i == 0)
-            {
-                row.push_back('#');
-            }
-            else
-            {
-                row.push_back(' ');
-            }
-        }
-        this->canvas.push_back(row);
+        this->enemies[i].remove(this->canvas);
+    }
+    for (int i = 0; i < bonuses.size(); i++)
+    {
+        this->bonuses[i].remove(this->canvas);
     }
 }
 void Game::checkLevel()
@@ -175,7 +170,7 @@ void Game::checkLevel()
         this->nBonus++;
         this->speed -= 5; //accellera
         this->damage += 50;
-        this->bonus += 10;
+        this->bonus += 20;
         this->prevLevel = this->levelUpTarget;
         this->levelUpTarget += 1000;
     }
@@ -185,7 +180,7 @@ void Game::checkLevel()
         this->nBonus--;
         this->speed += 5; // rallenta
         this->damage -= 50;
-        this->bonus -= 10;
+        this->bonus -= 20;
         this->levelUpTarget = this->prevLevel;
         this->prevLevel -= 1000;
     }

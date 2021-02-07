@@ -12,6 +12,7 @@ public:
 
     int getX();
     int getY();
+    void setY(int y);
     int getHeight();
     int getWidth();
     bool isOccupied(std::vector<std::vector<char>> canvas);

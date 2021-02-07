@@ -10,53 +10,38 @@ Enemy::Enemy(int damage, int initialX, int initialY, int width, int height) : En
     this->sprite.addLine(one);
     this->sprite.addLine(two);
     this->sprite.addLine(three);
-    // this->yDirection = DIR_LEFT;
+    this->yDirection = DIR_LEFT;
 }
 int Enemy::getDamage() { return this->damage; }
 void Enemy::move(int screenWidth, int borderWidth)
 {
-    int dirChangeProb = (rand() % 50) + 1;
-    if (dirChangeProb >= 25)
-    {
-        if (this->yDirection == DIR_LEFT)
-        {
-
-            this->yDirection = DIR_RIGHT;
-        }
-        else
-        {
-            this->yDirection = DIR_LEFT;
-        }
-    }
-    //destra
-    if (this->yDirection == DIR_RIGHT)
+    int dirChangeProb = rand() % 2;
+    if (dirChangeProb == 1)
     {
         this->y++;
+        this->yDirection = DIR_RIGHT;
     }
     else
     {
         this->y--;
+        this->yDirection = DIR_LEFT;
     }
     this->x++;
     this->collideLateralWalls(screenWidth, borderWidth);
 }
 void Enemy::collideLateralWalls(int screenWidth, int borderWidth)
 {
-    // borderWidth -= 1; //per avere la coordinata dell'ultimo punto del bordo
     if (this->y + this->width >= screenWidth - borderWidth - 1)
     {
-        this->y = screenWidth - borderWidth - 1;
-        this->yDirection == DIR_LEFT;
+        this->y = screenWidth - this->width - borderWidth - 1;
     }
-    if (this->y <= 0 + borderWidth)
+    if (this->y < 0 + borderWidth)
     {
         this->y = borderWidth;
-        this->yDirection == DIR_RIGHT;
     }
 }
 bool Enemy::collideBottomWall(int screenHeight, int borderWidth)
 {
-    // borderWidth -= 1; //per avere la coordinata dell'ultimo punto del bordo
     if (this->x + this->height >= screenHeight - borderWidth)
     {
         return true;
@@ -79,26 +64,27 @@ void Enemy::collideBonus(std::vector<Bonus> bonuses)
         int bHeight = bonuses[i].getHeight();
         int eX = bonuses[i].getX();
         int eY = bonuses[i].getY();
+        bool collide = false;
         //check collisioni hitbox
         if (this->x<eX + bWidth &&this->x + this->width> eX &&
             this->y<eY + bHeight &&this->y + this->height> eY)
         {
-            // 0 = va verso destra
-            // 1 = va verso sinistra
-            if (this->yDirection == 0)
+            collide = true;
+            // DIR_RIGHT = va verso destra
+            // DIR_LEFT = va verso sinistra
+            if (this->yDirection == DIR_RIGHT)
             {
-                this->y -= 1;
+                this->y--;
             }
             else
             {
-                this->y += 1;
+                this->y++;
             }
         }
     }
 }
 void Enemy::collideEnemy(std::vector<Enemy> enemies)
 {
-    // std::vector<Enemy>::iterator enemyIt;
     for (int i = 0; i < enemies.size(); i++)
     {
         Enemy e = enemies[i];
@@ -106,19 +92,18 @@ void Enemy::collideEnemy(std::vector<Enemy> enemies)
         int bHeight = e.getHeight();
         int eX = e.getX();
         int eY = e.getY();
+        bool collide = false;
         //check collisioni hitbox
         if (this->x<eX + bWidth &&this->x + this->width> eX &&
             this->y<eY + bHeight &&this->y + this->height> eY)
         {
             if (this->yDirection == DIR_RIGHT)
             {
-                this->y -= 1;
-                this->yDirection == DIR_LEFT;
+                this->y--;
             }
             else
             {
-                this->y += 1;
-                this->yDirection == DIR_RIGHT;
+                this->y++;
             }
         }
     }
