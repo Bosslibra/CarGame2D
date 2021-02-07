@@ -25,6 +25,11 @@ void LevelInterface::drawCanva(){
     //controllori
     int k=0;
     int lv=0;
+    
+    //se la larghezza è minore della lunghezza di char e score, aumenta la larghezza
+    if(width<maxLevelChar || width<maxScoreChar){
+        width=width + maxLevelChar + maxScoreChar;
+    }
 
     //la stringa del punteggio e del livello viene concatenata all'effettivo
     //punteggio e livello
