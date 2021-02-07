@@ -15,7 +15,7 @@ int Entity::getHeight() { return this->height; }
 int Entity::getWidth() { return this->width; }
 bool Entity::isOccupied(std::vector<std::vector<char>> canvas)
 {
-    for (int i = this->y; i < this->y + this->height + 1; i++)
+    for (int i = this->y-1; i < this->y + this->height + 1; i++)
     {
         for (int j = this->x; j < this->x + this->width + 1; j++)
         {

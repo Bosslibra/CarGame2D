@@ -65,38 +65,38 @@ Sprite Player::getSprite()
 }
 void Player::move()
 {
-	int velocity = 2;
+	int speed = 2;
 	Input i;
 	int direction = i.getMovementInput();
 	switch (direction)
 	{
 	case TOP:
-		this->x -= velocity;
+		this->x -= speed;
 		break;
 	case TOPLEFT:
-		this->y -= velocity;
-		this->x -= velocity;
+		this->y -= speed;
+		this->x -= speed;
 		break;
 	case TOPRIGHT:
-		this->x -= velocity;
-		this->y += velocity;
+		this->x -= speed;
+		this->y += speed;
 		break;
 	case RIGHT:
-		this->y += velocity;
+		this->y += speed;
 		break;
 	case DOWNLEFT:
-		this->x += velocity;
-		this->y -= velocity;
+		this->x += speed;
+		this->y -= speed;
 		break;
 	case DOWNRIGHT:
-		this->y += velocity;
-		this->x += velocity;
+		this->y += speed;
+		this->x += speed;
 		break;
 	case DOWN:
-		this->x += velocity;
+		this->x += speed;
 		break;
 	case LEFT:
-		this->y -= velocity;
+		this->y -= speed;
 		break;
 	default:
 		break;

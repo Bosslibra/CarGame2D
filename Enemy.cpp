@@ -16,30 +16,17 @@ Enemy::Enemy(int damage, int initialX, int initialY, int width, int height) : En
 int Enemy::getDamage() { return this->damage; }
 void Enemy::move(int screenWidth, int borderWidth)
 {
-    int dirChangeProb = (int)(rand() % 50) + 1;
-    //bassa probabilità di cambiare direzione
-    if (dirChangeProb >= 45)
-    {
-
-        if (this->yDirection == 0)
-        {
-            this->yDirection = 1;
-        }
-        else
-        {
-            this->yDirection = 0;
-        }
-    }
-    
     // se yDirection è uguale a 0 allora si sposta verso destra
     // altrimenti sinistra
     if (this->yDirection == 0)
     {
         this->y += 1;
+        this->yDirection = 1;
     }
     else
     {
         this->y -= 1;
+        this->yDirection = 0;
     }
     this->x++;
     this->collideLateralWalls(screenWidth, borderWidth);
