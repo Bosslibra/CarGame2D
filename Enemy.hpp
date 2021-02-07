@@ -15,6 +15,7 @@ public:
     int getDamage();
     void move(int speed, int screenWidth, int borderWidth);
     void draw(std::vector<std::vector<char>> &canvas);
+    void remove(std::vector<std::vector <char>> &canvas);
     void collideLateralWalls(int screenWidth, int borderWidth);
     bool collideBottomWall(int screenHeight, int borderWidth);
     void collideBonus(std::vector<Bonus> bonuses);

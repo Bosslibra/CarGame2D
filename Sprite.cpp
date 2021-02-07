@@ -15,15 +15,22 @@ void Sprite::draw(std::vector<std::vector<char>> &canvas, int x, int y, int widt
 {
     for (int i = y; i < y + height; i++)
     {
-        std::vector<char> row = canvas[i];
         for (int j = x; j < x + width; j++)
         {
-            std::vector<char>::iterator iter = row.begin() + j;
 
-            row.insert(iter, (char)this->sprite[i - y][j - x]);
+            canvas[i][j] =this->sprite[i - y][j - x];
         }
-        std::vector<std::vector<char>>::iterator iter = canvas.begin() + i;
-        canvas.insert(iter, row);
+    }
+}
+void Sprite::remove(std::vector<std::vector<char>> &canvas, int x, int y, int width, int height)
+{
+    for (int i = y; i < y + height; i++)
+    {
+        for (int j = x; j < x + width; j++)
+        {
+
+            canvas[i][j] =' ';
+        }
     }
 }
 std::vector<std::string> Sprite::getSprite()

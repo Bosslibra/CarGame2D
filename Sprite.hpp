@@ -24,4 +24,5 @@ public:
     std::vector<std::string> getSprite();
 
    void draw(std::vector <std::vector <char>> &canvas, int x, int y, int width, int height);
+   void remove(std::vector<std::vector<char>> &canvas, int x, int y, int width, int height);
 };

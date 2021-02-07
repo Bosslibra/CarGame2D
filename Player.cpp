@@ -39,27 +39,27 @@ bool Player::collideBonus(Bonus b)
 	}
 	return false;
 }
-bool Player::collideWalls(int xMax, int yMax)
+bool Player::collideWalls(int width, int height)
 {
 	//check collisioni hitbox
 	if (this->x <= 0)
 	{
-		this->x = 0;
+		this->x = 1;
 		return true;
 	}
-	else if (x >= xMax)
+	if (x >= height)
 	{
-		this->x = xMax;
+		this->x = height-1;
 		return true;
 	}
 	if (this->y <= 0)
 	{
-		this->y = 0;
+		this->y = 1;
 		return true;
 	}
-	else if (y >= yMax)
+	if (y >= width)
 	{
-		this->y = yMax;
+		this->y = width-1;
 		return true;
 	}
 	return false;
@@ -78,23 +78,23 @@ void Player::move(int speed)
 		this->x -= speed;
 		break;
 	case TOPLEFT:
-		this->y -= speed / 2;
-		this->x -= speed / 2;
+		this->y -= speed;
+		this->x -= speed;
 		break;
 	case TOPRIGHT:
-		this->y -= speed / 2;
-		this->x += speed / 2;
+		this->x -= speed;
+		this->y += speed;
 		break;
 	case RIGHT:
 		this->y += speed;
 		break;
 	case DOWNLEFT:
-		this->x += speed / 2;
-		this->y -= speed / 2;
+		this->x += speed;
+		this->y -= speed;
 		break;
 	case DOWNRIGHT:
-		this->y += speed / 2;
-		this->x += speed / 2;
+		this->y += speed;
+		this->x += speed;
 		break;
 	case DOWN:
 		this->x += speed;
@@ -108,5 +108,9 @@ void Player::move(int speed)
 }
 void Player::draw(std::vector<std::vector<char>> &canvas)
 {
-	this->sprite.draw(canvas, this->x, this->y, this->width, this->height);
+	this->sprite.draw(canvas, this->x, this->y, this->height, this->width);
+}
+void Player::remove(std::vector<std::vector<char>> &canvas)
+{
+	this->sprite.remove(canvas, this->x, this->y, this->height, this->width);
 }

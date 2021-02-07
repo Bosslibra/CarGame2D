@@ -52,6 +52,10 @@ void Enemy::draw(std::vector<std::vector<char>> &canvas)
 {
     this->sprite.draw(canvas, this->x, this->y, this->width, this->height);
 }
+void Enemy::remove(std::vector<std::vector<char>> &canvas)
+{
+    this->sprite.remove(canvas, this->x, this->y, this->width, this->height);
+}
 void Enemy::collideBonus(std::vector<Bonus> bonuses)
 {
     for (int i = 0; i < bonuses.size(); i++)

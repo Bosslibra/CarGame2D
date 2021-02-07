@@ -6,7 +6,7 @@ class GameInterface
 private:
     ConsoleDrawing console;
     const int width = 40;
-    const int height = 60;
+    const int height = 50;
     int speed;
     std::vector<std::vector<char>> canvas;
 
@@ -27,6 +27,7 @@ private:
     int nBonus;
 
     int levelUpTarget;
+    int prevLevel;
 public:
     GameInterface();
     ~GameInterface();

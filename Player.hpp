@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 // DIRECTIONS
+#define STOPPED 0
 #define TOP 1
 #define LEFT 2
 #define RIGHT 3
@@ -54,7 +55,7 @@ public:
      * @return true (collide)
      * @return false (non collide)
      */
-    bool collideWalls(int xMax, int yMax);
+    bool collideWalls(int width, int height);
     /**
      * @brief Get the Sprite object
      *
@@ -69,4 +70,5 @@ public:
      */
     void move(int speed);
     void draw(std::vector<std::vector <char>> &canvas);
+    void remove(std::vector<std::vector <char>> &canvas);
 };
