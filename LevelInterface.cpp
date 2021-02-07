@@ -9,7 +9,7 @@ Sprite LevelInterface::player;
 int LevelInterface::enemySpeed = 1;
 int LevelInterface::bonusLimit = 20;
 int LevelInterface::enemyLimit = 2;
-int LevelInterface::internal_score = 0;
+int LevelInterface::internal_score = 1;
 int LevelInterface::bottom_wall_id;
 vector<Sprite> LevelInterface::Enemies;
 vector<Sprite> LevelInterface::Bonuses;
@@ -151,9 +151,17 @@ void LevelInterface::moveGame()
     int after_move;
     for (size_t i = 0; i < Bonuses.size(); i++)
     {
-        after_move = Bonuses[i].move(DOWN, 0, 1);
+        after_move = Bonuses[i].move(DOWN, 0, 1).first;
         switch (after_move)
         {
+        case NOTHING:
+            if (Bonuses[i].isNear(player.getSpriteID()))
+            {
+                Bonuses[i].unload();
+                this->addScore(100);
+                Bonuses.erase(Bonuses.begin() + i);
+            }
+            break;
         case UPDATE_SCORE_BONUS:
             this->addScore(100);
             Bonuses.erase(Bonuses.begin() + i);
@@ -170,17 +178,25 @@ void LevelInterface::moveGame()
         switch (direction)
         {
         case INPUT_DOWN:
-            after_move = Enemies[i].move(DOWN, 0, 1);
+            after_move = Enemies[i].move(DOWN, 0, 1).first;
             break;
         case INPUT_DOWNLEFT:
-            after_move = Enemies[i].move(DOWN_LEFT, -1, 1);
+            after_move = Enemies[i].move(DOWN_LEFT, -1, 1).first;
             break;
         case INPUT_DOWNRIGHT:
-            after_move = Enemies[i].move(DOWN_RIGHT, 1, 1);
+            after_move = Enemies[i].move(DOWN_RIGHT, 1, 1).first;
             break;
         }
         switch (after_move)
         {
+        case NOTHING:
+            if (Enemies[i].isNear(player.getSpriteID()))
+            {
+                Enemies[i].unload();
+                this->removeScore(100);
+                Enemies.erase(Enemies.begin() + i);
+            }
+            break;
         case UPDATE_SCORE_ENEMY:
             this->removeScore(100);
             Enemies.erase(Enemies.begin() + i);
@@ -188,36 +204,36 @@ void LevelInterface::moveGame()
         case ERASE:
             Enemies.erase(Enemies.begin() + i);
             break;
-        case BOUNCE_ENEMY:
-            if (direction == INPUT_DOWNLEFT)
-            {
-                after_move = Enemies[i].move(DOWN_RIGHT, 1, 1);
-                switch (after_move)
-                {
-                case UPDATE_SCORE_ENEMY:
-                    this->removeScore(100);
-                    Enemies.erase(Enemies.begin() + i);
-                    break;
-                case ERASE:
-                    Enemies.erase(Enemies.begin() + i);
-                    break;
-                }
-            }
-            else if (direction == INPUT_DOWNRIGHT)
-            {
-                after_move = Enemies[i].move(DOWN_LEFT, -1, 1);
-                switch (after_move)
-                {
-                case UPDATE_SCORE_ENEMY:
-                    this->removeScore(100);
-                    Enemies.erase(Enemies.begin() + i);
-                    break;
-                case ERASE:
-                    Enemies.erase(Enemies.begin() + i);
-                    break;
-                }
-            }
-            break;
+            // case BOUNCE_ENEMY:
+            // if (direction == INPUT_DOWNLEFT)
+            // {
+            //     after_move = Enemies[i].move(DOWN_RIGHT, 1, 1).first;
+            //     switch (after_move)
+            //     {
+            //     case UPDATE_SCORE_ENEMY:
+            //         this->removeScore(100);
+            //         Enemies.erase(Enemies.begin() + i);
+            //         break;
+            //     case ERASE:
+            //         Enemies.erase(Enemies.begin() + i);
+            //         break;
+            //     }
+            // }
+            // else if (direction == INPUT_DOWNRIGHT)
+            // {
+            //     after_move = Enemies[i].move(DOWN_LEFT, -1, 1).first;
+            //     switch (after_move)
+            //     {
+            //     case UPDATE_SCORE_ENEMY:
+            //         this->removeScore(100);
+            //         Enemies.erase(Enemies.begin() + i);
+            //         break;
+            //     case ERASE:
+            //         Enemies.erase(Enemies.begin() + i);
+            //         break;
+            //     }
+            // }
+            // break;
         }
     }
     this->canvas_handler.DrawBuffer(Sprite::getCanvas());
@@ -226,7 +242,7 @@ void LevelInterface::moveGame()
 
 void LevelInterface::movePlayer(int direction)
 {
-    int after_move;
+    pair<int, int> after_move;
     switch (direction)
     {
     case INPUT_TOP:
@@ -254,114 +270,50 @@ void LevelInterface::movePlayer(int direction)
         after_move = LevelInterface::player.move(DOWN_RIGHT, 1, 1);
         break;
     }
-    // cout << after_move << endl;
-    switch (after_move)
+    switch (after_move.first)
     {
     case UPDATE_SCORE_ENEMY:
         this->removeScore(100);
+        if (after_move.second != USELESS)
+        {
+            LevelInterface::removeEnemy(after_move.second);
+        }
         break;
 
     case UPDATE_SCORE_BONUS:
+        if (after_move.second != USELESS)
+        {
+            LevelInterface::removeBonus(after_move.second);
+        }
         this->addScore(100);
         break;
     }
     this->canvas_handler.DrawBuffer(Sprite::getCanvas());
 }
 
-void LevelInterface::addScore(int score)
+void LevelInterface::removeEnemy(int id)
 {
-    if (this->internal_score + score > 1000)
+    for (size_t i = 0; i < Enemies.size(); i++)
     {
-        this->level++;
-        this->internal_score = internal_score + score - 1000;
-        this->bonusLimit--;
-        this->enemyLimit++;
-    }
-    else
-    {
-        this->internal_score += score;
-    }
-    this->score += score;
-    //updating the score and the level
-    vector<vector<char>> temp = Sprite::getCanvas();
-    int new_score = this->score;
-    int new_level = this->level;
-    string score_string = to_string(new_score);
-    string level_string = to_string(new_level);
-    int score_position = 9;
-    int level_position = 9;
-    //resetting to 0
-    for (size_t i = PLAYER_WIDTH + 9; i < CANVAS_WIDTH - 1; i++)
-    {
-        temp.at(i).at(SCORE_HEIGHT) = '\0';
-        temp.at(i).at(SCORE_HEIGHT + 1) = '\0';
-    }
-    for (char characther : score_string)
-    {
-        temp.at(PLAYER_WIDTH + score_position).at(SCORE_HEIGHT) = characther;
-        score_position++;
-    }
-    for (char characther : level_string)
-    {
-        temp.at(PLAYER_WIDTH + level_position).at(SCORE_HEIGHT + 1) = characther;
-        level_position++;
-    }
-    Sprite::setCanvas(temp);
-    return;
-}
-
-void LevelInterface::spawner()
-{
-    if (Enemies.size() < enemyLimit)
-    {
-        int enemy_limit = enemyLimit - Enemies.size();
-        for (size_t i = 0; i < enemy_limit; i++)
+        if (Enemies[i].getSpriteID() == id)
         {
-            int load_check = 0;
-            Sprite enemy;
-            do
-            {
-                int x = rand() % (PLAYER_WIDTH - 3);
-                x += 4;
-                vector<vector<int>> ep1;
-                vector<int> e1point1 = {x, 1, (int)'*'};
-                vector<int> e1point2 = {x, 2, (int)'E'};
-                vector<int> e1point3 = {x, 3, (int)'*'};
-                vector<int> e1point4 = {x + 1, 2, (int)'*'};
-                vector<int> e1point5 = {x - 1, 2, (int)'*'};
-                ep1.push_back(e1point1);
-                ep1.push_back(e1point2);
-                ep1.push_back(e1point3);
-                ep1.push_back(e1point4);
-                ep1.push_back(e1point5);
-                enemy = Sprite(ep1, ENEMY);
-                load_check = enemy.load();
-            } while (load_check != LOAD_ALLOWED);
-            LevelInterface::Enemies.push_back(enemy);
-        }
-    }
-    if (Bonuses.size() < bonusLimit)
-    {
-        int bonus_limit = bonusLimit - Bonuses.size();
-        for (size_t i = 0; i < bonus_limit; i++)
-        {
-            int bonus_check = 0;
-            Sprite bonus;
-            do
-            {
-                int x = rand() % (PLAYER_WIDTH - 1);
-                x += 2;
-                vector<vector<int>> bonus_points;
-                vector<int> bpoint = {x, 1, int('B')};
-                bonus_points.push_back(bpoint);
-                bonus = Sprite(bonus_points, BONUS);
-                bonus_check = bonus.load();
-            } while (bonus_check != LOAD_ALLOWED);
-            LevelInterface::Bonuses.push_back(bonus);
+            Enemies.erase(Enemies.begin() + i);
+            return;
         }
     }
 }
 
+void LevelInterface::removeBonus(int id)
+{
+    for (size_t i = 0; i < Bonuses.size(); i++)
+    {
+        if (Bonuses[i].getSpriteID() == id)
+        {
+            Bonuses.erase(Bonuses.begin() + i);
+            return;
+        }
+    }
+}
 void LevelInterface::removeScore(int score)
 {
     if (this->score - score < 0)
@@ -409,7 +361,119 @@ void LevelInterface::removeScore(int score)
     return;
 }
 
+void LevelInterface::addScore(int score)
+{
+    if (this->internal_score + score >= 1000)
+    {
+        this->level++;
+        this->internal_score = internal_score + score - 1000;
+        if (bonusLimit != 1)
+        {
+            this->bonusLimit--;
+        }
+        this->enemyLimit++;
+    }
+    else
+    {
+        this->internal_score += score;
+    }
+    this->score += score;
+    //updating the score and the levels
+    vector<vector<char>> temp = Sprite::getCanvas();
+    int new_score = this->score;
+    int new_level = this->level;
+    string score_string = to_string(new_score);
+    string level_string = to_string(new_level);
+    int score_position = 9;
+    int level_position = 9;
+    //resetting to 0
+    for (size_t i = PLAYER_WIDTH + 9; i < CANVAS_WIDTH - 1; i++)
+    {
+        temp.at(i).at(SCORE_HEIGHT) = '\0';
+        temp.at(i).at(SCORE_HEIGHT + 1) = '\0';
+    }
+    for (char characther : score_string)
+    {
+        temp.at(PLAYER_WIDTH + score_position).at(SCORE_HEIGHT) = characther;
+        score_position++;
+    }
+    for (char characther : level_string)
+    {
+        temp.at(PLAYER_WIDTH + level_position).at(SCORE_HEIGHT + 1) = characther;
+        level_position++;
+    }
+    Sprite::setCanvas(temp);
+    return;
+}
+
+void LevelInterface::spawner()
+{
+    if (Enemies.size() < enemyLimit)
+    {
+        int enemy_limit = enemyLimit - Enemies.size();
+        for (size_t i = 0; i < enemy_limit; i++)
+        {
+            int load_check = 0;
+            Sprite enemy;
+            do
+            {
+                int x = rand() % (PLAYER_WIDTH - 6);
+                if (x < 2)
+                {
+                    x = 10;
+                }
+                vector<vector<int>> ep1;
+                vector<int> e1point1 = {x, 2, (int)'*'};
+                vector<int> e1point2 = {x, 3, (int)'E'};
+                vector<int> e1point3 = {x, 4, (int)'*'};
+                vector<int> e1point4 = {x + 1, 3, (int)'*'};
+                vector<int> e1point5 = {x - 1, 3, (int)'*'};
+                ep1.push_back(e1point1);
+                ep1.push_back(e1point2);
+                ep1.push_back(e1point3);
+                ep1.push_back(e1point4);
+                ep1.push_back(e1point5);
+                enemy = Sprite(ep1, ENEMY);
+                load_check = enemy.load();
+            } while (load_check != LOAD_ALLOWED);
+            LevelInterface::Enemies.push_back(enemy);
+        }
+    }
+    if (Bonuses.size() < bonusLimit)
+    {
+        int bonus_limit = bonusLimit - Bonuses.size();
+        for (size_t i = 0; i < bonus_limit; i++)
+        {
+            int bonus_check = 0;
+            Sprite bonus;
+            do
+            {
+                int x = rand() % (PLAYER_WIDTH - 2);
+                if (x < 2)
+                {
+                    x = 2;
+                }
+                vector<vector<int>> bonus_points;
+                vector<int> bpoint = {x, 1, int('B')};
+                bonus_points.push_back(bpoint);
+                bonus = Sprite(bonus_points, BONUS);
+                bonus_check = bonus.load();
+            } while (bonus_check != LOAD_ALLOWED);
+            LevelInterface::Bonuses.push_back(bonus);
+        }
+    }
+}
+
 void LevelInterface::gameOver()
 {
-    //TODO render gameover screen
+    vector<vector<char>> temp = Sprite::getCanvas();
+    temp.at(PLAYER_WIDTH + 9).at(SCORE_HEIGHT + 5) = 'G';
+    temp.at(PLAYER_WIDTH + 10).at(SCORE_HEIGHT + 5) = 'A';
+    temp.at(PLAYER_WIDTH + 11).at(SCORE_HEIGHT + 5) = 'M';
+    temp.at(PLAYER_WIDTH + 12).at(SCORE_HEIGHT + 5) = 'E';
+    temp.at(PLAYER_WIDTH + 9).at(SCORE_HEIGHT + 6) = 'O';
+    temp.at(PLAYER_WIDTH + 10).at(SCORE_HEIGHT + 6) = 'V';
+    temp.at(PLAYER_WIDTH + 11).at(SCORE_HEIGHT + 6) = 'E';
+    temp.at(PLAYER_WIDTH + 12).at(SCORE_HEIGHT + 6) = 'R';
+    this->canvas_handler.DrawBuffer(temp);
 }

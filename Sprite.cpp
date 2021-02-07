@@ -182,6 +182,14 @@ pair<int, int> Sprite::internalCollisionCheck(int occupied_id, int occupied_type
         case WALL:
             return make_pair(PLAYER_WALL_COLLISION, occupied_id);
             break;
+
+        case ENEMY:
+            return make_pair(PLAYER_ENEMY_COLLISION, occupied_id);
+            break;
+
+        case BONUS:
+            return make_pair(PLAYER_BONUS_COLLISION, occupied_id);
+            break;
         }
     }
     else if (this->type == ENEMY)
@@ -199,9 +207,6 @@ pair<int, int> Sprite::internalCollisionCheck(int occupied_id, int occupied_type
                 return make_pair(ENEMY_WALL_COLLISION, occupied_id);
                 break;
             }
-        case PLAYER:
-            return make_pair(ENEMY_PLAYER_COLLISION, occupied_id);
-            break;
         }
     }
     else if (this->type == BONUS)
@@ -221,8 +226,6 @@ pair<int, int> Sprite::internalCollisionCheck(int occupied_id, int occupied_type
         case ENEMY:
             return make_pair(BONUS_ENEMY_COLLISION, occupied_id);
             break;
-        case PLAYER:
-            return make_pair(BONUS_PLAYER_COLLISION, USELESS);
         }
     }
 }
@@ -392,7 +395,27 @@ int Sprite::isOccupied(int x, int y, int self_id)
     return check;
 }
 
-int Sprite::move(int direction, int unit_x, int unit_y)
+bool Sprite::isNear(int id)
+{
+    bool check = false;
+    vector<vector<int>> player_position = Sprite::getLoadedSprite(id).positions;
+    for (vector<int> coordinates_sprite : this->positions)
+    {
+        for (vector<int> coordinates_player : player_position)
+        {
+            if (coordinates_player[0] - coordinates_sprite[0] == 1 || coordinates_player[0] - coordinates_sprite[0] == -1 || coordinates_player[0] - coordinates_sprite[0] == 0)
+            {
+                if (coordinates_player[1] - coordinates_sprite[1] == 1 || coordinates_player[1] - coordinates_sprite[1] == -1 || coordinates_player[1] - coordinates_sprite[1] == 0)
+                {
+                    check = true;
+                }
+            }
+        }
+    }
+    return check;
+}
+
+pair<int, int> Sprite::move(int direction, int unit_x, int unit_y)
 {
     pair<int, int> check = Sprite::checkCollision(direction, unit_x, unit_y);
     vector<vector<int>> new_positions;
@@ -417,27 +440,70 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         }
         loadedSprites[this->spriteID].positions = new_positions;
         this->positions = new_positions;
-        return NOTHING;
+        return make_pair(NOTHING, USELESS);
         break;
 
     case PLAYER_WALL_COLLISION:
         //nothing should happen
-        return NOTHING;
+        return make_pair(NOTHING, USELESS);
         break;
 
-    case ENEMY_WALL_COLLISION:
-        //enemy has hit a wall, handler must change its direction
-        return BOUNCE_ENEMY;
-        break;
-
-    case ENEMY_PLAYER_COLLISION:
-        //enemy sprite disappears, handler must update score
-        temp = Sprite::getLoadedSprite(this->spriteID);
+    case PLAYER_ENEMY_COLLISION:
+        temp = Sprite::getLoadedSprite(check.second);
         if (temp.getSpriteID() != -1)
         {
             temp.unload();
         }
-        return UPDATE_SCORE_ENEMY;
+        for (vector<int> coordinates : this->positions)
+        {
+            //deleting the old position
+            canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
+        }
+        for (vector<int> coordinates : this->positions)
+        {
+            //moving the point to the new position
+            canvas.at(coordinates[X_SPRITE] + unit_x).at(coordinates[Y_SPRITE] + unit_y) = coordinates[CHAR_SPRITE];
+            //updating the Sprite position
+            coordinates.at(X_SPRITE) += unit_x;
+            coordinates.at(Y_SPRITE) += unit_y;
+            vector<int> temp = {coordinates.at(X_SPRITE), coordinates.at(Y_SPRITE), coordinates.at(CHAR_SPRITE)};
+            new_positions.push_back(temp);
+        }
+        loadedSprites[this->spriteID].positions = new_positions;
+        this->positions = new_positions;
+        return make_pair(UPDATE_SCORE_ENEMY, check.second);
+        break;
+
+    case PLAYER_BONUS_COLLISION:
+        temp = Sprite::getLoadedSprite(check.second);
+        if (temp.getSpriteID() != -1)
+        {
+            temp.unload();
+        }
+        for (vector<int> coordinates : this->positions)
+        {
+            //deleting the old position
+            canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
+        }
+        for (vector<int> coordinates : this->positions)
+        {
+            //moving the point to the new position
+            canvas.at(coordinates[X_SPRITE] + unit_x).at(coordinates[Y_SPRITE] + unit_y) = coordinates[CHAR_SPRITE];
+            //updating the Sprite position
+            coordinates.at(X_SPRITE) += unit_x;
+            coordinates.at(Y_SPRITE) += unit_y;
+            vector<int> temp = {coordinates.at(X_SPRITE), coordinates.at(Y_SPRITE), coordinates.at(CHAR_SPRITE)};
+            new_positions.push_back(temp);
+        }
+        loadedSprites[this->spriteID].positions = new_positions;
+        this->positions = new_positions;
+        return make_pair(UPDATE_SCORE_BONUS, check.second);
+        break;
+
+    case ENEMY_WALL_COLLISION:
+        //enemy has hit a wall, handler must change its direction
+        //nothing should happen
+        return make_pair(NOTHING, USELESS);
         break;
 
     case ENEMY_BOTTOM_WALL_COLLISION:
@@ -447,7 +513,7 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         {
             temp.unload();
         }
-        return ERASE;
+        return make_pair(ERASE, USELESS);
         break;
 
     case BONUS_WALL_COLLISION:
@@ -457,17 +523,7 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         {
             temp.unload();
         }
-        return ERASE;
-        break;
-
-    case BONUS_PLAYER_COLLISION:
-        //bonus has to disappear, handler must update score
-        temp = Sprite::getLoadedSprite(this->spriteID);
-        if (temp.getSpriteID() != -1)
-        {
-            temp.unload();
-            return UPDATE_SCORE_BONUS;
-        }
+        return make_pair(ERASE, USELESS);
         break;
 
     case BONUS_ENEMY_COLLISION:
@@ -479,9 +535,9 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         }
         else
         {
-            return ERASE;
+            return make_pair(ERASE, USELESS);
         }
-        return ERASE;
+        return make_pair(ERASE, USELESS);
         break;
 
     case BONUS_BOTTOM_WALL_COLLISION:
@@ -493,9 +549,9 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         }
         else
         {
-            return ERASE;
+            return make_pair(ERASE, USELESS);
         }
-        return ERASE;
+        return make_pair(ERASE, USELESS);
         break;
 
     case ENEMY_OOB:
@@ -508,9 +564,9 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         else
         {
 
-            return ERASE;
+            return make_pair(ERASE, USELESS);
         }
-        return NOTHING;
+        return make_pair(NOTHING, USELESS);
         break;
 
     case BONUS_OOB:
@@ -522,14 +578,14 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         }
         else
         {
-            return ERASE;
+            return make_pair(ERASE, USELESS);
         }
-        return NOTHING;
+        return make_pair(NOTHING, USELESS);
         break;
 
     case PLAYER_OOB:
         //nothing should happens, same as player against wall
-        return NOTHING;
+        return make_pair(NOTHING, USELESS);
         break;
     }
 }

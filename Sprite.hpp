@@ -39,11 +39,11 @@
 
 //collision type
 #define PLAYER_WALL_COLLISION 23
+#define PLAYER_ENEMY_COLLISION 24
+#define PLAYER_BONUS_COLLISION 26
 #define ENEMY_WALL_COLLISION 25
 #define ENEMY_BOTTOM_WALL_COLLISION 38
-#define ENEMY_PLAYER_COLLISION 27
 #define BONUS_WALL_COLLISION 28
-#define BONUS_PLAYER_COLLISION 29
 #define BONUS_ENEMY_COLLISION 30
 #define BONUS_BOTTOM_WALL_COLLISION 39
 #define ENEMY_OOB 31
@@ -59,7 +59,6 @@
 #define BOUNCE_ENEMY 35
 #define NOTHING 36
 #define ERASE 40
-
 
 using namespace std;
 
@@ -92,8 +91,9 @@ public:
     static void setCanvas(vector<vector<char>> canvas);            //sets the shared canvas that all the sprites will be using
     static vector<vector<char>> getCanvas();                       //returns the canvas
     static int bottom_wall_id;
-    int getSpriteID();                               //returns sprite identifier
-    int load();                                      //pushes a Sprite into the loadedSprites vector, deleting it from the unloadedSprites if needed
-    int unload();                                    //pushes a Sprite into the unloadedSprites vector, deleting it from the loadedSprites if needed
-    int move(int direction, int unit_x, int unit_y); //moves a sprite, along with his aspect i the canvas,essentially making all his point shift into one of 8 possible directions
+    bool isNear(int spriteID);
+    int getSpriteID();                                          //returns sprite identifier
+    int load();                                                 //pushes a Sprite into the loadedSprites vector, deleting it from the unloadedSprites if needed
+    int unload();                                               //pushes a Sprite into the unloadedSprites vector, deleting it from the loadedSprites if needed
+    pair<int, int> move(int direction, int unit_x, int unit_y); //moves a sprite, along with his aspect i the canvas,essentially making all his point shift into one of 8 possible directions
 };

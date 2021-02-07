@@ -28,6 +28,8 @@ private:
     ConsoleDrawing canvas_handler;
     void addScore(int score);
     void removeScore(int score);
+    void removeEnemy(int spriteID);
+    void removeBonus(int spriteID);
 
 public:
     LevelInterface();
