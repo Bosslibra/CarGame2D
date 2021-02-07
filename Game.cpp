@@ -11,9 +11,6 @@ Game::Game()
 
 void Game::start()
 {
-    this->level = 1;
-    this->score = 0;
-    this->gameState = GAME_ON;
     this->board.setup();
     Input i;
     do
@@ -54,47 +51,9 @@ void Game::start()
         }
         if (i.getMenuInput() == INPUT_EXIT)
         {
-            this->gameState = GAME_OVER;
+            this->board.gameState = GAME_OVER;
         }
-
         Sleep(17);
-    } while (true);
-
-    //TODO rendering an ending screen
-}
-
-void Game::addScore(int score)
-{
-    if (this->internal_score + score > 1000)
-    {
-        this->level++;
-        this->internal_score = internal_score + score - 1000;
-        this->board.increaseEnemies();
-        this->board.decreaseBonuses();
-    }
-    else
-    {
-        this->internal_score += score;
-    }
-    this->score += score;
-}
-
-void Game::removeScore(int score)
-{
-    if (this->score - score <= 0)
-    {
-        this->gameState = GAME_OVER;
-    }
-    if (this->internal_score - score < 0)
-    {
-        this->internal_score = 1000 - internal_score + score;
-        this->level--;
-        this->board.decreaseEnemies();
-        this->board.increaseBonuses();
-    }
-    else
-    {
-        this->internal_score -= score;
-    }
-    this->score -= score;
+    } while (this->board.gameState == GAME_ON);
+    this->board.gameOver();
 }

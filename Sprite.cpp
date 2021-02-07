@@ -153,7 +153,7 @@ pair<int, int> Sprite::oobCheck(int type)
 {
     if (this->type == PLAYER)
     {
-        return make_pair(ERROR_MOVE_NOT_ALLOWED, USELESS);
+        return make_pair(PLAYER_OOB, USELESS);
     }
     else if (this->type == ENEMY)
     {
@@ -162,10 +162,6 @@ pair<int, int> Sprite::oobCheck(int type)
     else if (this->type == BONUS)
     {
         return make_pair(BONUS_OOB, USELESS);
-    }
-    else
-    {
-        return make_pair(ERROR_MOVE_NOT_ALLOWED, USELESS);
     }
 }
 
@@ -226,10 +222,6 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     //it's less CPU intensive, for all that it matters...
 
     //MEMO [x][y], [0][0] is the top-left point
-    if (canvas.empty())
-    {
-        return make_pair(ERROR_EMPTY_CANVAS, USELESS);
-    }
     vector<vector<int>> current_sprite_positions = this->positions;
     switch (direction)
     {
@@ -501,13 +493,9 @@ int Sprite::move(int direction, int unit_x, int unit_y)
         return NOTHING;
         break;
 
-    case ERROR_EMPTY_CANVAS:
-        //TODO critical error, canvas was not set properly
+    case PLAYER_OOB:
+        //nothing should happens, same as player against wall
         return NOTHING;
-        break;
-
-    case ERROR_MOVE_NOT_ALLOWED:
-        return ERROR_MOVE_NOT_ALLOWED;
         break;
     }
 }

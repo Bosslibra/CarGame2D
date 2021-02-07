@@ -49,6 +49,7 @@
 #define BONUS_ENEMY_COLLISION 30
 #define ENEMY_OOB 31
 #define BONUS_OOB 32
+#define PLAYER_OOB 37
 
 //useless data
 #define USELESS -2
