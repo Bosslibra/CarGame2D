@@ -6,7 +6,7 @@ GameInterface::GameInterface()
     //score inziale
     this->score = 1;
     this->player = new Player(this->width - 3, this->height / 2, 3, 3);
-    //numero entità iniziali
+    //parametri iniziali
     this->nBonus = 1;
     this->nEnemy = 2;
     this->damage = 100;
