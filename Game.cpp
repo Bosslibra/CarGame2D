@@ -15,7 +15,8 @@ void Game::start()
     Input i;
     do
     {
-        // this->board.moveGame();
+        this->board.moveGame();
+        this->board.spawner();
         int coord = i.getMovementInput();
         if (coord == INPUT_TOP)
         {

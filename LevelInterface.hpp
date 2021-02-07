@@ -20,15 +20,12 @@ private:
     static int bonusLimit;
     static int enemyLimit;
     static int internal_score;
-    int score;
-    int level;
+    static int bottom_wall_id;
     static vector<Sprite> Enemies;
     static vector<Sprite> Bonuses;
+    int score;
+    int level;
     ConsoleDrawing canvas_handler;
-    void increaseEnemies();
-    void decreaseEnemies();
-    void increaseBonuses();
-    void decreaseBonuses();
     void addScore(int score);
     void removeScore(int score);
 
@@ -38,5 +35,6 @@ public:
     void moveGame();
     void setup();
     void gameOver();
+    void spawner();
     int gameState; //0 active, 1 gameOver
 };
