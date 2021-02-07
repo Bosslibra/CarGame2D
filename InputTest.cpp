@@ -10,39 +10,39 @@ int main()
     do
     {
         int coord = i.getMovementInput();
-        if (coord == TOP)
+        if (coord == INPUT_TOP)
         {
             std::cout << "top ";
         }
-        else if (coord == LEFT)
+        else if (coord == INPUT_LEFT)
         {
             std::cout << "left ";
         }
-        else if (coord == RIGHT)
+        else if (coord == INPUT_RIGHT)
         {
             std::cout << "right ";
         }
-        else if (coord == DOWN)
+        else if (coord == INPUT_DOWN)
         {
             std::cout << "down ";
         }
-        else if (coord == TOPLEFT)
+        else if (coord == INPUT_TOPLEFT)
         {
             std::cout << "topleft ";
         }
-        else if (coord == TOPRIGHT)
+        else if (coord == INPUT_TOPRIGHT)
         {
             std::cout << "topright ";
         }
-        else if (coord == DOWNLEFT)
+        else if (coord == INPUT_DOWNLEFT)
         {
             std::cout << "downleft ";
         }
-        else if (coord == DOWNRIGHT)
+        else if (coord == INPUT_DOWNRIGHT)
         {
             std::cout << "downright ";
         }
-        if (i.getMenuInput() == EXIT)
+        if (i.getMenuInput() == INPUT_EXIT)
         {
             keepGoing = false;
         }
