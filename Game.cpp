@@ -1,6 +1,6 @@
-#include "GameInterface.hpp"
-
-GameInterface::GameInterface()
+#include "Game.hpp"
+Game::~Game() {}
+Game::Game()
 {
     this->resetCanvas();
     //score inziale
@@ -9,67 +9,55 @@ GameInterface::GameInterface()
     //parametri iniziali
     this->nBonus = 1;
     this->nEnemy = 2;
-    this->damage = 100;
+    this->damage = 150;
     this->bonus = 50;
-    this->speed = 1;
+    this->speed = 120;
     this->levelUpTarget = 1000;
     this->prevLevel = 0;
     console.DrawAtStart(this->canvas);
     srand((unsigned)time(0));
 }
-void GameInterface::run()
+void Game::run()
 {
-    // resetto canvas
-    this->resetCanvas();
-    if (this->enemies.size() < this->nEnemy)
-        this->addEnemy(this->damage);
-    if (this->bonuses.size() < this->nBonus)
-        this->addBonus(this->bonus);
+    while (this->score > 0)
+    {
+        // resetto canvas
+        this->resetCanvas();
+        if (this->enemies.size() < this->nEnemy)
+            this->addEnemy(this->damage);
+        if (this->bonuses.size() < this->nBonus)
+            this->addBonus(this->bonus);
 
-    this->move();
-    this->checkCollision();
-    this->draw();
+        this->move();
+        this->checkCollision();
+        this->draw();
 
-    this->score += 1;
-    // this->checkLevel();
+        this->score += 1;
+        this->checkLevel();
 
-    // for (int i = 0; i < this->height; i++)
-    // {
-    //     for (int j = 0; j < this->width; j++)
-    //     {
-    //         std::cout<<this->canvas[i][j];
-    //     }
-    //     std::cout<<std::endl;
-    // }
-    //     std::cout<<std::endl;
-
-    Sleep(100);
+        Sleep(this->speed);
+    }
 }
 
-void GameInterface::checkCollision()
+void Game::checkCollision()
 {
-    if (this->player->collideWalls(this->height, this->width))
+    this->player->collideWalls(this->height, this->width);
+    //collide con nemici
+    for (int i = 0; i < enemies.size(); i++)
     {
-        this->score -= this->damage;
-    }
-    if (enemies.size() > 0)
-    {
-        for (int i = 0; i < enemies.size(); i++)
+        bool isColliding = this->player->collideEnemy(enemies[i]);
+        if (isColliding)
         {
-            bool isColliding = this->player->collideEnemy(enemies[i]);
-            if (isColliding)
-            {
-                this->score -= enemies[i].getDamage();
-                enemies.erase(enemies.begin() + i);
-            }
-            else
-            {
-                enemies[i].collideBonus(this->bonuses);
-                enemies[i].collideEnemy(this->enemies);
-            }
+            this->score -= enemies[i].getDamage();
+            enemies.erase(enemies.begin() + i);
+        }
+        else
+        {
+            enemies[i].collideBonus(this->bonuses);
+            enemies[i].collideEnemy(this->enemies);
         }
     }
-
+    // collide con bonus
     for (int i = 0; i < bonuses.size(); i++)
     {
         bool isColliding = this->player->collideBonus(bonuses[i]);
@@ -80,7 +68,7 @@ void GameInterface::checkCollision()
         }
     }
 }
-void GameInterface::draw()
+void Game::draw()
 {
     //disegno player
     this->player->draw(this->canvas);
@@ -104,16 +92,16 @@ void GameInterface::draw()
 
     this->console.DrawBuffer(this->canvas);
 }
-void GameInterface::move()
+void Game::move()
 {
-    this->player->move(speed);
-    
+    this->player->move();
+
     //muovo tutti i nemici
     if (enemies.size() > 0)
     {
         for (int i = 0; i < enemies.size(); i++)
         {
-            enemies[i].move(this->speed, this->height, 1);
+            enemies[i].move(this->height, 1);
             if (enemies[i].collideBottomWall(this->width, 1))
             {
                 enemies.erase(enemies.begin() + i);
@@ -126,32 +114,40 @@ void GameInterface::move()
     {
         for (int i = 0; i < bonuses.size(); i++)
         {
-            bonuses[i].move(this->speed);
-            if (bonuses[i].collideBottomWall(this->width, 1))
+            bonuses[i].move();
+            if (bonuses[i].collideBottomWall(this->width, bonuses[i].getWidth()))
             {
                 bonuses.erase(bonuses.begin() + i);
             }
         }
     }
 }
-void GameInterface::addEnemy(int damage)
+void Game::addEnemy(int damage)
+{
+
+    int yPos = rand() % (width - 3) + 3;
+    Enemy e(damage, 4, yPos, 3, 3);
+    // se NON è occupato allora aggiungo il nemico, altrimenti aspetto.
+    if (!e.isOccupied(this->canvas))
+    {
+        this->enemies.push_back(e);
+    }
+}
+void Game::addBonus(int bonus)
 {
     int yPos = rand() % (width - 3) + 3;
-    Enemy e(damage, 3, yPos, 3, 3);
-    this->enemies.push_back(e);
+    Bonus b(bonus, 1, yPos, 1, 1);
+    // se NON è occupato allora aggiungo il nemico, altrimenti aspetto.
+    if (!b.isOccupied(this->canvas))
+    {
+        this->bonuses.push_back(b);
+    }
 }
-void GameInterface::addBonus(int bonus)
-{
-    int yPos = rand() % (width - 3) + 3;
-    Bonus b(bonus, 3, yPos, 1, 1);
-    // if(!b.collideEnemy(this->enemies))
-    this->bonuses.push_back(b);
-}
-void GameInterface::setScore(int score)
+void Game::setScore(int score)
 {
     this->score += score;
 }
-void GameInterface::resetCanvas()
+void Game::resetCanvas()
 {
     this->canvas.clear();
     for (int i = 0; i < this->height; i++)
@@ -171,21 +167,26 @@ void GameInterface::resetCanvas()
         this->canvas.push_back(row);
     }
 }
-void GameInterface::checkLevel()
+void Game::checkLevel()
 {
     if (this->score >= this->levelUpTarget)
     {
-        this->levelUpTarget += 1000;
         this->nEnemy++;
         this->nBonus++;
-        this->speed += 1;
-        this->prevLevel= this ->levelUpTarget;
-    } else if (this->score < this->prevLevel){
-         this->levelUpTarget = this->prevLevel;
+        this->speed -= 5; //accellera
+        this->damage += 50;
+        this->bonus += 10;
+        this->prevLevel = this->levelUpTarget;
+        this->levelUpTarget += 1000;
+    }
+    else if (this->score < this->prevLevel)
+    {
         this->nEnemy--;
         this->nBonus--;
-        this->speed -= 1;
+        this->speed += 5; // rallenta
+        this->damage -= 50;
+        this->bonus -= 10;
+        this->levelUpTarget = this->prevLevel;
         this->prevLevel -= 1000;
-
     }
 }

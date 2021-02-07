@@ -6,6 +6,7 @@
 ConsoleDrawing::ConsoleDrawing()
 {
     // this->buffer_one = {{' '}};
+    this->ShowConsoleCursor(false);
 }
 
 BOOL ConsoleDrawing::setCursorPosition(int x, int y)
@@ -15,7 +16,6 @@ BOOL ConsoleDrawing::setCursorPosition(int x, int y)
     c.Y = y;
     return SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
- 
  //made to hide cursor in console
 void ConsoleDrawing::ShowConsoleCursor(bool show)
 {
@@ -31,12 +31,11 @@ void ConsoleDrawing::ShowConsoleCursor(bool show)
 //Draws the game as it starts
 void ConsoleDrawing::DrawAtStart(std::vector<std::vector<char>> canvas)
 {
-    ConsoleDrawing::ShowConsoleCursor(false);
     for (int i = 0; i < canvas.size(); i++)
     {
         for (int j = 0; j < canvas[i].size(); j++)
         {
-            ConsoleDrawing::setCursorPosition(i, j);
+            this->setCursorPosition(i, j);
             std::cout << canvas[i][j];
         }
     }
@@ -56,7 +55,7 @@ void ConsoleDrawing::DrawBuffer(std::vector<std::vector<char>> canvas)
             {
                 if (this->buffer_one[i][j] != canvas[i][j])
                 { //only rewrites what has been changed
-                    ConsoleDrawing::setCursorPosition(i, j);
+                    this->setCursorPosition(i, j);
                     std::cout << canvas[i][j];
                 }
             }
@@ -65,5 +64,5 @@ void ConsoleDrawing::DrawBuffer(std::vector<std::vector<char>> canvas)
 
     this->buffer_one = canvas;//saves copy of vector to later compare it to the updated one, in order to have the lowest calls to std::cout
 
-    Sleep(16); //16.66667 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
+   // Sleep(16); //16.66667 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
 }

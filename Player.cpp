@@ -39,68 +39,63 @@ bool Player::collideBonus(Bonus b)
 	}
 	return false;
 }
-bool Player::collideWalls(int width, int height)
+void Player::collideWalls(int width, int height)
 {
 	//check collisioni hitbox
 	if (this->x <= 0)
 	{
 		this->x = 1;
-		return true;
 	}
-	if (x >= height)
+	if (this->x + this->height >= height)
 	{
-		this->x = height-1;
-		return true;
+		this->x = height - this->height - 1;
 	}
 	if (this->y <= 0)
 	{
 		this->y = 1;
-		return true;
 	}
-	if (y >= width)
+	if (this->y + this->width >= width)
 	{
-		this->y = width-1;
-		return true;
+		this->y = width - this->width - 1;
 	}
-	return false;
 }
 Sprite Player::getSprite()
 {
 	return this->sprite;
 }
-void Player::move(int speed)
+void Player::move()
 {
 	Input i;
 	int direction = i.getMovementInput();
 	switch (direction)
 	{
 	case TOP:
-		this->x -= speed;
+		this->x--;
 		break;
 	case TOPLEFT:
-		this->y -= speed;
-		this->x -= speed;
+		this->y--;
+		this->x--;
 		break;
 	case TOPRIGHT:
-		this->x -= speed;
-		this->y += speed;
+		this->x--;
+		this->y++;
 		break;
 	case RIGHT:
-		this->y += speed;
+		this->y++;
 		break;
 	case DOWNLEFT:
-		this->x += speed;
-		this->y -= speed;
+		this->x++;
+		this->y--;
 		break;
 	case DOWNRIGHT:
-		this->y += speed;
-		this->x += speed;
+		this->y++;
+		this->x++;
 		break;
 	case DOWN:
-		this->x += speed;
+		this->x++;
 		break;
 	case LEFT:
-		this->y -= speed;
+		this->y--;
 		break;
 	default:
 		break;

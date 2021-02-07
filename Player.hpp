@@ -50,12 +50,12 @@ public:
     /**
      * @brief controlla le collisioni con i bordi
      *
-     * @param xMax massima grandezza canvas (x)
-     * @param yMax massima grandezza canvas (y)
+     * @param width massima grandezza canvas (x)
+     * @param height massima grandezza canvas (y)
      * @return true (collide)
      * @return false (non collide)
      */
-    bool collideWalls(int width, int height);
+    void collideWalls(int width, int height);
     /**
      * @brief Get the Sprite object
      *
@@ -68,7 +68,7 @@ public:
      *
      * @param speed speed
      */
-    void move(int speed);
+    void move();
     void draw(std::vector<std::vector <char>> &canvas);
     void remove(std::vector<std::vector <char>> &canvas);
 };

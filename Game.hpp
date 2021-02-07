@@ -1,7 +1,7 @@
 #include "ConsoleDrawing.hpp"
 #include "Player.hpp"
 #include <vector>
-class GameInterface
+class Game
 {
 private:
     ConsoleDrawing console;
@@ -29,17 +29,15 @@ private:
     int levelUpTarget;
     int prevLevel;
 public:
-    GameInterface();
-    ~GameInterface();
+    Game();
+    ~Game();
     void run();
     void checkCollision();
     void move();
     void draw();
-    // void setLevel(level);
     void checkLevel();
     void setScore(int score);
     void resetCanvas();
-    // void spawnEntities();
     void addEnemy(int damage);
     void addBonus(int bonus);
 };

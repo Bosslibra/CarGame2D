@@ -10,33 +10,48 @@ Enemy::Enemy(int damage, int initialX, int initialY, int width, int height) : En
     this->sprite.addLine(one);
     this->sprite.addLine(two);
     this->sprite.addLine(three);
+    // this->yDirection = DIR_LEFT;
 }
 int Enemy::getDamage() { return this->damage; }
-void Enemy::move(int speed, int screenWidth, int borderWidth)
+void Enemy::move(int screenWidth, int borderWidth)
 {
-    this->yDirection = rand() % 2;
-    //destra
-    if (this->yDirection == 0)
+    int dirChangeProb = (rand() % 50) + 1;
+    if (dirChangeProb >= 25)
     {
-        this->y += speed;
+        if (this->yDirection == DIR_LEFT)
+        {
+
+            this->yDirection = DIR_RIGHT;
+        }
+        else
+        {
+            this->yDirection = DIR_LEFT;
+        }
+    }
+    //destra
+    if (this->yDirection == DIR_RIGHT)
+    {
+        this->y++;
     }
     else
     {
-        this->y -= speed;
+        this->y--;
     }
-    this->x += speed;
+    this->x++;
     this->collideLateralWalls(screenWidth, borderWidth);
 }
 void Enemy::collideLateralWalls(int screenWidth, int borderWidth)
 {
     // borderWidth -= 1; //per avere la coordinata dell'ultimo punto del bordo
-    if (this->y + this->width >= screenWidth - borderWidth)
+    if (this->y + this->width >= screenWidth - borderWidth - 1)
     {
         this->y = screenWidth - borderWidth - 1;
+        this->yDirection == DIR_LEFT;
     }
     if (this->y <= 0 + borderWidth)
     {
-        this->y = borderWidth + 1;
+        this->y = borderWidth;
+        this->yDirection == DIR_RIGHT;
     }
 }
 bool Enemy::collideBottomWall(int screenHeight, int borderWidth)
@@ -81,11 +96,10 @@ void Enemy::collideBonus(std::vector<Bonus> bonuses)
         }
     }
 }
-
 void Enemy::collideEnemy(std::vector<Enemy> enemies)
 {
     // std::vector<Enemy>::iterator enemyIt;
-    for (int i = 0; i< enemies.size(); i++)
+    for (int i = 0; i < enemies.size(); i++)
     {
         Enemy e = enemies[i];
         int bWidth = e.getWidth();
@@ -96,13 +110,15 @@ void Enemy::collideEnemy(std::vector<Enemy> enemies)
         if (this->x<eX + bWidth &&this->x + this->width> eX &&
             this->y<eY + bHeight &&this->y + this->height> eY)
         {
-            if (this->yDirection == 0)
+            if (this->yDirection == DIR_RIGHT)
             {
                 this->y -= 1;
+                this->yDirection == DIR_LEFT;
             }
             else
             {
                 this->y += 1;
+                this->yDirection == DIR_RIGHT;
             }
         }
     }

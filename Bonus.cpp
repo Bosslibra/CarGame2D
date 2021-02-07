@@ -3,15 +3,15 @@
 Bonus::Bonus(int bonus, int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)
 {
     this->bonus = bonus;
-    this->sprite.addLine("B");
+    this->sprite.addLine("$");
 }
 
 Bonus::~Bonus() {}
 
 int Bonus::getBonus() { return this->bonus; }
-void Bonus::move(int speed)
+void Bonus::move()
 {
-    this->x += speed;
+    this->x ++;
 }
 void Bonus::draw(std::vector<std::vector<char>> &canvas)
 {

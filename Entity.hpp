@@ -1,3 +1,4 @@
+#include <vector>
 class Entity
 {
 protected:
@@ -13,5 +14,5 @@ public:
     int getY();
     int getHeight();
     int getWidth();
-    // // void move(char d,int speed);
+    bool isOccupied(std::vector<std::vector<char>> canvas);
 };

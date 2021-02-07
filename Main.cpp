@@ -5,16 +5,12 @@
 // #include <string>
 // #include <vector>
 // #include <windows.h>
-#include "GameInterface.hpp"
+#include "Game.hpp"
 
 int main()
 {
     system("cls");
-    GameInterface* g = new GameInterface();
-    int x = 0;
-    while (x<200){
-        g->run();
-        x++;
-    }
+    Game g;
+    g.run();
     return 0;
 }
