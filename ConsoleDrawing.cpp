@@ -5,7 +5,7 @@
 
 ConsoleDrawing::ConsoleDrawing()
 {
-    this->buffer_one = {{' '}};
+    // this->buffer_one = {{' '}};
 }
 
 BOOL ConsoleDrawing::setCursorPosition(int x, int y)
