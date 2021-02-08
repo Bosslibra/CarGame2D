@@ -7,12 +7,12 @@ void LevelInterface::initCanvas()
 {
     this->width = 40; //larghezza fissa
     //cicli per la costruzione della cornice e degli spazi bianchi interni
-    for (int i = 0; i < this->height; i++)
+    for (int i = 0; i < this->width; i++)
     {
         std::vector<char> row;
-        for (int j = 0; j < this->width; j++)
+        for (int j = 0; j < this->height; j++)
         {
-            if (j == this->width - 1 || i == this->height - 1 || j == 0)
+            if (j == this->height - 1 || i == this->width - 1 || j == 0)
             {
                 row.push_back('#');
             }

@@ -4,6 +4,11 @@ Game::~Game() {}
 Game::Game()
 {
     this->initCanvas();
+    
+}
+void Game::initCanvas()
+{
+    srand((unsigned)time(0));
     //score e level inziali
     this->score = 1;
     this->level = 1;
@@ -16,17 +21,13 @@ Game::Game()
     this->speed = 120;
     this->levelUpTarget = 1000;
     this->prevLevel = 0;
-    console.DrawAtStart(this->showStats());
-    srand((unsigned)time(0));
-}
-void Game::initCanvas()
-{
-    for (int i = 0; i < this->height; i++)
+
+    for (int i = 0; i < this->width; i++)
     {
         vector<char> row;
-        for (int j = 0; j < this->width; j++)
+        for (int j = 0; j < this->height; j++)
         {
-            if (j == 0 || j == this->width - 1 || i == this->height - 1 || i == 0)
+            if (j == 0 || j == this->height - 1 || i == this->width - 1 || i == 0)
             {
                 row.push_back('#');
             }
@@ -37,6 +38,7 @@ void Game::initCanvas()
         }
         this->canvas.push_back(row);
     }
+    console.DrawAtStart(this->showStats());
 }
 void Game::run()
 {
@@ -67,7 +69,7 @@ void Game::run()
 
 void Game::checkCollision()
 {
-    this->player->collideWalls(this->height, this->width);
+    this->player->collideWalls(this->width, this->height);
     //collide con nemici
     for (int i = 0; i < this->enemies.size(); i++)
     {
@@ -121,8 +123,8 @@ void Game::move()
     //muovo tutti i nemici
     for (int i = 0; i < enemies.size(); i++)
     {
-        enemies[i].move(this->height, 1);
-        if (enemies[i].collideBottomWall(this->width, enemies[i].getHeight()))
+        enemies[i].move(this->width, 1);
+        if (enemies[i].collideBottomWall(this->height, enemies[i].getHeight()))
         {
             enemies.erase(enemies.begin() + i);
         }
@@ -132,7 +134,7 @@ void Game::move()
     for (int i = 0; i < bonuses.size(); i++)
     {
         bonuses[i].move();
-        if (bonuses[i].collideBottomWall(this->width, bonuses[i].getHeight()))
+        if (bonuses[i].collideBottomWall(this->height, bonuses[i].getHeight()))
         {
             bonuses.erase(bonuses.begin() + i);
         }
@@ -238,12 +240,11 @@ bool Game::gameOver()
     Sleep(200);
     Input i;
     bool continueCondition;
-    
+
     if (i.getMenuInput() == ENTER){
         continueCondition = true;
         this->canvas.clear();
         this->initCanvas();
-        this->console.DrawAtStart(this->showStats());
     } else {
         continueCondition = false;
     }

@@ -8,8 +8,8 @@ class Game
 private:
     ConsoleDrawing console;
     //costanti
-    const int width = 40;
-    const int height = 50;
+    const int width = 60;
+    const int height = 70;
     int speed;
     std::vector<std::vector<char>> canvas;
 

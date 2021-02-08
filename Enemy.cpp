@@ -12,7 +12,7 @@ Enemy::Enemy(int damage, int initialX, int initialY, int width, int height) : En
     this->sprite.addLine(one);
     this->sprite.addLine(two);
     this->sprite.addLine(three);
-    this->yDirection = (int)(rand() % 2);
+    this->yDirection = (int)(rand() % 3); //inizia  con direzione casuale
 }
 int Enemy::getDamage() { return this->damage; }
 void Enemy::move(int screenWidth, int borderWidth)
@@ -22,13 +22,12 @@ void Enemy::move(int screenWidth, int borderWidth)
     if (this->yDirection == 0)
     {
         this->y += 1;
-        this->yDirection = 1;
     }
-    else
+    else if(this->yDirection == 1)
     {
         this->y -= 1;
-        this->yDirection = 0;
     }
+    this->yDirection = rand() % 3;
     this->x++;
     this->collideLateralWalls(screenWidth, borderWidth);
 }
