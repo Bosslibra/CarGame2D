@@ -6,17 +6,12 @@
 LevelInterface(){}
 
 void LevelInterface::drawCanva(){
-    int width=height*2;
-    //la dimensione dell'interfaccia è data dall'altezza presa dalla classe
-    //e la larghezza composta moltiplicato l'altezza per due
-    char canva[height][width];
-
     //salvo come stringhe le parole "level" e "score"
     std::string levelString = "LEVEL: ";
     std::string scoreString = "SCORE: ";
     //salvo come stringhe i parametri level e score, che sarebbero interi
-    std::string actualLevel = std::to_string(this->level);
-    std::string actualString = std::to_string(this->score);
+    std::string actualLevel = "5";
+    std::string actualString = "2323232";
     //controllori per la lunghezza delle stringhe
     int countScoreChar = 0;
     int maxScoreChar = actualString.length() + scoreString.length();
@@ -25,6 +20,13 @@ void LevelInterface::drawCanva(){
     //controllori
     int k=0;
     int lv=0;
+
+    //width=dimensione score + tot
+    int width= maxScoreChar+6;
+    //la dimensione dell'interfaccia è data dall'altezza presa dalla classe
+    //e la larghezza composta moltiplicato l'altezza per due
+    char canva[height][width];
+
 
     //se la larghezza è minore della lunghezza di char e score, aumenta la larghezza
     if(width<maxLevelChar || width<maxScoreChar){
@@ -42,31 +44,32 @@ void LevelInterface::drawCanva(){
         for(int j=0; j<width; j++){
 
             if(i==0 && j!=0) {
-                canva[i][j]='-';
+                canva[i][j]='#';
             }  else if(i==height-1) {
-                canva[i][j]='_';
+                canva[i][j]='#';
 
             } else {
                 canva[i][j]=' ';
-            };
+            }
+
             if(j==0){
                 canva[i][j]='|';
-            }else if ((j==(width/10)+countScoreChar) && i==(width/4) && countScoreChar<maxScoreChar){
+            }else if ((j==(width/10)+countScoreChar) && i==(width/5)-2 && countScoreChar<maxScoreChar){
                 canva[i][j]=scoreString[k];
 
                 countScoreChar++;
                 k++;
-            } else if ((j==(width/10)+ countLevelChar && i==(height/4)+2 && countLevelChar<maxLevelChar)){
+            } else if ((j==(width/10)+ countLevelChar && i==(height/5)+2 && countLevelChar<maxLevelChar)){
                 canva[i][j]=levelString[lv];
                 countLevelChar++;
                 lv++;
             } else if(j==width-1){
-                canva[i][j]='|';
+                canva[i][j]='#';
             }
-
+            std::cout<<canva[i][j];
         }std::cout<<'\n';
+
     }
-}
 }
 
 void LevelInterface::levelUp(){
