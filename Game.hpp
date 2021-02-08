@@ -62,7 +62,18 @@ private:
      * @brief aggiunge un bonus
      */
     void addBonus(int bonus);
+    /**
+     * @brief mostra la schermata di game over e chiede se si vuole riprovare
+     *
+     * @return true
+     * @return false
+     */
     bool gameOver();
+    /**
+     * @brief collega il vettore delle statistiche al gioco
+     *
+     * @return std::vector<std::vector<char>>
+     */
     std::vector<std::vector<char>> showStats();
 
 public:
