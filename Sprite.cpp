@@ -18,7 +18,7 @@ void Sprite::draw(vector<vector<char>> &canvas, int x, int y, int width, int hei
         for (int j = x; j < x + width; j++)
         {
 
-            canvas[i][j] =this->sprite[i - y][j - x];
+            canvas[i][j] = this->sprite[i - y][j - x];
         }
     }
 }
@@ -29,7 +29,7 @@ void Sprite::remove(vector<vector<char>> &canvas, int x, int y, int width, int h
         for (int j = x; j < x + width; j++)
         {
 
-            canvas[i][j] =' ';
+            canvas[i][j] = ' ';
         }
     }
 }

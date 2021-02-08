@@ -19,6 +19,7 @@ void Enemy::move(int screenWidth, int borderWidth)
 {
     // se yDirection è uguale a 0 allora si sposta verso destra
     // altrimenti sinistra
+    // ha una possibilità su 3 di non muoversi
     if (this->yDirection == 0)
     {
         this->y += 1;
@@ -46,7 +47,7 @@ void Enemy::collideLateralWalls(int screenWidth, int borderWidth)
 }
 bool Enemy::collideBottomWall(int screenHeight, int borderWidth)
 {
-    if (this->x + this->height >= screenHeight - borderWidth)
+    if (this->x >= screenHeight - borderWidth)
     {
         return true;
     }

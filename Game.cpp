@@ -13,7 +13,7 @@ void Game::initGame()
     //score e level inziali
     this->score = 1;
     this->level = 1;
-    this->player = new Player(this->width - 4, this->height / 2, 3, 3);
+    this->player = new Player(this->height - 4, this->width / 2, 3, 3);
     //parametri iniziali
     this->nBonus = 1;
     this->nEnemy = 2;
