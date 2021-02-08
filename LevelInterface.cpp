@@ -83,16 +83,24 @@ void LevelInterface::setup()
 
     //hardwriting the player
     vector<vector<int>> player_position;
-    vector<int> ppoint1 = {PLAYER_STARTING_X, CANVAS_HEIGHT - 3, (int)'*'};
-    vector<int> ppoint2 = {PLAYER_STARTING_X, CANVAS_HEIGHT - 4, (int)'P'};
-    vector<int> ppoint3 = {PLAYER_STARTING_X, CANVAS_HEIGHT - 5, (int)'*'};
-    vector<int> ppoint4 = {PLAYER_STARTING_X + 1, CANVAS_HEIGHT - 4, (int)'*'};
-    vector<int> ppoint5 = {PLAYER_STARTING_X - 1, CANVAS_HEIGHT - 4, (int)'*'};
+    vector<int> ppoint1 = {PLAYER_STARTING_X, CANVAS_HEIGHT - 3, (int)'|'};
+    vector<int> ppoint2 = {PLAYER_STARTING_X, CANVAS_HEIGHT - 4, (int)'A'};
+    vector<int> ppoint3 = {PLAYER_STARTING_X, CANVAS_HEIGHT - 5, (int)'|'};
+    vector<int> ppoint4 = {PLAYER_STARTING_X + 1, CANVAS_HEIGHT - 4, (int)'-'};
+    vector<int> ppoint5 = {PLAYER_STARTING_X - 1, CANVAS_HEIGHT - 4, (int)'^'};
+    vector<int> ppoint6 = {PLAYER_STARTING_X - 1, CANVAS_HEIGHT - 3, (int)'0'};
+    vector<int> ppoint7 = {PLAYER_STARTING_X + 1, CANVAS_HEIGHT - 3, (int)'0'};
+    vector<int> ppoint8 = {PLAYER_STARTING_X + 1, CANVAS_HEIGHT - 5, (int)'0'};
+    vector<int> ppoint9 = {PLAYER_STARTING_X - 1, CANVAS_HEIGHT - 5, (int)'0'};
     player_position.push_back(ppoint1);
     player_position.push_back(ppoint2);
     player_position.push_back(ppoint3);
     player_position.push_back(ppoint4);
     player_position.push_back(ppoint5);
+    player_position.push_back(ppoint6);
+    player_position.push_back(ppoint7);
+    player_position.push_back(ppoint8);
+    player_position.push_back(ppoint9);
 
     //hardwriting a single bonus
     // vector<vector<int>> bonus_points;
@@ -204,36 +212,6 @@ void LevelInterface::moveGame()
         case ERASE:
             Enemies.erase(Enemies.begin() + i);
             break;
-            // case BOUNCE_ENEMY:
-            // if (direction == INPUT_DOWNLEFT)
-            // {
-            //     after_move = Enemies[i].move(DOWN_RIGHT, 1, 1).first;
-            //     switch (after_move)
-            //     {
-            //     case UPDATE_SCORE_ENEMY:
-            //         this->removeScore(100);
-            //         Enemies.erase(Enemies.begin() + i);
-            //         break;
-            //     case ERASE:
-            //         Enemies.erase(Enemies.begin() + i);
-            //         break;
-            //     }
-            // }
-            // else if (direction == INPUT_DOWNRIGHT)
-            // {
-            //     after_move = Enemies[i].move(DOWN_LEFT, -1, 1).first;
-            //     switch (after_move)
-            //     {
-            //     case UPDATE_SCORE_ENEMY:
-            //         this->removeScore(100);
-            //         Enemies.erase(Enemies.begin() + i);
-            //         break;
-            //     case ERASE:
-            //         Enemies.erase(Enemies.begin() + i);
-            //         break;
-            //     }
-            // }
-            // break;
         }
     }
     this->canvas_handler.DrawBuffer(Sprite::getCanvas());
@@ -420,16 +398,25 @@ void LevelInterface::spawner()
                 //rng between 3 and PLAYER_WIDTH - 3
                 int x = rand() % ((PLAYER_WIDTH - 2) - 3 + 1) + 3;
                 vector<vector<int>> ep1;
+
                 vector<int> e1point1 = {x, 2, (int)'*'};
                 vector<int> e1point2 = {x, 3, (int)'E'};
                 vector<int> e1point3 = {x, 4, (int)'*'};
                 vector<int> e1point4 = {x + 1, 3, (int)'*'};
                 vector<int> e1point5 = {x - 1, 3, (int)'*'};
+                vector<int> e1point6 = {x - 1, 2, (int)'0'};
+                vector<int> e1point7 = {x + 1, 2, (int)'0'};
+                vector<int> e1point8 = {x + 1, 4, (int)'0'};
+                vector<int> e1point9 = {x - 1, 4, (int)'0'};
                 ep1.push_back(e1point1);
                 ep1.push_back(e1point2);
                 ep1.push_back(e1point3);
                 ep1.push_back(e1point4);
                 ep1.push_back(e1point5);
+                ep1.push_back(e1point6);
+                ep1.push_back(e1point7);
+                ep1.push_back(e1point8);
+                ep1.push_back(e1point9);
                 enemy = Sprite(ep1, ENEMY);
                 load_check = enemy.load();
             } while (load_check != LOAD_ALLOWED);
