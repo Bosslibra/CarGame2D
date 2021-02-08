@@ -13,5 +13,7 @@ Il punteggio aumenta con lo scorrere del tempo e raccogliendo le banconote che s
 
 La condizione di sconfitta è il raggiungimento del punteggio 0: è dunque possibile scendere di livello quando si perdono punti. Se non si raggiunge il punteggio 0, il gioco non termina.
 
+Una volta arrivati nel GameOver per ricominciare a giocare si può premere Invio.
+
 ## Librerie
 L'unica libreria importata è windows.h, che viene utilizzata per gestire la console e l'input dalla tastiera.
