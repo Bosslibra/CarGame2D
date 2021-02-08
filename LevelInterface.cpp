@@ -95,52 +95,52 @@ void LevelInterface::setup()
     player_position.push_back(ppoint5);
 
     //hardwriting a single bonus
-    vector<vector<int>> bonus_points;
-    vector<int> bpoint = {30, 1, int('B')};
-    bonus_points.push_back(bpoint);
+    // vector<vector<int>> bonus_points;
+    // vector<int> bpoint = {30, 1, int('B')};
+    // bonus_points.push_back(bpoint);
 
     //hardwriting two enemies
-    vector<vector<int>> ep1;
-    vector<int> e1point1 = {15, 1, (int)'*'};
-    vector<int> e1point2 = {15, 2, (int)'E'};
-    vector<int> e1point3 = {15, 3, (int)'*'};
-    vector<int> e1point4 = {15 + 1, 2, (int)'*'};
-    vector<int> e1point5 = {15 - 1, 2, (int)'*'};
-    ep1.push_back(e1point1);
-    ep1.push_back(e1point2);
-    ep1.push_back(e1point3);
-    ep1.push_back(e1point4);
-    ep1.push_back(e1point5);
+    // vector<vector<int>> ep1;
+    // vector<int> e1point1 = {15, 1, (int)'*'};
+    // vector<int> e1point2 = {15, 2, (int)'E'};
+    // vector<int> e1point3 = {15, 3, (int)'*'};
+    // vector<int> e1point4 = {15 + 1, 2, (int)'*'};
+    // vector<int> e1point5 = {15 - 1, 2, (int)'*'};
+    // ep1.push_back(e1point1);
+    // ep1.push_back(e1point2);
+    // ep1.push_back(e1point3);
+    // ep1.push_back(e1point4);
+    // ep1.push_back(e1point5);
 
-    vector<vector<int>> ep2;
-    vector<int> e2point1 = {45, 1, (int)'*'};
-    vector<int> e2point2 = {45, 2, (int)'E'};
-    vector<int> e2point3 = {45, 3, (int)'*'};
-    vector<int> e2point4 = {45 + 1, 2, (int)'*'};
-    vector<int> e2point5 = {45 - 1, 2, (int)'*'};
-    ep2.push_back(e2point1);
-    ep2.push_back(e2point2);
-    ep2.push_back(e2point3);
-    ep2.push_back(e2point4);
-    ep2.push_back(e2point5);
+    // vector<vector<int>> ep2;
+    // vector<int> e2point1 = {45, 1, (int)'*'};
+    // vector<int> e2point2 = {45, 2, (int)'E'};
+    // vector<int> e2point3 = {45, 3, (int)'*'};
+    // vector<int> e2point4 = {45 + 1, 2, (int)'*'};
+    // vector<int> e2point5 = {45 - 1, 2, (int)'*'};
+    // ep2.push_back(e2point1);
+    // ep2.push_back(e2point2);
+    // ep2.push_back(e2point3);
+    // ep2.push_back(e2point4);
+    // ep2.push_back(e2point5);
 
     //loading sprites
     Sprite player(player_position, PLAYER);
     Sprite wall(wall_position, WALL);
     Sprite bottom_wall(bottom_wall_position, WALL);
-    Sprite enemy1(ep1, ENEMY);
-    Sprite enemy2(ep2, ENEMY);
-    Sprite bonus(bonus_points, BONUS);
+    // Sprite enemy1(ep1, ENEMY);
+    // Sprite enemy2(ep2, ENEMY);
+    // Sprite bonus(bonus_points, BONUS);
     player.load();
     wall.load();
     bottom_wall.load();
-    enemy1.load();
-    enemy2.load();
-    bonus.load();
+    // enemy1.load();
+    // enemy2.load();
+    // bonus.load();
     LevelInterface::player = player;
-    LevelInterface::Enemies.push_back(enemy1);
-    LevelInterface::Enemies.push_back(enemy2);
-    LevelInterface::Bonuses.push_back(bonus);
+    // LevelInterface::Enemies.push_back(enemy1);
+    // LevelInterface::Enemies.push_back(enemy2);
+    // LevelInterface::Bonuses.push_back(bonus);
     Sprite::bottom_wall_id = bottom_wall.getSpriteID();
     this->canvas_handler.DrawAtStart(Sprite::getCanvas());
 }
@@ -417,11 +417,8 @@ void LevelInterface::spawner()
             Sprite enemy;
             do
             {
-                int x = rand() % (PLAYER_WIDTH - 6);
-                if (x < 2)
-                {
-                    x = 10;
-                }
+                //rng between 3 and PLAYER_WIDTH - 3
+                int x = rand() % ((PLAYER_WIDTH - 2) - 3 + 1) + 3;
                 vector<vector<int>> ep1;
                 vector<int> e1point1 = {x, 2, (int)'*'};
                 vector<int> e1point2 = {x, 3, (int)'E'};
@@ -448,13 +445,10 @@ void LevelInterface::spawner()
             Sprite bonus;
             do
             {
-                int x = rand() % (PLAYER_WIDTH - 2);
-                if (x < 2)
-                {
-                    x = 2;
-                }
+                //rng between 2 and PLAYER_WIDTH - 1
+                int x = rand() % ((PLAYER_WIDTH - 1) - 2 + 1) + 2;
                 vector<vector<int>> bonus_points;
-                vector<int> bpoint = {x, 1, int('B')};
+                vector<int> bpoint = {x, 1, int('$')};
                 bonus_points.push_back(bpoint);
                 bonus = Sprite(bonus_points, BONUS);
                 bonus_check = bonus.load();
