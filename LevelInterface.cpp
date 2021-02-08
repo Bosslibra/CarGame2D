@@ -1,15 +1,11 @@
 #include "LevelInterface.hpp"
 
-LevelInterface::LevelInterface(int height)
-{
-    this->width = 40;
-    this->height = height;
-    // this->level = level;
-    // this->score = score;
-}
-
+LevelInterface::LevelInterface()
+{}
+LevelInterface::~LevelInterface() {}
 void LevelInterface::initCanvas()
 {
+    this->width = 40; //larghezza fissa
     //cicli per la costruzione della cornice e degli spazi bianchi interni
     for (int i = 0; i < this->height; i++)
     {
@@ -64,3 +60,4 @@ std::vector<std::vector<char>> LevelInterface::getCanvas()
 {
     return this->canvas;
 }
+void LevelInterface::setHeight(int height) { this->height = height; }

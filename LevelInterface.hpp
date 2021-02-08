@@ -18,7 +18,8 @@ private:
     void initCanvas();
 
 public:
-    LevelInterface(int height);
+    LevelInterface();
+    ~LevelInterface();
     /**
      * @brief scrive lo score e il livello nel canvas
      *
@@ -32,4 +33,10 @@ public:
      * @return std::vector<std::vector<char>>
      */
     std::vector<std::vector<char>> getCanvas();
+    /**
+     * @brief Set the Height object
+     *
+     * @param height
+     */
+    void setHeight(int height);
 };

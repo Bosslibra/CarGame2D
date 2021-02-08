@@ -1,6 +1,5 @@
 #include "ConsoleDrawing.hpp"
 
-
 ConsoleDrawing::ConsoleDrawing()
 {
     // this->buffer_one = {{' '}};
@@ -14,7 +13,7 @@ BOOL ConsoleDrawing::setCursorPosition(int x, int y)
     c.Y = y;
     return SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
- //made to hide cursor in console
+//made to hide cursor in console
 void ConsoleDrawing::ShowConsoleCursor(bool show)
 {
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -60,7 +59,21 @@ void ConsoleDrawing::DrawBuffer(std::vector<std::vector<char>> canvas)
         }
     }
 
-    this->buffer_one = canvas;//saves copy of vector to later compare it to the updated one, in order to have the lowest calls to std::cout
+    this->buffer_one = canvas; //saves copy of vector to later compare it to the updated one, in order to have the lowest calls to std::cout
 
-   // Sleep(16); //16.66667 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
+    // Sleep(16); //16.66667 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
+}
+void ConsoleDrawing::drawGameOver(std::vector<std::vector<char>> canvas)
+{
+    this->ShowConsoleCursor(false);
+    system("cls");
+    for (int i = 0; i < canvas.size(); i++)
+    {
+        for (int j = 0; j < canvas[i].size(); j++)
+        {
+            this->setCursorPosition(j, i);
+            std::cout << canvas[i][j];
+        }
+    }
+    // Sleep(16); //16.66667 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
 }

@@ -14,5 +14,6 @@ public:
     BOOL setCursorPosition(int x, int y);
     void DrawAtStart(std::vector<std::vector<char>> canvas);
     void DrawBuffer(std::vector<std::vector<char>> canvas);
+    void drawGameOver(std::vector<std::vector<char>> canvas);
     void ShowConsoleCursor(bool show);
 };

@@ -2,6 +2,7 @@
 #include "LevelInterface.hpp"
 #include "Player.hpp"
 #include <vector>
+#define ENTER 9
 class Game
 {
 private:
@@ -61,6 +62,7 @@ private:
      * @brief aggiunge un bonus
      */
     void addBonus(int bonus);
+    bool gameOver();
     std::vector<std::vector<char>> showStats();
 
 public:

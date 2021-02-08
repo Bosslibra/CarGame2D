@@ -74,6 +74,7 @@ int Input::getMovementInput()
  */
 int Input::getMenuInput()
 {
+    system("pause");
     if (GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_SPACE))
     {
         return ENTER;
