@@ -25,7 +25,7 @@ void LevelInterface::drawCanva(){
     //controllori
     int k=0;
     int lv=0;
-    
+
     //se la larghezza è minore della lunghezza di char e score, aumenta la larghezza
     if(width<maxLevelChar || width<maxScoreChar){
         width=width + maxLevelChar + maxScoreChar;
@@ -54,9 +54,9 @@ void LevelInterface::drawCanva(){
             }else if ((j==(width/10)+countScoreChar) && i==(width/4) && countScoreChar<maxScoreChar){
                 canva[i][j]=scoreString[k];
 
-                countStringChar++;
+                countScoreChar++;
                 k++;
-            } else if ((j==(width/10)+ countLevelChar && i==(heihgt/4)+2 && countLevelChar<maxLevelChar)){
+            } else if ((j==(width/10)+ countLevelChar && i==(height/4)+2 && countLevelChar<maxLevelChar)){
                 canva[i][j]=levelString[lv];
                 countLevelChar++;
                 lv++;
@@ -66,6 +66,7 @@ void LevelInterface::drawCanva(){
 
         }std::cout<<'\n';
     }
+}
 }
 
 void LevelInterface::levelUp(){
