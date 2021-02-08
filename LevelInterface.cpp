@@ -60,20 +60,6 @@ void LevelInterface::drawCanva(int level, int score)
     }
 }
 
-void LevelInterface::levelUp()
-{
-    this->level += 1;
-}
-void LevelInterface::levelDown()
-{
-    this->level -= 1;
-}
-
-void LevelInterface::addScore(int bonus)
-{
-    this->score += bonus;
-}
-
 std::vector<std::vector<char>> LevelInterface::getCanvas()
 {
     return this->canvas;
