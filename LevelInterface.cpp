@@ -299,16 +299,12 @@ void LevelInterface::removeScore(int score)
         this->gameState = GAME_OVER;
         return;
     }
-    else if (this->internal_score - score < 0)
+    if (this->score % 1000 == 0)
     {
-        this->internal_score = 1000 - internal_score + score;
+        internal_score--;
         this->level--;
         this->bonusLimit++;
         this->enemyLimit--;
-    }
-    else
-    {
-        this->internal_score -= score;
     }
     this->score -= score;
     //updating the score and the level
@@ -341,19 +337,19 @@ void LevelInterface::removeScore(int score)
 
 void LevelInterface::addScore(int score)
 {
-    if (this->internal_score + score >= 1000)
+    if ((this->score + score) % 1000 == 0)
     {
-        this->level++;
-        this->internal_score = internal_score + score - 1000;
-        if (bonusLimit != 1)
+        int module = (this->score + score) / 1000;
+        if (module > internal_score)
         {
-            this->bonusLimit--;
+            internal_score = module;
+            this->level++;
+            if (bonusLimit != 1)
+            {
+                this->bonusLimit--;
+            }
+            this->enemyLimit++;
         }
-        this->enemyLimit++;
-    }
-    else
-    {
-        this->internal_score += score;
     }
     this->score += score;
     //updating the score and the levels
