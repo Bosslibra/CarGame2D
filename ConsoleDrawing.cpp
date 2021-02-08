@@ -72,8 +72,9 @@ void ConsoleDrawing::drawGameOver(std::vector<std::vector<char>> canvas)
     {
         for (int j = 0; j < canvas[i].size(); j++)
         {
-            this->setCursorPosition(j, i);
+            this->setCursorPosition(j+20, i+20);
             std::cout << canvas[i][j];
         }
     }
+    this->setCursorPosition(20, 30);
 }
