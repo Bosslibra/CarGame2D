@@ -1,5 +1,5 @@
 #include "Enemy.hpp"
-#include <iostream>
+
 using namespace std;
 Enemy::~Enemy() {}
 Enemy::Enemy(int damage, int initialX, int initialY, int width, int height) : Entity(initialX, initialY, width, height)

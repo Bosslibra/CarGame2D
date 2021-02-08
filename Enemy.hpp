@@ -3,8 +3,6 @@
 #include <ctime>
 #include <vector>
 
-#define DIR_LEFT 0
-#define DIR_RIGHT 1
 class Enemy : public Entity
 {
 private:
