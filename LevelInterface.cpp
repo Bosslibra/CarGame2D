@@ -387,7 +387,7 @@ void LevelInterface::addScore(int score)
         {
             internal_score = module;
             this->level++;
-            if (bonusLimit != 1)
+            if (bonusLimit > 5)
             {
                 this->bonusLimit--;
             }
@@ -432,30 +432,37 @@ void LevelInterface::spawner()
     if (Enemies.size() < enemyLimit)
     {
         int enemy_limit = enemyLimit - Enemies.size();
+        int x;
+        Sprite enemy;
         for (size_t i = 0; i < enemy_limit; i++)
         {
-            //rng between 3 and PLAYER_WIDTH - 3
-            int x = rand() % ((PLAYER_WIDTH - 2) - 3 + 1) + 3;
-            vector<vector<int>> ep1;
-            vector<int> e1point1 = {x, 2, (int)'*'};
-            vector<int> e1point2 = {x, 3, (int)'E'};
-            vector<int> e1point3 = {x, 4, (int)'*'};
-            vector<int> e1point4 = {x + 1, 3, (int)'*'};
-            vector<int> e1point5 = {x - 1, 3, (int)'*'};
-            vector<int> e1point6 = {x - 1, 2, (int)'0'};
-            vector<int> e1point7 = {x + 1, 2, (int)'0'};
-            vector<int> e1point8 = {x + 1, 4, (int)'0'};
-            vector<int> e1point9 = {x - 1, 4, (int)'0'};
-            ep1.push_back(e1point1);
-            ep1.push_back(e1point2);
-            ep1.push_back(e1point3);
-            ep1.push_back(e1point4);
-            ep1.push_back(e1point5);
-            ep1.push_back(e1point6);
-            ep1.push_back(e1point7);
-            ep1.push_back(e1point8);
-            ep1.push_back(e1point9);
-            Sprite enemy = Sprite(ep1, ENEMY);
+            do
+            {
+                //rng between 3 and PLAYER_WIDTH - 3
+                x = rand() % ((PLAYER_WIDTH - 2) - 3 + 1) + 3;
+                vector<vector<int>> ep1;
+                vector<int> e1point1 = {x, 2, (int)'*'};
+                vector<int> e1point2 = {x, 3, (int)'E'};
+                vector<int> e1point3 = {x, 4, (int)'*'};
+                vector<int> e1point4 = {x + 1, 3, (int)'*'};
+                vector<int> e1point5 = {x - 1, 3, (int)'*'};
+                vector<int> e1point6 = {x - 1, 2, (int)'0'};
+                vector<int> e1point7 = {x + 1, 2, (int)'0'};
+                vector<int> e1point8 = {x + 1, 4, (int)'0'};
+                vector<int> e1point9 = {x - 1, 4, (int)'0'};
+                ep1.push_back(e1point1);
+                ep1.push_back(e1point2);
+                ep1.push_back(e1point3);
+                ep1.push_back(e1point4);
+                ep1.push_back(e1point5);
+                ep1.push_back(e1point6);
+                ep1.push_back(e1point7);
+                ep1.push_back(e1point8);
+                ep1.push_back(e1point9);
+                enemy = Sprite(ep1, ENEMY);
+            } while (enemy.isOccupied(x, 2) != EMPTY || enemy.isOccupied(x, 3) != EMPTY || enemy.isOccupied(x, 4) != EMPTY ||
+                     enemy.isOccupied(x + 1, 3) != EMPTY || enemy.isOccupied(x - 1, 3) != EMPTY || enemy.isOccupied(x - 1, 2) != EMPTY ||
+                     enemy.isOccupied(x + 1, 2) != EMPTY || enemy.isOccupied(x + 1, 4) != EMPTY || enemy.isOccupied(x - 1, 4) != EMPTY);
             LevelInterface::Enemies.push_back(enemy);
             enemy.load();
         }
