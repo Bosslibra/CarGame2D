@@ -1,6 +1,5 @@
 Debug
 .vscode
-*.exe
 .editorconfig
 *.out
 .vscode
