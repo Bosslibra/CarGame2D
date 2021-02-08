@@ -106,7 +106,7 @@ void Game::draw()
     {
         bonuses[i].draw(this->canvas);
     }
-
+    //quando disegna ha già il canvas compreso dello score e level
     this->console.DrawBuffer(this->showStats());
 }
 void Game::move()
