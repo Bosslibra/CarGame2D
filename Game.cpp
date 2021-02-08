@@ -9,11 +9,14 @@ Game::Game()
 }
 void Game::initGame()
 {
-
+    //nel caso in cui il gioco ricominci
+    this->enemies.clear();
+    this->bonuses.clear();
     //score e level inziali
     this->score = 1;
     this->level = 1;
     this->player = new Player(this->height - 4, this->width / 2, 3, 3);
+
     //parametri iniziali
     this->nBonus = 1;
     this->nEnemy = 2;
