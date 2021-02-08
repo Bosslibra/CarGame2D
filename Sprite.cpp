@@ -501,24 +501,7 @@ pair<int, int> Sprite::move(int direction, int unit_x, int unit_y)
         break;
 
     case ENEMY_ENEMY_COLLISION:
-        for (vector<int> coordinates : this->positions)
-        {
-            //deleting the old position
-            canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
-        }
-        for (vector<int> coordinates : this->positions)
-        {
-            //moving the point to the new position
-            canvas.at(coordinates[X_SPRITE] + unit_x).at(coordinates[Y_SPRITE] + unit_y) = coordinates[CHAR_SPRITE];
-            //updating the Sprite position
-            coordinates.at(X_SPRITE) += unit_x;
-            coordinates.at(Y_SPRITE) += unit_y;
-            vector<int> temp = {coordinates.at(X_SPRITE), coordinates.at(Y_SPRITE), coordinates.at(CHAR_SPRITE)};
-            new_positions.push_back(temp);
-        }
-        loadedSprites[this->spriteID].positions = new_positions;
-        this->positions = new_positions;
-        return make_pair(NOTHING, USELESS);
+        return make_pair(ENEMY_ENEMY_COLLISION, USELESS);
         break;
 
     case BONUS_WALL_COLLISION:

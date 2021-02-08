@@ -19,10 +19,12 @@ private:
     static int enemySpeed;
     static int bonusLimit;
     static int enemyLimit;
+    static int mineLimit;
     static int internal_score;
     static int bottom_wall_id;
     static vector<Sprite> Enemies;
     static vector<Sprite> Bonuses;
+    static vector<Sprite> Mines;
     int score;
     int level;
     ConsoleDrawing canvas_handler;
@@ -30,6 +32,8 @@ private:
     void removeScore(int score);
     void removeEnemy(int spriteID);
     void removeBonus(int spriteID);
+    void removeMine(int spriteID);
+    void recursive_movement(int last_direction, int id);
 
 public:
     LevelInterface();

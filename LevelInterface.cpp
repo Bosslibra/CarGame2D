@@ -9,10 +9,12 @@ Sprite LevelInterface::player;
 int LevelInterface::enemySpeed = 1;
 int LevelInterface::bonusLimit = 20;
 int LevelInterface::enemyLimit = 2;
+int LevelInterface::mineLimit = 1;
 int LevelInterface::internal_score = 1;
 int LevelInterface::bottom_wall_id;
 vector<Sprite> LevelInterface::Enemies;
 vector<Sprite> LevelInterface::Bonuses;
+vector<Sprite> LevelInterface::Mines;
 
 LevelInterface::LevelInterface()
 {
@@ -63,20 +65,14 @@ void LevelInterface::setup()
     {
         wall_position.push_back({0, y, (int)'|'});
         wall_position.push_back({CANVAS_WIDTH - 1, y, (int)'|'});
-        // canvas.at(0).at(y) = '|';
-        // canvas.at(CANVAS_WIDTH - 1).at(y) = '|';
         if (y != 0 && y != CANVAS_HEIGHT)
         {
-            // canvas.at(1).at(y) = '#';
-            // canvas.at(PLAYER_WIDTH).at(y) = '#';
             wall_position.push_back({1, y, (int)'#'});
             wall_position.push_back({PLAYER_WIDTH, y, (int)'#'});
         }
     }
     for (int x = 0; x < CANVAS_WIDTH; x++)
     {
-        // canvas.at(x).at(0) = '-';
-        // canvas.at(x).at(CANVAS_HEIGHT - 1) = '-';
         wall_position.push_back({x, 0, (int)'-'});
         bottom_wall_position.push_back({x, CANVAS_HEIGHT - 1, (int)'-'});
     }
@@ -101,54 +97,14 @@ void LevelInterface::setup()
     player_position.push_back(ppoint7);
     player_position.push_back(ppoint8);
     player_position.push_back(ppoint9);
-
-    //hardwriting a single bonus
-    // vector<vector<int>> bonus_points;
-    // vector<int> bpoint = {30, 1, int('B')};
-    // bonus_points.push_back(bpoint);
-
-    //hardwriting two enemies
-    // vector<vector<int>> ep1;
-    // vector<int> e1point1 = {15, 1, (int)'*'};
-    // vector<int> e1point2 = {15, 2, (int)'E'};
-    // vector<int> e1point3 = {15, 3, (int)'*'};
-    // vector<int> e1point4 = {15 + 1, 2, (int)'*'};
-    // vector<int> e1point5 = {15 - 1, 2, (int)'*'};
-    // ep1.push_back(e1point1);
-    // ep1.push_back(e1point2);
-    // ep1.push_back(e1point3);
-    // ep1.push_back(e1point4);
-    // ep1.push_back(e1point5);
-
-    // vector<vector<int>> ep2;
-    // vector<int> e2point1 = {45, 1, (int)'*'};
-    // vector<int> e2point2 = {45, 2, (int)'E'};
-    // vector<int> e2point3 = {45, 3, (int)'*'};
-    // vector<int> e2point4 = {45 + 1, 2, (int)'*'};
-    // vector<int> e2point5 = {45 - 1, 2, (int)'*'};
-    // ep2.push_back(e2point1);
-    // ep2.push_back(e2point2);
-    // ep2.push_back(e2point3);
-    // ep2.push_back(e2point4);
-    // ep2.push_back(e2point5);
-
     //loading sprites
     Sprite player(player_position, PLAYER);
     Sprite wall(wall_position, WALL);
     Sprite bottom_wall(bottom_wall_position, WALL);
-    // Sprite enemy1(ep1, ENEMY);
-    // Sprite enemy2(ep2, ENEMY);
-    // Sprite bonus(bonus_points, BONUS);
     player.load();
     wall.load();
     bottom_wall.load();
-    // enemy1.load();
-    // enemy2.load();
-    // bonus.load();
     LevelInterface::player = player;
-    // LevelInterface::Enemies.push_back(enemy1);
-    // LevelInterface::Enemies.push_back(enemy2);
-    // LevelInterface::Bonuses.push_back(bonus);
     Sprite::bottom_wall_id = bottom_wall.getSpriteID();
     this->canvas_handler.DrawAtStart(Sprite::getCanvas());
 }
@@ -180,6 +136,29 @@ void LevelInterface::moveGame()
             break;
         }
     }
+    for (size_t i = 0; i < Mines.size(); i++)
+    {
+        after_move = Mines[i].move(DOWN, 0, 1).first;
+        switch (after_move)
+        {
+        case NOTHING:
+            if (Mines[i].isNear(player.getSpriteID()))
+            {
+                Mines[i].unload();
+                this->removeScore(100);
+                Mines.erase(Mines.begin() + i);
+            }
+            break;
+        case UPDATE_SCORE_ENEMY:
+            this->removeScore(100);
+            Mines.erase(Mines.begin() + i);
+            break;
+        case ERASE:
+            Mines.erase(Mines.begin() + i);
+            break;
+        }
+    }
+
     for (size_t i = 0; i < Enemies.size(); i++)
     {
         direction = enemy_possible_moves[rand() % 3];
@@ -212,10 +191,61 @@ void LevelInterface::moveGame()
         case ERASE:
             Enemies.erase(Enemies.begin() + i);
             break;
+
+        case ENEMY_ENEMY_COLLISION:
+
+            break;
         }
     }
     this->canvas_handler.DrawBuffer(Sprite::getCanvas());
     return;
+}
+
+void LevelInterface::recursive_movement(int last_direction, int id)
+{
+    int after_move;
+    if (last_direction == DOWN_LEFT)
+    {
+        last_direction = DOWN_RIGHT;
+    }
+    else if (last_direction == DOWN_RIGHT)
+    {
+        last_direction = DOWN_LEFT;
+    }
+    switch (last_direction)
+    {
+    case INPUT_DOWN:
+        after_move = Enemies[id].move(DOWN, 0, 1).first;
+        break;
+    case INPUT_DOWNLEFT:
+        after_move = Enemies[id].move(DOWN_LEFT, -1, 1).first;
+        break;
+    case INPUT_DOWNRIGHT:
+        after_move = Enemies[id].move(DOWN_RIGHT, 1, 1).first;
+        break;
+    }
+    switch (after_move)
+    {
+    case NOTHING:
+        if (Enemies[id].isNear(player.getSpriteID()))
+        {
+            Enemies[id].unload();
+            this->removeScore(100);
+            Enemies.erase(Enemies.begin() + id);
+        }
+        break;
+    case UPDATE_SCORE_ENEMY:
+        this->removeScore(100);
+        Enemies.erase(Enemies.begin() + id);
+        break;
+    case ERASE:
+        Enemies.erase(Enemies.begin() + id);
+        break;
+
+    case ENEMY_ENEMY_COLLISION:
+        this->recursive_movement(last_direction, id);
+        break;
+    }
 }
 
 void LevelInterface::movePlayer(int direction)
@@ -254,14 +284,14 @@ void LevelInterface::movePlayer(int direction)
         this->removeScore(100);
         if (after_move.second != USELESS)
         {
-            LevelInterface::removeEnemy(after_move.second);
+            this->removeEnemy(after_move.second);
+            this->removeMine(after_move.second);
         }
         break;
-
     case UPDATE_SCORE_BONUS:
         if (after_move.second != USELESS)
         {
-            LevelInterface::removeBonus(after_move.second);
+            this->removeBonus(after_move.second);
         }
         this->addScore(100);
         break;
@@ -276,6 +306,18 @@ void LevelInterface::removeEnemy(int id)
         if (Enemies[i].getSpriteID() == id)
         {
             Enemies.erase(Enemies.begin() + i);
+            return;
+        }
+    }
+}
+
+void LevelInterface::removeMine(int id)
+{
+    for (size_t i = 0; i < Mines.size(); i++)
+    {
+        if (Mines[i].getSpriteID() == id)
+        {
+            Mines.erase(Mines.begin() + i);
             return;
         }
     }
@@ -305,6 +347,7 @@ void LevelInterface::removeScore(int score)
         this->level--;
         this->bonusLimit++;
         this->enemyLimit--;
+        this->mineLimit--;
     }
     this->score -= score;
     //updating the score and the level
@@ -348,7 +391,11 @@ void LevelInterface::addScore(int score)
             {
                 this->bonusLimit--;
             }
-            this->enemyLimit++;
+            if (enemyLimit < 10)
+            {
+                this->enemyLimit++;
+            }
+            this->mineLimit++;
         }
     }
     this->score += score;
@@ -387,39 +434,44 @@ void LevelInterface::spawner()
         int enemy_limit = enemyLimit - Enemies.size();
         for (size_t i = 0; i < enemy_limit; i++)
         {
-            Sprite enemy;
-            int x;
-            do
-            {
-                //rng between 3 and PLAYER_WIDTH - 3
-                x = rand() % ((PLAYER_WIDTH - 2) - 3 + 1) + 3;
-                vector<vector<int>> ep1;
-                vector<int> e1point1 = {x, 2, (int)'*'};
-                vector<int> e1point2 = {x, 3, (int)'E'};
-                vector<int> e1point3 = {x, 4, (int)'*'};
-                vector<int> e1point4 = {x + 1, 3, (int)'*'};
-                vector<int> e1point5 = {x - 1, 3, (int)'*'};
-                vector<int> e1point6 = {x - 1, 2, (int)'0'};
-                vector<int> e1point7 = {x + 1, 2, (int)'0'};
-                vector<int> e1point8 = {x + 1, 4, (int)'0'};
-                vector<int> e1point9 = {x - 1, 4, (int)'0'};
-                ep1.push_back(e1point1);
-                ep1.push_back(e1point2);
-                ep1.push_back(e1point3);
-                ep1.push_back(e1point4);
-                ep1.push_back(e1point5);
-                ep1.push_back(e1point6);
-                ep1.push_back(e1point7);
-                ep1.push_back(e1point8);
-                ep1.push_back(e1point9);
-                enemy = Sprite(ep1, ENEMY);
-            } while (enemy.isOccupied(x, 2) != EMPTY &&
-                     enemy.isOccupied(x, 3) != EMPTY && enemy.isOccupied(x, 4) != EMPTY &&
-                     enemy.isOccupied(x + 1, 3) != EMPTY && enemy.isOccupied(x - 1, 3) != EMPTY &&
-                     enemy.isOccupied(x - 1, 2) != EMPTY && enemy.isOccupied(x + 1, 2) != EMPTY &&
-                     enemy.isOccupied(x + 1, 4) != EMPTY && enemy.isOccupied(x - 1, 4) != EMPTY);
+            //rng between 3 and PLAYER_WIDTH - 3
+            int x = rand() % ((PLAYER_WIDTH - 2) - 3 + 1) + 3;
+            vector<vector<int>> ep1;
+            vector<int> e1point1 = {x, 2, (int)'*'};
+            vector<int> e1point2 = {x, 3, (int)'E'};
+            vector<int> e1point3 = {x, 4, (int)'*'};
+            vector<int> e1point4 = {x + 1, 3, (int)'*'};
+            vector<int> e1point5 = {x - 1, 3, (int)'*'};
+            vector<int> e1point6 = {x - 1, 2, (int)'0'};
+            vector<int> e1point7 = {x + 1, 2, (int)'0'};
+            vector<int> e1point8 = {x + 1, 4, (int)'0'};
+            vector<int> e1point9 = {x - 1, 4, (int)'0'};
+            ep1.push_back(e1point1);
+            ep1.push_back(e1point2);
+            ep1.push_back(e1point3);
+            ep1.push_back(e1point4);
+            ep1.push_back(e1point5);
+            ep1.push_back(e1point6);
+            ep1.push_back(e1point7);
+            ep1.push_back(e1point8);
+            ep1.push_back(e1point9);
+            Sprite enemy = Sprite(ep1, ENEMY);
             LevelInterface::Enemies.push_back(enemy);
             enemy.load();
+        }
+    }
+    if (Mines.size() < mineLimit)
+    {
+        int mine_limit = mineLimit - Mines.size();
+        for (size_t i = 0; i < mine_limit; i++)
+        {
+            int x = rand() % ((PLAYER_WIDTH - 1) - 2 + 1) + 2;
+            vector<vector<int>> mine_points;
+            vector<int> mpoint = {x, 1, int('M')};
+            mine_points.push_back(mpoint);
+            Sprite mine = Sprite(mine_points, ENEMY);
+            mine.load();
+            LevelInterface::Mines.push_back(mine);
         }
     }
     if (Bonuses.size() < bonusLimit)
@@ -427,17 +479,12 @@ void LevelInterface::spawner()
         int bonus_limit = bonusLimit - Bonuses.size();
         for (size_t i = 0; i < bonus_limit; i++)
         {
-            Sprite bonus;
-            int x;
-            do
-            {
-                //rng between 2 and PLAYER_WIDTH - 1
-                x = rand() % ((PLAYER_WIDTH - 1) - 2 + 1) + 2;
-                vector<vector<int>> bonus_points;
-                vector<int> bpoint = {x, 1, int('$')};
-                bonus_points.push_back(bpoint);
-                bonus = Sprite(bonus_points, BONUS);
-            } while (bonus.isOccupied(x, 1) != EMPTY);
+            //rng between 2 and PLAYER_WIDTH - 1
+            int x = rand() % ((PLAYER_WIDTH - 1) - 2 + 1) + 2;
+            vector<vector<int>> bonus_points;
+            vector<int> bpoint = {x, 1, int('$')};
+            bonus_points.push_back(bpoint);
+            Sprite bonus = Sprite(bonus_points, BONUS);
             bonus.load();
             LevelInterface::Bonuses.push_back(bonus);
         }
