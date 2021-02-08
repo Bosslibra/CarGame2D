@@ -5,11 +5,11 @@ Game::Game()
 {
     srand((unsigned)time(0));
     this->initGame();
-    
+
 }
 void Game::initGame()
 {
-    
+
     //score e level inziali
     this->score = 1;
     this->level = 1;

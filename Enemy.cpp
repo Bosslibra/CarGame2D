@@ -42,7 +42,7 @@ void Enemy::collideLateralWalls(int screenWidth, int borderWidth)
     if (this->y <= 0 + borderWidth + 1)
     {
         this->y = borderWidth + 1;
-        this->yDirection = 1; //se sbatte contro il muro di sinistra allora "si gira" e va verso destra
+        this->yDirection = 0; //se sbatte contro il muro di sinistra allora "si gira" e va verso destra
     }
 }
 bool Enemy::collideBottomWall(int screenHeight, int borderWidth)
