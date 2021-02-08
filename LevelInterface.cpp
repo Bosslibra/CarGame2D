@@ -387,14 +387,13 @@ void LevelInterface::spawner()
         int enemy_limit = enemyLimit - Enemies.size();
         for (size_t i = 0; i < enemy_limit; i++)
         {
-            int load_check = 0;
             Sprite enemy;
+            int x;
             do
             {
                 //rng between 3 and PLAYER_WIDTH - 3
-                int x = rand() % ((PLAYER_WIDTH - 2) - 3 + 1) + 3;
+                x = rand() % ((PLAYER_WIDTH - 2) - 3 + 1) + 3;
                 vector<vector<int>> ep1;
-
                 vector<int> e1point1 = {x, 2, (int)'*'};
                 vector<int> e1point2 = {x, 3, (int)'E'};
                 vector<int> e1point3 = {x, 4, (int)'*'};
@@ -414,9 +413,13 @@ void LevelInterface::spawner()
                 ep1.push_back(e1point8);
                 ep1.push_back(e1point9);
                 enemy = Sprite(ep1, ENEMY);
-                load_check = enemy.load();
-            } while (load_check != LOAD_ALLOWED);
+            } while (enemy.isOccupied(x, 2) != EMPTY &&
+                     enemy.isOccupied(x, 3) != EMPTY && enemy.isOccupied(x, 4) != EMPTY &&
+                     enemy.isOccupied(x + 1, 3) != EMPTY && enemy.isOccupied(x - 1, 3) != EMPTY &&
+                     enemy.isOccupied(x - 1, 2) != EMPTY && enemy.isOccupied(x + 1, 2) != EMPTY &&
+                     enemy.isOccupied(x + 1, 4) != EMPTY && enemy.isOccupied(x - 1, 4) != EMPTY);
             LevelInterface::Enemies.push_back(enemy);
+            enemy.load();
         }
     }
     if (Bonuses.size() < bonusLimit)
@@ -424,18 +427,18 @@ void LevelInterface::spawner()
         int bonus_limit = bonusLimit - Bonuses.size();
         for (size_t i = 0; i < bonus_limit; i++)
         {
-            int bonus_check = 0;
             Sprite bonus;
+            int x;
             do
             {
                 //rng between 2 and PLAYER_WIDTH - 1
-                int x = rand() % ((PLAYER_WIDTH - 1) - 2 + 1) + 2;
+                x = rand() % ((PLAYER_WIDTH - 1) - 2 + 1) + 2;
                 vector<vector<int>> bonus_points;
                 vector<int> bpoint = {x, 1, int('$')};
                 bonus_points.push_back(bpoint);
                 bonus = Sprite(bonus_points, BONUS);
-                bonus_check = bonus.load();
-            } while (bonus_check != LOAD_ALLOWED);
+            } while (bonus.isOccupied(x, 1) != EMPTY);
+            bonus.load();
             LevelInterface::Bonuses.push_back(bonus);
         }
     }

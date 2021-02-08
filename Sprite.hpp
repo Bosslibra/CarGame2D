@@ -43,6 +43,7 @@
 #define PLAYER_BONUS_COLLISION 26
 #define ENEMY_WALL_COLLISION 25
 #define ENEMY_BOTTOM_WALL_COLLISION 38
+#define ENEMY_ENEMY_COLLISION 41
 #define BONUS_WALL_COLLISION 28
 #define BONUS_ENEMY_COLLISION 30
 #define BONUS_BOTTOM_WALL_COLLISION 39
@@ -73,12 +74,10 @@ private:
     int spriteID;                                                              //unique identifier
     int type;                                                                  //bonus, enemy, wall or player
     int idGenerator();                                                         //returns an unique identifier, using unloadedIDs if some exists or by advancing lastUnusedID
-    int loadSprite();                                                          //utility to insert in the loadedSprites map
     void unloadSprite();                                                       //utility to insert in the unloadedSprites map
     pair<int, int> checkCollision(int direction, int unit_x, int unit_y);      //tries to move a sprite in the direction provided, return true if it can't be moved due to collision, false otherwise
-    int isOccupied(int x, int y, int self_id);                                 //given an x and y position, return -1 if the position isn't occupied, otherwise returns the sprite ID of the sprite that occupies that position
     bool isLoaded();                                                           //returns true if the sprite is inside the loadedSprites vector
-    pair<int, int> oobCheck(int type);                                         //utility to check for out of bounds collision
+    pair<int, int> oobCheck();                                         //utility to check for out of bounds collision
     pair<int, int> internalCollisionCheck(int occupied_id, int occupied_type); //utility to check for out of bounds collision
     Sprite getLoadedSprite(int spriteID);
 
@@ -93,7 +92,8 @@ public:
     static int bottom_wall_id;
     bool isNear(int spriteID);
     int getSpriteID();                                          //returns sprite identifier
-    int load();                                                 //pushes a Sprite into the loadedSprites vector, deleting it from the unloadedSprites if needed
+    void load();                                                //pushes a Sprite into the loadedSprites vector, deleting it from the unloadedSprites if needed
     int unload();                                               //pushes a Sprite into the unloadedSprites vector, deleting it from the loadedSprites if needed
+    int isOccupied(int x, int y);                               //given an x and y position, return -1 if the position isn't occupied, otherwise returns the sprite ID of the sprite that occupies that position
     pair<int, int> move(int direction, int unit_x, int unit_y); //moves a sprite, along with his aspect i the canvas,essentially making all his point shift into one of 8 possible directions
 };

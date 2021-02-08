@@ -74,16 +74,27 @@ bool Sprite::isLoaded()
     }
 }
 
-int Sprite::load()
+void Sprite::load()
 {
-    if (Sprite::isLoaded() == false && !canvas.empty())
+    // bool check = false;
+    //checking that every point is not occupied
+    // for (vector<int> coordinates : this->positions)
+    // {
+    //     int sprite_id = this->isOccupied(coordinates[X_SPRITE], coordinates[Y_SPRITE]);
+    //     if (sprite_id != EMPTY)
+    //     {
+    //         check = true;
+    //     }
+    // }
+    //every point is not occupied, writing the sprite
+    // if (check)
+    // {
+    for (vector<int> coordinates : this->positions)
     {
-        return this->loadSprite();
+        canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = coordinates[CHAR_SPRITE];
     }
-    else
-    {
-        return LOAD_ERROR;
-    }
+    loadedSprites[this->spriteID] = *this;
+    return;
 }
 
 int Sprite::unload()
@@ -97,34 +108,6 @@ int Sprite::unload()
     {
         return UNLOAD_SPRITE_WAS_NOT_LOADED;
     }
-}
-
-int Sprite::loadSprite()
-{
-    bool check = false;
-    //checking that every point is not occupied
-    for (vector<int> coordinates : this->positions)
-    {
-        if (Sprite::isOccupied(coordinates[X_SPRITE], coordinates[Y_SPRITE], this->spriteID))
-        {
-            check = true;
-        }
-    }
-    //every point is not occupied, writing the sprite
-    if (check)
-    {
-        for (vector<int> coordinates : this->positions)
-        {
-            canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = coordinates[CHAR_SPRITE];
-        }
-    }
-    else
-    {
-        return LOAD_OVERLAP;
-    }
-    Sprite temp(this->positions, this->type, this->spriteID);
-    loadedSprites[this->spriteID] = temp;
-    return LOAD_ALLOWED;
 }
 
 void Sprite::unloadSprite()
@@ -157,7 +140,7 @@ int Sprite::idGenerator()
     }
 }
 
-pair<int, int> Sprite::oobCheck(int type)
+pair<int, int> Sprite::oobCheck()
 {
     if (this->type == PLAYER)
     {
@@ -207,6 +190,8 @@ pair<int, int> Sprite::internalCollisionCheck(int occupied_id, int occupied_type
                 return make_pair(ENEMY_WALL_COLLISION, occupied_id);
                 break;
             }
+        case ENEMY:
+            return make_pair(ENEMY_ENEMY_COLLISION, occupied_id);
         }
     }
     else if (this->type == BONUS)
@@ -246,14 +231,14 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     case UP:
         for (vector<int> coordinates : current_sprite_positions)
         {
-            int occupied_id = Sprite::isOccupied(coordinates[X_SPRITE], coordinates[Y_SPRITE] + unit_y, this->spriteID);
+            int occupied_id = this->isOccupied(coordinates[X_SPRITE], coordinates[Y_SPRITE] + unit_y);
             if (coordinates[Y_SPRITE] + unit_y < 0)
             {
-                return Sprite::oobCheck(this->type);
+                return this->oobCheck();
             }
             else if (occupied_id != EMPTY)
             {
-                return Sprite::internalCollisionCheck(occupied_id, Sprite::getLoadedSprite(occupied_id).type);
+                return this->internalCollisionCheck(occupied_id, this->getLoadedSprite(occupied_id).type);
             }
         }
         return make_pair(MOVE_ALLOWED, USELESS);
@@ -262,14 +247,14 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     case UP_RIGHT:
         for (vector<int> coordinates : current_sprite_positions)
         {
-            int occupied_id = Sprite::isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE] + unit_y, this->spriteID);
+            int occupied_id = this->isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE] + unit_y);
             if (coordinates[X_SPRITE] + unit_x > canvas_width || coordinates[Y_SPRITE] + unit_y < 0)
             {
-                return Sprite::oobCheck(this->type);
+                return this->oobCheck();
             }
             else if (occupied_id != EMPTY)
             {
-                return Sprite::internalCollisionCheck(occupied_id, Sprite::getLoadedSprite(occupied_id).type);
+                return this->internalCollisionCheck(occupied_id, this->getLoadedSprite(occupied_id).type);
             }
         }
         return make_pair(MOVE_ALLOWED, USELESS);
@@ -278,14 +263,14 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     case RIGHT:
         for (vector<int> coordinates : current_sprite_positions)
         {
-            int occupied_id = Sprite::isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE], this->spriteID);
+            int occupied_id = this->isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE]);
             if (coordinates[X_SPRITE] + unit_x > canvas_width)
             {
-                return Sprite::oobCheck(this->type);
+                return this->oobCheck();
             }
             else if (occupied_id != EMPTY)
             {
-                return Sprite::internalCollisionCheck(occupied_id, Sprite::getLoadedSprite(occupied_id).type);
+                return this->internalCollisionCheck(occupied_id, this->getLoadedSprite(occupied_id).type);
             }
         }
         return make_pair(MOVE_ALLOWED, USELESS);
@@ -294,14 +279,14 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     case DOWN_RIGHT:
         for (vector<int> coordinates : current_sprite_positions)
         {
-            int occupied_id = Sprite::isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE] + unit_y, this->spriteID);
+            int occupied_id = this->isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE] + unit_y);
             if (coordinates[X_SPRITE] + unit_x > canvas_width || coordinates[Y_SPRITE] + unit_y > canvas_height)
             {
-                return Sprite::oobCheck(this->type);
+                return this->oobCheck();
             }
             else if (occupied_id != EMPTY)
             {
-                return Sprite::internalCollisionCheck(occupied_id, Sprite::getLoadedSprite(occupied_id).type);
+                return this->internalCollisionCheck(occupied_id, this->getLoadedSprite(occupied_id).type);
             }
         }
         return make_pair(MOVE_ALLOWED, USELESS);
@@ -310,14 +295,14 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     case DOWN:
         for (vector<int> coordinates : current_sprite_positions)
         {
-            int occupied_id = Sprite::isOccupied(coordinates[X_SPRITE], coordinates[Y_SPRITE] + unit_y, this->spriteID);
+            int occupied_id = this->isOccupied(coordinates[X_SPRITE], coordinates[Y_SPRITE] + unit_y);
             if (coordinates[Y_SPRITE] + unit_y > canvas_height)
             {
-                return Sprite::oobCheck(this->type);
+                return this->oobCheck();
             }
             else if (occupied_id != EMPTY)
             {
-                return Sprite::internalCollisionCheck(occupied_id, Sprite::getLoadedSprite(occupied_id).type);
+                return this->internalCollisionCheck(occupied_id, this->getLoadedSprite(occupied_id).type);
             }
         }
         return make_pair(MOVE_ALLOWED, USELESS);
@@ -326,14 +311,14 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     case DOWN_LEFT:
         for (vector<int> coordinates : current_sprite_positions)
         {
-            int occupied_id = Sprite::isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE] + unit_y, this->spriteID);
+            int occupied_id = this->isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE] + unit_y);
             if (coordinates[X_SPRITE] + unit_x < 0 || coordinates[Y_SPRITE] + unit_y > canvas_height)
             {
-                return Sprite::oobCheck(this->type);
+                return this->oobCheck();
             }
             else if (occupied_id != EMPTY)
             {
-                return Sprite::internalCollisionCheck(occupied_id, Sprite::getLoadedSprite(occupied_id).type);
+                return this->internalCollisionCheck(occupied_id, this->getLoadedSprite(occupied_id).type);
             }
         }
         return make_pair(MOVE_ALLOWED, USELESS);
@@ -342,14 +327,14 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     case LEFT:
         for (vector<int> coordinates : current_sprite_positions)
         {
-            int occupied_id = Sprite::isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE], this->spriteID);
+            int occupied_id = this->isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE]);
             if (coordinates[X_SPRITE] + unit_x < 0)
             {
-                return Sprite::oobCheck(this->type);
+                return this->oobCheck();
             }
             else if (occupied_id != EMPTY)
             {
-                return Sprite::internalCollisionCheck(occupied_id, Sprite::getLoadedSprite(occupied_id).type);
+                return this->internalCollisionCheck(occupied_id, this->getLoadedSprite(occupied_id).type);
             }
         }
         return make_pair(MOVE_ALLOWED, USELESS);
@@ -358,14 +343,14 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     case UP_LEFT:
         for (vector<int> coordinates : current_sprite_positions)
         {
-            int occupied_id = Sprite::isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE] + unit_y, this->spriteID);
+            int occupied_id = this->isOccupied(coordinates[X_SPRITE] + unit_x, coordinates[Y_SPRITE] + unit_y);
             if (coordinates[X_SPRITE] + unit_x < 0 || coordinates[Y_SPRITE] + unit_y < 0)
             {
-                return Sprite::oobCheck(this->type);
+                return this->oobCheck();
             }
             else if (occupied_id != EMPTY)
             {
-                return Sprite::internalCollisionCheck(occupied_id, Sprite::getLoadedSprite(occupied_id).type);
+                return this->internalCollisionCheck(occupied_id, this->getLoadedSprite(occupied_id).type);
             }
         }
         return make_pair(MOVE_ALLOWED, USELESS);
@@ -373,12 +358,12 @@ pair<int, int> Sprite::checkCollision(int direction, int unit_x, int unit_y)
     }
 }
 
-int Sprite::isOccupied(int x, int y, int self_id)
+int Sprite::isOccupied(int x, int y)
 {
     int check = EMPTY;
     for (map<int, Sprite>::iterator it = loadedSprites.begin(); it != loadedSprites.end(); ++it)
     {
-        if (it->first != self_id)
+        if (it->first != this->spriteID)
         {
             for (vector<int> coordinates : it->second.positions)
             {
@@ -386,7 +371,7 @@ int Sprite::isOccupied(int x, int y, int self_id)
                 {
                     if (coordinates[Y_SPRITE] == y)
                     {
-                        check = it->first;
+                        return it->first;
                     }
                 }
             }
@@ -397,7 +382,6 @@ int Sprite::isOccupied(int x, int y, int self_id)
 
 bool Sprite::isNear(int id)
 {
-    bool check = false;
     vector<vector<int>> player_position = Sprite::getLoadedSprite(id).positions;
     for (vector<int> coordinates_sprite : this->positions)
     {
@@ -407,17 +391,17 @@ bool Sprite::isNear(int id)
             {
                 if (coordinates_player[1] - coordinates_sprite[1] == 1 || coordinates_player[1] - coordinates_sprite[1] == -1 || coordinates_player[1] - coordinates_sprite[1] == 0)
                 {
-                    check = true;
+                    return true;
                 }
             }
         }
     }
-    return check;
+    return false;
 }
 
 pair<int, int> Sprite::move(int direction, int unit_x, int unit_y)
 {
-    pair<int, int> check = Sprite::checkCollision(direction, unit_x, unit_y);
+    pair<int, int> check = this->checkCollision(direction, unit_x, unit_y);
     vector<vector<int>> new_positions;
     Sprite temp;
     switch (check.first)
@@ -514,6 +498,27 @@ pair<int, int> Sprite::move(int direction, int unit_x, int unit_y)
             temp.unload();
         }
         return make_pair(ERASE, USELESS);
+        break;
+
+    case ENEMY_ENEMY_COLLISION:
+        for (vector<int> coordinates : this->positions)
+        {
+            //deleting the old position
+            canvas.at(coordinates[X_SPRITE]).at(coordinates[Y_SPRITE]) = char(0);
+        }
+        for (vector<int> coordinates : this->positions)
+        {
+            //moving the point to the new position
+            canvas.at(coordinates[X_SPRITE] + unit_x).at(coordinates[Y_SPRITE] + unit_y) = coordinates[CHAR_SPRITE];
+            //updating the Sprite position
+            coordinates.at(X_SPRITE) += unit_x;
+            coordinates.at(Y_SPRITE) += unit_y;
+            vector<int> temp = {coordinates.at(X_SPRITE), coordinates.at(Y_SPRITE), coordinates.at(CHAR_SPRITE)};
+            new_positions.push_back(temp);
+        }
+        loadedSprites[this->spriteID].positions = new_positions;
+        this->positions = new_positions;
+        return make_pair(NOTHING, USELESS);
         break;
 
     case BONUS_WALL_COLLISION:
