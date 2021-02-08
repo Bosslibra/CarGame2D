@@ -2,7 +2,7 @@
 
 LevelInterface::LevelInterface(int height)
 {
-    this->width = 30;
+    this->width = 40;
     this->height = height;
     // this->level = level;
     // this->score = score;
@@ -16,11 +16,11 @@ void LevelInterface::initCanvas()
         std::vector<char> row;
         for (int j = 0; j < this->width; j++)
         {
-            if (j == this->width - 1 || i == this->height - 1 || i == 0)
+            if (j == this->width - 1 || i == this->height - 1 || j == 0)
             {
                 row.push_back('#');
             }
-            else if (j == 0)
+            else if (i == 0)
             {
                 row.push_back('|');
             }
@@ -40,13 +40,13 @@ void LevelInterface::drawCanva(int level, int score)
     std::string scoreString = "SCORE: " + std::to_string(score);
 
     // mi posiziono a metà schermo -1
-    int yMid = this->height / 2;
+    int yMid = this->width / 2;
     for (int i = 0; i < scoreString.length(); i++)
     {
         //controllo che non vada in overflow la scritta
         if (i < canvas[yMid].size())
         {
-            canvas[yMid][i + 2] = scoreString.at(i);
+            canvas[i + 10][yMid] = scoreString.at(i);
         }
     }
     yMid += 2; //lascio uno spazio bianco tra le scritte
@@ -55,7 +55,7 @@ void LevelInterface::drawCanva(int level, int score)
         //controllo che non vada in overflow la scritta
         if (i < canvas[yMid].size())
         {
-            canvas[yMid][i + 2] = levelString.at(i);
+            canvas[i + 10][yMid] = levelString.at(i);
         }
     }
 }

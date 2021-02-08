@@ -63,10 +63,8 @@ public:
      */
     Sprite getSprite();
     /**
-     * @brief
+     * @brief muove il player verso la direzione del tasto premuto
      *
-     *
-     * @param speed speed
      */
     void move();
     /**

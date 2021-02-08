@@ -61,6 +61,7 @@ private:
      * @brief aggiunge un bonus
      */
     void addBonus(int bonus);
+    std::vector<std::vector<char>> showStats();
 
 public:
     /**
@@ -73,6 +74,4 @@ public:
      * @brief gestisce tutto il gioco (è un wrapper dei metodi principali)
      */
     void run();
-
-    std::vector<std::vector<char>> showStats();
 };
