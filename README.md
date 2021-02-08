@@ -1,8 +1,9 @@
 # CarGame2D
 
-Progetto per Esame Programmazione, corso di Laurea Informatica. 
+Progetto per Esame Programmazione, corso di Laurea Informatica.
 
 ## Descrizione
+
 CarGame2D è un gioco di corse automobilistiche.
 
 Il gioco è basato su un sistema di livelli: quanto più sale il punteggio, quanto più si alza il livello.
@@ -16,4 +17,5 @@ La condizione di sconfitta è il raggiungimento del punteggio 0: è dunque possi
 Una volta arrivati nel GameOver per ricominciare a giocare si può premere Invio o Barra Spaziatrice, qualsiasi altro tasto chiude il gioco.
 
 ## Librerie
+
 L'unica libreria importata è windows.h, che viene utilizzata per gestire la console e l'input dalla tastiera.
