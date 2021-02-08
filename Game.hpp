@@ -33,7 +33,7 @@ private:
     int prevLevel;
 
     //funzioni interne
-    void initCanvas();
+    void initGame();
     /**
      * @brief muove tutte le entità nel canvas (player, enemy, bonus)
      */

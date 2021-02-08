@@ -3,12 +3,13 @@ using namespace std;
 Game::~Game() {}
 Game::Game()
 {
-    this->initCanvas();
+    srand((unsigned)time(0));
+    this->initGame();
     
 }
-void Game::initCanvas()
+void Game::initGame()
 {
-    srand((unsigned)time(0));
+    
     //score e level inziali
     this->score = 1;
     this->level = 1;
@@ -244,7 +245,7 @@ bool Game::gameOver()
     if (i.getMenuInput() == ENTER){
         continueCondition = true;
         this->canvas.clear();
-        this->initCanvas();
+        this->initGame();
     } else {
         continueCondition = false;
     }
