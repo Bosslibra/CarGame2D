@@ -38,7 +38,7 @@ public:
      * @brief controlla se collide con il bordo inferiore (se collide va cancellato)
      *
      * @param screenHeight grandezza schermo
-     * @param borderWidth larghezza bordo
+     * @param borderWidth spessore bordo
      * @return true collide
      * @return false non collide
      */

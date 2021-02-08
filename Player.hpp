@@ -69,6 +69,17 @@ public:
      * @param speed speed
      */
     void move();
-    void draw(std::vector<std::vector <char>> &canvas);
-    void remove(std::vector<std::vector <char>> &canvas);
+    /**
+     * @brief disegna il player sul canvas
+     *
+     * @param canvas canvas di gioco
+     */
+    void draw(std::vector<std::vector<char>> &canvas);
+
+    /**
+     * @brief elimina la vecchia posizione del player dal canvas
+     *
+     * @param canvas canvas di gioco
+     */
+    void remove(std::vector<std::vector<char>> &canvas);
 };
