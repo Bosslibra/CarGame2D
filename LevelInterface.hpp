@@ -1,15 +1,23 @@
-#pragma once
 #include <windows.h>
+#include <iostream>
 #include <vector>
 
-class LevelInterface {
+class LevelInterface
+{
 
 private:
     int height;
-public:
-    LevelInterface(int score, int level);
+    int width;
+    int level;
+    int score;
+    std::vector<std::vector<char>> canvas;
 
-    void drawCanva(int c);
+    void initCanvas();
+
+public:
+    LevelInterface(int height);
+
+    void drawCanva(int level, int score);
     //aumenta il livello di 1
     void levelUp();
     //diminuisce il livello di 1
@@ -18,5 +26,5 @@ public:
     void addScore(int bonus);
     //rimuove punteggio
     void subScore(int damage);
-
+    std::vector<std::vector<char>> getCanvas();
 };

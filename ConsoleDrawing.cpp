@@ -1,7 +1,5 @@
 #include "ConsoleDrawing.hpp"
-#include <windows.h>
-#include <iostream>
-#include <vector>
+
 
 ConsoleDrawing::ConsoleDrawing()
 {
@@ -65,9 +63,4 @@ void ConsoleDrawing::DrawBuffer(std::vector<std::vector<char>> canvas)
     this->buffer_one = canvas;//saves copy of vector to later compare it to the updated one, in order to have the lowest calls to std::cout
 
    // Sleep(16); //16.66667 milliseconds is equal to 1/60 of a second, so that we can achieve (hopefully) 60fps
-}
-
-void maximizeWindow(){
-    HWND hwnd = GetConsoleWindow();
-    ShowWindow(hwnd, SW_SHOWMAXIMIZED);
 }

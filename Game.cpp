@@ -5,8 +5,9 @@ Game::Game()
 {
 
     this->initCanvas();
-    //score inziale
+    //score e level inziali
     this->score = 1;
+    this->level = 1;
     this->player = new Player(this->width - 4, this->height / 2, 3, 3);
     //parametri iniziali
     this->nBonus = 1;
@@ -42,19 +43,19 @@ void Game::run()
 {
     while (this->score > 0)
     {
-        this->resetCanvas();
-        //aggiorno il numero di nemici/bonus a schermo
-        if (this->enemies.size() < this->nEnemy)
-            this->addEnemy(this->damage);
-        if (this->bonuses.size() < this->nBonus)
-            this->addBonus(this->bonus);
+        // this->resetCanvas();
+        // //aggiorno il numero di nemici/bonus a schermo
+        // if (this->enemies.size() < this->nEnemy)
+        //     this->addEnemy(this->damage);
+        // if (this->bonuses.size() < this->nBonus)
+        //     this->addBonus(this->bonus);
 
-        this->move();
-        this->checkCollision();
+        // this->move();
+        // this->checkCollision();
         this->draw();
 
-        this->score += 1;
-        this->checkLevel();
+        // this->score += 1;
+        // this->checkLevel();
         Sleep(this->speed);
     }
 }
@@ -93,20 +94,20 @@ void Game::checkCollision()
 }
 void Game::draw()
 {
-    //disegno player
-    this->player->draw(this->canvas);
-    for (int i = 0; i < enemies.size(); i++)
-    {
-        enemies[i].draw(this->canvas);
-    }
+    // //disegno player
+    // this->player->draw(this->canvas);
+    // for (int i = 0; i < enemies.size(); i++)
+    // {
+    //     enemies[i].draw(this->canvas);
+    // }
 
-    // muovo tutti i bonus
-    for (int i = 0; i < bonuses.size(); i++)
-    {
-        bonuses[i].draw(this->canvas);
-    }
+    // // muovo tutti i bonus
+    // for (int i = 0; i < bonuses.size(); i++)
+    // {
+    //     bonuses[i].draw(this->canvas);
+    // }
 
-    this->console.DrawBuffer(this->canvas);
+    this->console.DrawBuffer(this->showStats());
 }
 void Game::move()
 {
@@ -170,6 +171,7 @@ void Game::checkLevel()
 {
     if (this->score >= this->levelUpTarget)
     {
+        this->level++;
         this->nEnemy++;
         this->nBonus++;
         this->speed -= 5; //accellera
@@ -180,6 +182,7 @@ void Game::checkLevel()
     }
     else if (this->score < this->prevLevel)
     {
+        this->level--;
         this->nEnemy--;
         this->nBonus--;
         this->speed += 5; // rallenta
@@ -188,4 +191,22 @@ void Game::checkLevel()
         this->levelUpTarget = this->prevLevel;
         this->prevLevel -= 1000;
     }
+}
+std::vector<std::vector<char>> Game::showStats()
+{
+    LevelInterface l(this->height);
+    l.drawCanva(this->level, this->score);
+    std::vector<std::vector<char>> stats = l.getCanvas();
+    std::vector<std::vector<char>> result = this->canvas;
+    std::cout<<result[1][0];
+    for (int i = 0; i < stats.size(); i++)
+    {
+        // result[i].insert(result[i].end(), stats[i].begin(), stats[i].end());
+        int maxY = result[i].size();
+        for (int j = 0; j < stats[i].size() ; j++)
+        {
+            result[i][maxY+j] = stats[i][j];
+        }
+    }
+    return result;
 }

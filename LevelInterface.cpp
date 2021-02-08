@@ -1,85 +1,80 @@
 #include "LevelInterface.hpp"
-#include <windows.h>
-#include <iostream>
-#include <vector>
 
-LevelInterface(){}
+LevelInterface::LevelInterface(int height)
+{
+    this->width = 30;
+    this->height = height;
+    // this->level = level;
+    // this->score = score;
+}
 
-void LevelInterface::drawCanva(){
-    int width=height*2;
-    //la dimensione dell'interfaccia è data dall'altezza presa dalla classe
-    //e la larghezza composta moltiplicato l'altezza per due
-    char canva[height][width];
-
-    //salvo come stringhe le parole "level" e "score"
-    std::string levelString = "LEVEL: ";
-    std::string scoreString = "SCORE: ";
-    //salvo come stringhe i parametri level e score, che sarebbero interi
-    std::string actualLevel = std::to_string(this->level);
-    std::string actualString = std::to_string(this->score);
-    //controllori per la lunghezza delle stringhe
-    int countScoreChar = 0;
-    int maxScoreChar = actualString.length() + scoreString.length();
-    int countLevelChar = 0;
-    int maxLevelChar = actualLevel.length() + levelString.length();
-    //controllori
-    int k=0;
-    int lv=0;
-    
-    //se la larghezza è minore della lunghezza di char e score, aumenta la larghezza
-    if(width<maxLevelChar || width<maxScoreChar){
-        width=width + maxLevelChar + maxScoreChar;
-    }
-
-    //la stringa del punteggio e del livello viene concatenata all'effettivo
-    //punteggio e livello
-    scoreString+=actualString;
-    levelString+=actualLevel;
-
-    //cicli per la costruzione della cornice, degli spazi bianchi interni
-    //e per l'inserimento delle scritte score e level
-    for(int i=0; i<height; i++){
-        for(int j=0; j<width; j++){
-
-            if(i==0 && j!=0) {
-                canva[i][j]='-';
-            }  else if(i==height-1) {
-                canva[i][j]='_';
-
-            } else {
-                canva[i][j]=' ';
-            };
-            if(j==0){
-                canva[i][j]='|';
-            }else if ((j==(width/10)+countScoreChar) && i==(width/4) && countScoreChar<maxScoreChar){
-                canva[i][j]=scoreString[k];
-
-                countStringChar++;
-                k++;
-            } else if ((j==(width/10)+ countLevelChar && i==(heihgt/4)+2 && countLevelChar<maxLevelChar)){
-                canva[i][j]=levelString[lv];
-                countLevelChar++;
-                lv++;
-            } else if(j==width-1){
-                canva[i][j]='|';
+void LevelInterface::initCanvas()
+{
+    //cicli per la costruzione della cornice e degli spazi bianchi interni
+    for (int i = 0; i < this->height; i++)
+    {
+        std::vector<char> row;
+        for (int j = 0; j < this->width; j++)
+        {
+            if (j == this->width - 1 || i == this->height - 1 || i == 0)
+            {
+                row.push_back('#');
             }
+            else if (j == 0)
+            {
+                row.push_back('|');
+            }
+            else
+            {
+                row.push_back(' ');
+            }
+        }
+        this->canvas.push_back(row);
+    }
+}
+void LevelInterface::drawCanva(int level, int score)
+{
+    this->initCanvas();
+    //salvo come stringhe il valore di "level" e "score"
+    std::string levelString = "LEVEL: " + std::to_string(level);
+    std::string scoreString = "SCORE: " + std::to_string(score);
 
-        }std::cout<<'\n';
+    // mi posiziono a metà schermo -1
+    int yMid = this->height / 2;
+    for (int i = 0; i < scoreString.length(); i++)
+    {
+        //controllo che non vada in overflow la scritta
+        if (i < canvas[yMid].size())
+        {
+            canvas[yMid][i + 2] = scoreString.at(i);
+        }
+    }
+    yMid += 2; //lascio uno spazio bianco tra le scritte
+    for (int i = 0; i < levelString.length(); i++)
+    {
+        //controllo che non vada in overflow la scritta
+        if (i < canvas[yMid].size())
+        {
+            canvas[yMid][i + 2] = levelString.at(i);
+        }
     }
 }
 
-void LevelInterface::levelUp(){
+void LevelInterface::levelUp()
+{
     this->level += 1;
-
 }
-void LevelInterface::levelDown(){
+void LevelInterface::levelDown()
+{
     this->level -= 1;
 }
 
-void LevelInterface::addScore(int bonus){
+void LevelInterface::addScore(int bonus)
+{
     this->score += bonus;
 }
 
-void LevelInferface::subScore(int damage){
-    this->score -= damage;
+std::vector<std::vector<char>> LevelInterface::getCanvas()
+{
+    return this->canvas;
 }

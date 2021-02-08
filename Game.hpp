@@ -1,4 +1,5 @@
 #include "ConsoleDrawing.hpp"
+#include "LevelInterface.hpp"
 #include "Player.hpp"
 #include <vector>
 class Game
@@ -20,6 +21,7 @@ private:
     int bonus;
 
     int score; //@param score score partita
+    int level;
 
     Player *player; //giocatore
     //numero bonus/nemici nella mappa
@@ -61,7 +63,6 @@ private:
     void addBonus(int bonus);
 
 public:
-
     /**
      * @brief inizializza alcuni parametri di base del gioco come numero iniziale di nemici/bonus
      *        score e la posizione del player
@@ -69,7 +70,9 @@ public:
     Game();
     ~Game();
     /**
-     * @brief gestisce tutto il gioco
+     * @brief gestisce tutto il gioco (è un wrapper dei metodi principali)
      */
     void run();
+
+    std::vector<std::vector<char>> showStats();
 };
