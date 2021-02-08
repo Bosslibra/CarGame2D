@@ -18,13 +18,6 @@ public:
     LevelInterface(int height);
 
     void drawCanva(int level, int score);
-    //aumenta il livello di 1
-    void levelUp();
-    //diminuisce il livello di 1
-    void levelDown();
-    //aumenta il punteggio
-    void addScore(int bonus);
-    //rimuove punteggio
-    void subScore(int damage);
+
     std::vector<std::vector<char>> getCanvas();
 };
